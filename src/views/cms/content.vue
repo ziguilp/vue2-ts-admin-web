@@ -128,6 +128,15 @@ export default class extends Vue {
                 formRule: [{ required: true }],
             },
             {
+                type: CustomListColumnType.NUMBER,
+                label: "排序[越大越靠前]",
+                canSearch: false,
+                canAdd: true,
+                canEdit: true,
+                prop: "sort",
+                formRule: [{ required: true }],
+            },
+            {
                 type: CustomListColumnType.DATETIME_RANGER,
                 label: "展示时间",
                 prop: "date_show_ranger",
