@@ -16,7 +16,7 @@ Vue.use(Router)
 */
 
 export default new Router({
-    // mode: 'history',  // Enable this if you need.
+    mode: 'history',  // Enable this if you need.
     scrollBehavior: (to, from, savedPosition) => {
         if (savedPosition) {
             return savedPosition
@@ -138,20 +138,39 @@ export default new Router({
             ]
         },
 
-        // {
-        //     path: '/setting',
-        //     component: Layout,
-        //     redirect: '/setting/factlist',
-        //     meta: {
-        //         title: '系统配置信息',
-        //         icon: 'setting',
-        //         permission: ['attach_ElecCapacityController', 'attach_ElecCapacityLimitController','attach_ElecComponentsController', 'attach_ElecInverterController', 'attach_ElecsiteController', 'attach_ElecPredictionsController', 'attach_ElecWeatherStationController']
-        //         // (item: AuthRightItem, pksObj: any) => {
+        {
+            path: '/cms',
+            component: Layout,
+            redirect: '/cms/content/list',
+            meta: {
+                title: 'CMS管理',
+                icon: 'setting',
+                permission: ['cms_page_edit', 'cms_page_del', 'cms_content_edit', 'cms_page', 'cms_content']
+                // (item: AuthRightItem, pksObj: any) => {
 
-        //         // }
-        //     },
-        //     children: []
-        // },
+                // }
+            },
+            children: [
+                {
+                    path: 'page/list',
+                    name: 'pageList',
+                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/cms/page.vue'),
+                    meta: {
+                        title: '页面',
+                        icon: 'circle'
+                    }
+                },
+                {
+                    path: 'content/list',
+                    name: 'contentList',
+                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/cms/content.vue'),
+                    meta: {
+                        title: '内容',
+                        icon: 'circle'
+                    }
+                },
+            ]
+        },
         {
             path: '/book',
             component: Layout,
@@ -218,6 +237,16 @@ export default new Router({
                     }
                 },
             ]
+        },
+        {
+            path: '/cms/detail/:alias',
+            name: 'cmsView',
+            component: () => import(/* webpackChunkName: "dashboard" */ '@/views/cms/detail.vue'),
+            meta: {
+                title: '内容',
+                icon: 'circle',
+                hidden: true
+            }
         },
     ]
 })

@@ -10,6 +10,10 @@ export enum CustomListColumnType {
      */
     TEXT_ARRAY = 'text-array',
     /**
+     * 富文本输入
+     */
+    RICHTEXT = 'rich-text',
+    /**
     * 文本输入
     */
     TEXTAREA = 'textarea',
@@ -106,7 +110,8 @@ export interface CustomListColumn {
     /**
      * 数值精度
      */
-    precision?: number
+    precision?: number,
+    showFormatInTable?: Function
 }
 
 export interface CustomListOperationItem {

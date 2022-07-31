@@ -79,6 +79,7 @@
                                 <slot :name="v.prop" v-bind:row="scope.row">
                                     <template v-if="v.type === 'image'">
                                         <el-image
+                                            v-if="scope.row[v.prop]"
                                             :src="scope.row[v.prop]"
                                             :style="v.style"
                                             :fit="'cover'"
@@ -87,6 +88,7 @@
                                             ]"
                                             lazy
                                         ></el-image>
+                                        <el-tag v-else>无图</el-tag>
                                     </template>
                                     <div v-else-if="v.type === 'images'">
                                         <el-image
@@ -128,6 +130,26 @@
                                             )
                                         }}</template
                                     >
+                                    <template
+                                        v-else-if="
+                                            v.type === 'datet-ranger' ||
+                                            v.type === 'datetime-ranger'
+                                        "
+                                        >{{
+                                            dateFormat(
+                                                scope.row[v.prop][0],
+                                                v.dateFormat
+                                            )
+                                        }}~{{
+                                            dateFormat(
+                                                scope.row[v.prop][1],
+                                                v.dateFormat
+                                            )
+                                        }}</template
+                                    >
+                                    <template v-else-if="v.showFormatInTable">{{
+                                        v.showFormatInTable(scope.row[v.prop])
+                                    }}</template>
                                     <template v-else>{{
                                         scope.row[v.prop]
                                     }}</template>
