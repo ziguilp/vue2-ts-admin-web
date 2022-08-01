@@ -98,6 +98,8 @@ export interface CustomListColumn {
      */
     multiple?: Boolean,
     showInTable?: Boolean,
+    showInDetail?: Boolean,
+    readonly?: Boolean,
     tableConf?: TableColumn,
     //**参照formRule */
     formRule?: any[] | Function,
@@ -111,7 +113,8 @@ export interface CustomListColumn {
      * 数值精度
      */
     precision?: number,
-    showFormatInTable?: Function
+    showFormatInTable?: Function,
+    sortable?: boolean | 'custom',
 }
 
 export interface CustomListOperationItem {
@@ -130,6 +133,7 @@ export interface CustomListConf {
     onExport?: Function,
     showExport?: Function,
     onTableSelectionChange?: Function,
+    onSortChange?: Function,
     permissionAddMark?: string,
     permissionUpdateMark?: string,
     permissionDeleteMark?: string,

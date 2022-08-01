@@ -28,7 +28,7 @@
                 :placeholder="vo.placeholder"
                 :style="customStyle"
                 :multiple="vo.multiple"
-                :disabled="readonly"
+                :disabled="vo.readonly || readonly"
             >
             </CustomSelect>
 
@@ -39,7 +39,7 @@
                 :dataSource="vo.dataSource"
                 :placeholder="vo.placeholder"
                 :style="vo.style || customType || ''"
-                :disabled="readonly"
+                :disabled="vo.readonly || readonly"
             >
                 <el-radio
                     v-for="(opt, i) in vo.dataSource.value"
@@ -56,7 +56,7 @@
                 v-if="vo.type === 'checkbox'"
                 v-model="form[vo.prop]"
                 :style="customStyle"
-                :disabled="readonly"
+                :disabled="vo.readonly || readonly"
             >
                 <CustomCheckbox
                     v-for="(opt, i) in vo.dataSource.value"
@@ -75,7 +75,7 @@
                 v-else-if="vo.type === 'image'"
                 v-model="form[vo.prop]"
                 :style="customStyle"
-                :disabled="readonly"
+                :disabled="vo.readonly || readonly"
             >
                 <!-- <div>
           <el-image
@@ -96,7 +96,7 @@
                 v-model="form[vo.prop]"
                 :placeholder="vo.placeholder"
                 :style="customStyle"
-                :disabled="readonly"
+                :disabled="vo.readonly || readonly"
             ></el-input>
 
             <!-- 数组输入框 -->
@@ -104,7 +104,7 @@
                 v-else-if="vo.type === 'text-array'"
                 v-model="form[vo.prop]"
                 :style="customStyle"
-                :disabled="readonly"
+                :disabled="vo.readonly || readonly"
             ></InputArray>
 
             <!-- 年 -->
@@ -112,7 +112,7 @@
                 v-else-if="vo.type === 'year'"
                 v-model="form[vo.prop]"
                 :style="customStyle"
-                :disabled="readonly"
+                :disabled="vo.readonly || readonly"
                 type="year"
                 :placeholder="vo.placeholder"
             >
@@ -123,7 +123,7 @@
                 v-else-if="vo.type === 'year-ranger'"
                 v-model="form[vo.prop]"
                 style="width: 300px"
-                :disabled="readonly"
+                :disabled="vo.readonly || readonly"
                 :placeholder="vo.placeholder"
             >
             </YearRangerPicker>
@@ -134,7 +134,7 @@
                 v-model="form[vo.prop]"
                 type="date"
                 :style="customStyle"
-                :disabled="readonly"
+                :disabled="vo.readonly || readonly"
             >
             </el-date-picker>
 
@@ -147,7 +147,7 @@
                 start-placeholder="开始日期"
                 end-placeholder="结束日期"
                 style="width: 300px"
-                :disabled="readonly"
+                :disabled="vo.readonly || readonly"
             >
             </el-date-picker>
 
@@ -157,7 +157,7 @@
                 v-model="form[vo.prop]"
                 type="datetime"
                 :style="customStyle"
-                :disabled="readonly"
+                :disabled="vo.readonly || readonly"
             >
             </el-date-picker>
 
@@ -169,7 +169,7 @@
                 start-placeholder="开始时间"
                 end-placeholder="结束时间"
                 style="width: 400px"
-                :disabled="readonly"
+                :disabled="vo.readonly || readonly"
             >
             </el-date-picker>
 
@@ -179,7 +179,7 @@
                 type="password"
                 v-model="form[vo.prop]"
                 :style="customStyle"
-                :disabled="readonly"
+                :disabled="vo.readonly || readonly"
                 show-password
             ></el-input>
 
@@ -189,7 +189,7 @@
                 v-model="form[vo.prop]"
                 :style="customStyle"
                 :precision="vo.precision"
-                :disabled="readonly"
+                :disabled="vo.readonly || readonly"
                 :placeholder="vo.placeholder"
                 :min="vo.min"
                 :max="vo.max"
@@ -202,7 +202,7 @@
                 type="textarea"
                 v-model="form[vo.prop]"
                 :style="vo.width ? `width: ${vo.width}` : ``"
-                :disabled="readonly"
+                :disabled="vo.readonly || readonly"
                 :placeholder="vo.placeholder"
             >
             </el-input>
@@ -211,7 +211,7 @@
             <custom-editor
                 v-else-if="vo.type === 'rich-text'"
                 v-model="form[vo.prop]"
-                :disabled="readonly"
+                :disabled="vo.readonly || readonly"
                 :placeholder="vo.placeholder"
             >
             </custom-editor>

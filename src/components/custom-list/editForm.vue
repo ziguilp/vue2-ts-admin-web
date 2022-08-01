@@ -67,8 +67,19 @@ export default class extends Vue {
 
     get columns() {
         return this.conf.columns.reduce((p, c) => {
-            if ((this.form.id && c.canEdit) || (!this.form.id && c.canAdd)) {
-                p.push(c);
+            if (
+                (this.form.id && (c.canEdit || c.showInDetail)) ||
+                (!this.form.id && c.canAdd)
+            ) {
+                p.push({
+                    ...c,
+                    readonly:
+                        "undefined" == typeof c.readonly
+                            ? this.form.id && !c.canEdit
+                                ? true
+                                : undefined
+                            : c.readonly,
+                });
             }
             return p;
         }, [] as CustomListColumn[]);

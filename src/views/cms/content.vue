@@ -30,7 +30,6 @@ import {
     CmsContent,
 } from "@/api/cms";
 import { IpageDataDto } from "@/api/types";
-import { nextTick } from "process";
 
 @Component({
     name: "CmsContent",
@@ -80,7 +79,7 @@ export default class extends Vue {
                 showInTable: true,
                 label: "页面",
                 showFormatInTable: (v: any) => {
-                    return v.name;
+                    return v.cmsPage.name;
                 },
             },
             {

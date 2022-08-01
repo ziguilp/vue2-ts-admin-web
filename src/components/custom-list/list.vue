@@ -60,6 +60,7 @@
                     :data="data.list"
                     style="width: 100%"
                     ref="table"
+                    @sort-change="handleSortChange"
                     @selection-change="handleSelectionChange"
                 >
                     <el-table-column
@@ -73,6 +74,7 @@
                             :key="`custom-list-table-${v.prop}-${i}`"
                             :prop="v.prop"
                             :label="v.label"
+                            :sortable="v.sortable"
                             :width="v.width || ''"
                         >
                             <template slot-scope="scope">
@@ -119,6 +121,31 @@
                                         >
                                     </template>
                                     <template
+                                        v-else-if="v.type === 'text-array'"
+                                    >
+                                        <el-popover
+                                            placement="top-start"
+                                            :title="v.label"
+                                            width="200"
+                                            trigger="hover"
+                                            :content="
+                                                buidTextArray(
+                                                    scope.row[v.prop],
+                                                    '/',
+                                                    '-'
+                                                )
+                                            "
+                                        >
+                                            <el-tag slot="reference">{{
+                                                buidTextArray(
+                                                    scope.row[v.prop],
+                                                    "、",
+                                                    "-"
+                                                )
+                                            }}</el-tag>
+                                        </el-popover>
+                                    </template>
+                                    <template
                                         v-else-if="
                                             v.type === 'date' ||
                                             v.type === 'datetime'
@@ -148,7 +175,7 @@
                                         }}</template
                                     >
                                     <template v-else-if="v.showFormatInTable">{{
-                                        v.showFormatInTable(scope.row[v.prop])
+                                        v.showFormatInTable(scope.row)
                                     }}</template>
                                     <template v-else>{{
                                         scope.row[v.prop]
@@ -373,6 +400,32 @@ export default class CustomList extends Vue {
         }
     }
 
+    private async handleSortChange(sort: any) {
+        if (!(sort instanceof Array)) {
+            sort = [sort];
+        }
+        const sortBy = sort.reduce((p: any, c: any) => {
+            p[c.prop] = /^asc/.test(c.order) ? "ASC" : "DESC";
+            return p;
+        }, {});
+
+        if (this.conf.onSortChange) {
+            this.loading = true;
+            try {
+                this.data = await this.conf.onSortChange(
+                    this.$refs.searchForm
+                        ? (this.$refs.searchForm as CustomForm).getFormValue()
+                        : {},
+                    this.data,
+                    sortBy
+                );
+            } catch (error) {
+            } finally {
+                this.loading = false;
+            }
+        }
+    }
+
     private dateFormat(v: any, format = "YYYY-MM-DD HH:mm:ss") {
         return v ? moment(v).format(format) : "-";
     }
@@ -400,6 +453,15 @@ export default class CustomList extends Vue {
             label: value,
             type: "primary",
         };
+    }
+
+    private buidTextArray(
+        txts: string[],
+        glue: string = "、",
+        defaultVal: string = ""
+    ) {
+        const res = txts && txts.length > 0 ? txts.join(glue) : defaultVal;
+        return res;
     }
 }
 </script>
