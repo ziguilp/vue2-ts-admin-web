@@ -22,7 +22,7 @@ const settings: ISettings = {
     sidebarTextTheme: true,
     devServerPort: 9527,
     mockServerPort: 9528,
-    uploadDir: 'turbo'
+    uploadDir: 'xiquecrm'
 }
 
 export default settings

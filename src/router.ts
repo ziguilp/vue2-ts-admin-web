@@ -172,47 +172,29 @@ export default new Router({
             ]
         },
         {
-            path: '/book',
+            path: '/merchant',
             component: Layout,
-            redirect: '/book/list',
+            redirect: '/merchant/list',
             meta: {
-                title: '书籍管理',
+                title: '商户管理',
                 icon: 'gl1'
             },
             children: [
                 {
-                    path: 'cate',
-                    name: 'cate',
-                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/book/cate.vue'),
-                    meta: {
-                        title: '分类',
-                        icon: 'circle'
-                    }
-                },
-                {
                     path: 'list',
-                    name: 'list',
-                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/book/index.vue'),
+                    name: 'merchantList',
+                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/merchant/list.vue'),
                     meta: {
-                        title: '书籍列表',
+                        title: '商户列表',
                         icon: 'circle'
                     }
                 },
                 {
-                    path: 'location',
-                    name: 'locates',
+                    path: 'giftplan',
+                    name: 'giftplan',
                     component: () => import(/* webpackChunkName: "dashboard" */ '@/views/book/locates.vue'),
                     meta: {
-                        title: '库位管理',
-                        icon: 'circle'
-                    }
-                },
-                {
-                    path: 'skubind',
-                    name: 'skubind',
-                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/book/skubind.vue'),
-                    meta: {
-                        title: 'SKU绑定',
+                        title: '会员计划',
                         icon: 'circle'
                     }
                 },
@@ -221,18 +203,27 @@ export default new Router({
         {
             path: '/order',
             component: Layout,
-            redirect: '/order/borrow',
+            redirect: '/order/giftsubscribe',
             meta: {
                 title: '订单管理',
                 icon: 'sjbb'
             },
             children: [
                 {
-                    path: 'borrow',
-                    name: 'borrow',
+                    path: 'giftsubscribe',
+                    name: 'giftsubscribe',
                     component: () => import(/* webpackChunkName: "dashboard" */ '@/views/order/borrow.vue'),
                     meta: {
-                        title: '借阅订单',
+                        title: '会员订阅',
+                        icon: 'circle'
+                    }
+                },
+                {
+                    path: 'gift',
+                    name: 'gift',
+                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/order/borrow.vue'),
+                    meta: {
+                        title: '会员礼',
                         icon: 'circle'
                     }
                 },
