@@ -3,48 +3,29 @@ import { number } from 'echarts'
 import moment from 'moment'
 import { IpageDataDto } from './types'
 
+
 /**
- * 订单状态
+ * 订单类型
  */
-export const OrderStatusConf = [
-    {
-        label: "作废",
-        value: 0,
-    },
-    {
-        label: "待配送",
-        value: 1,
-    },
-    {
-        label: "已送达",
-        value: 2,
-    },
-    {
-        label: "部分归还",
-        value: 3,
-    },
-    {
-        label: "全部归还",
-        value: 4,
-    },
-    {
-        label: "退款中",
-        value: 5,
-    },
-    {
-        label: "部分退款",
-        value: 6,
-    },
-    {
-        label: "全部退款",
-        value: 7,
-    },
-]
+export enum OrderType {
+    /**
+     * 会员订阅订单
+     */
+    VIP_ORDER,
+    /**
+     * 商品购买订单
+     */
+    GOODS,
+    /**
+     * 会员礼履约订单
+     */
+    GIFTS
+}
 
 /**
  * 订单状态
  */
-export const VipcardOrderStatusConf = [
+export const OrderStatusConf = [
     {
         label: "作废",
         value: 0,
@@ -55,35 +36,29 @@ export const VipcardOrderStatusConf = [
     },
     {
         label: "已支付",
-        value: 4,
-    },
-    {
-        label: "退款中",
-        value: 5,
+        value: 2,
     },
     {
         label: "部分退款",
-        value: 6,
+        value: 3,
     },
     {
         label: "全部退款",
-        value: 7,
+        value: 4,
     },
 ]
 
 /**
- * 读取借阅订单
+ * 读取订单列表
  * @param param0 
  * @returns 
  */
-export const getBorrowOrderList = async ({ keyword, status, user_id = '', page, pageSize }: any) => {
+export const getOrderList = async ({ page, pageSize, data }: any) => {
     return ((await request({
         url: '/order/list',
         method: 'get',
         params: {
-            keyword,
-            status,
-            user_id,
+            data,
             page,
             pageSize
         }
@@ -106,13 +81,13 @@ export const getOrderDetail = async ({ orderSn }: any) => {
             total_amount: (detail.total_amount as Number).div(100).toFixed(2),
             total_original_amount: (detail.total_original_amount as Number).div(100).toFixed(2),
         }
-        detail.goods = detail.goods.map((e: any) => {
+        detail.goods = detail.order_goods.map((e: any) => {
             e.rmbYuan = {
                 total_amount: (e.price as Number).div(100).toFixed(2)
             }
             return e
         })
-        detail.status_conf = (detail.order_type == 1 ? OrderStatusConf : VipcardOrderStatusConf).reduce((p, c) => {
+        detail.status_conf = OrderStatusConf.reduce((p, c) => {
             if (c.value == detail.status) {
                 p = c
             }
@@ -121,45 +96,6 @@ export const getOrderDetail = async ({ orderSn }: any) => {
     }
     console.log({ detail })
     return detail
-}
-
-
-/*
-* 借阅订单确认
-* @param param0 
-* @returns 
-*/
-export const confirmOrder = async ({ orderSn }: any) => {
-    return ((await request({
-        url: `/order/confirm/${orderSn}`,
-        method: 'POST',
-    })).data)
-}
-
-/*
-* 归还订单
-* @param param0 
-* @returns 
-*/
-export const returnOrder = async ({ orderSn, skuList }: any) => {
-    return ((await request({
-        url: `/order/back/${orderSn}`,
-        method: 'POST',
-        data: { skuList }
-    })).data)
-}
-
-/*
-* 归还订单
-* @param param0 
-* @returns 
-*/
-export const returnOrderBroken = async ({ orderSn, skuList }: any) => {
-    return ((await request({
-        url: `/order/broken/${orderSn}`,
-        method: 'POST',
-        data: { skuList }
-    })).data)
 }
 
 /*

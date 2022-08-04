@@ -15,12 +15,12 @@ export const refreshToken = async () => {
     })).data) as LoginResult
 }
 
-export const getUserList = async ({ keyword, page, pageSize }: any) => {
+export const getUserList = async ({ data, page, pageSize }: any) => {
     return ((await request({
         url: '/auth/userlist',
         method: 'get',
         params: {
-            keyword,
+            data,
             page,
             pageSize: pageSize || 10
         }

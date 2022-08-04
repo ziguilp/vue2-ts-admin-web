@@ -111,12 +111,7 @@ import {
     CustomListColumnType,
     CustomListConf,
 } from "@/components/custom-list/customType";
-import {
-    cancelOrder,
-    getOrderDetail,
-    returnOrder,
-    returnOrderBroken,
-} from "@/api/order";
+import { cancelOrder, getOrderDetail } from "@/api/order";
 import { IpageDataDto } from "@/api/types";
 import { SkuStatusConf } from "@/api/sku";
 
@@ -193,17 +188,17 @@ export default class extends Vue {
         }
         this.loading = true;
         try {
-            let r = await returnOrder({
-                orderSn: this.orderSn,
-                skuList: this.choosed.map((e) => {
-                    return {
-                        skuId: e.sku_id,
-                        skuNo: e.sku_no,
-                    };
-                }),
-            });
+            // let r = await returnOrder({
+            //     orderSn: this.orderSn,
+            //     skuList: this.choosed.map((e) => {
+            //         return {
+            //             skuId: e.sku_id,
+            //             skuNo: e.sku_no,
+            //         };
+            //     }),
+            // });
 
-            console.log(`归还结果`, r);
+            // console.log(`归还结果`, r);
             await this.getData();
         } catch (error) {
             console.error(error);
@@ -218,17 +213,17 @@ export default class extends Vue {
         }
         this.loading = true;
         try {
-            let r = await returnOrderBroken({
-                orderSn: this.orderSn,
-                skuList: this.choosed.map((e) => {
-                    return {
-                        skuId: e.sku_id,
-                        skuNo: e.sku_no,
-                    };
-                }),
-            });
+            // let r = await returnOrderBroken({
+            //     orderSn: this.orderSn,
+            //     skuList: this.choosed.map((e) => {
+            //         return {
+            //             skuId: e.sku_id,
+            //             skuNo: e.sku_no,
+            //         };
+            //     }),
+            // });
 
-            console.log(`归还结果`, r);
+            // console.log(`归还结果`, r);
             await this.getData();
         } catch (error) {
             console.error(error);

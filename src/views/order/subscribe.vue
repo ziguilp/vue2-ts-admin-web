@@ -1,9 +1,6 @@
 <template>
     <div>
         <custom-list ref="list" :conf="config">
-            <template slot="goods" scope="scope">
-                {{ booksContent(scope.row) }}
-            </template>
             <template slot="operations" scope="scope">
                 <el-button
                     v-if="true"
@@ -13,13 +10,13 @@
                     >详情<el-divider direction="vertical"></el-divider>
                 </el-button>
 
-                <!-- <el-button
-                    v-if="scope.row.status === 1"
+                <el-button
+                    v-if="scope.row.status === 2"
                     type="text"
                     size="small"
                     @click="handleCancel(scope.row)"
                     >取消<el-divider direction="vertical"></el-divider>
-                </el-button> -->
+                </el-button>
             </template>
         </custom-list>
 
@@ -36,15 +33,14 @@ import {
 } from "@/components/custom-list/customType";
 import {
     cancelOrder,
-    confirmOrder,
-    getBorrowOrderList,
+    getOrderList,
+    getOrderDetail,
+    OrderType,
     OrderStatusConf,
-    VipcardOrderStatusConf,
 } from "@/api/order";
-import { getVipcardOrderList } from "@/api/vipcard";
 import { isMobile } from "@/utils/validate";
 import { IpageDataDto } from "@/api/types";
-import DetailVue from "./components/vipcardDetail.vue";
+import DetailVue from "./components/subscribeDetail.vue";
 @Component({
     name: "BorrowOrder",
     components: {
@@ -78,7 +74,18 @@ export default class extends Vue {
                 canSearch: false,
                 canAdd: false,
                 canEdit: false,
-                prop: "nickname",
+                prop: "user_id",
+            },
+            {
+                type: CustomListColumnType.TEXT,
+                label: "订单金额",
+                canSearch: false,
+                canAdd: false,
+                canEdit: false,
+                prop: "total_amount",
+                showFormatInTable: (row: any) => {
+                    return Number(row.total_amount).div(100).toFixed(2);
+                },
             },
             {
                 type: CustomListColumnType.TEXT,
@@ -86,40 +93,25 @@ export default class extends Vue {
                 canAdd: false,
                 canEdit: false,
                 label: "订单内容",
-                prop: "goods",
-            },
-            {
-                type: CustomListColumnType.SELECT,
-                label: "状态",
-                canSearch: false,
-                canAdd: false,
-                canEdit: false,
-                prop: "status",
-                dataSource: {
-                    key: "value",
-                    value: VipcardOrderStatusConf,
+                prop: "order_goods",
+                showFormatInTable: (row: any) => {
+                    return row.order_goods
+                        .map((e: any) => {
+                            return e.goods_info.name;
+                        })
+                        .join("、");
                 },
             },
             {
                 type: CustomListColumnType.SELECT,
                 label: "状态",
-                showInTable: false,
                 canSearch: true,
                 canAdd: false,
                 canEdit: false,
-                prop: "status_search",
+                prop: "status",
                 dataSource: {
                     key: "value",
-                    value: [
-                        {
-                            label: "待支付",
-                            value: "waitConfirm",
-                        },
-                        {
-                            label: "已支付",
-                            value: "done",
-                        },
-                    ],
+                    value: OrderStatusConf,
                 },
             },
             {
@@ -133,23 +125,18 @@ export default class extends Vue {
         ],
         tableSelection: false,
         onLoadData: async (searchForm: any, idata: IpageDataDto<any>) => {
-            const data: any = await getVipcardOrderList({
+            const data: any = await getOrderList({
                 keyword: searchForm.keyword || "",
-                status: searchForm.status_search || "",
+                data: {
+                    ...searchForm,
+                    type: OrderType.VIP_ORDER,
+                },
                 page: parseInt(String(idata.currentPage)),
                 pageSize: idata.pageSize,
             });
             return data;
         },
     };
-
-    private booksContent(row: any) {
-        return row.goods
-            .map((e: any) => {
-                return `${e.goods_name}`;
-            })
-            .join("、");
-    }
 
     private handleDetail(row: any) {
         (this.$refs.detail as DetailVue).init(row.order_sn);
@@ -160,7 +147,7 @@ export default class extends Vue {
             .confirm({
                 type: "warning",
                 title: "取消",
-                content: "确定要取消当前订单吗？",
+                content: "确定要取消当前订阅吗？",
             })
             .then(async () => {
                 const res = await cancelOrder({ orderSn: row.order_sn });

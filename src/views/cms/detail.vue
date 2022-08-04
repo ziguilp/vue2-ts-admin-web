@@ -39,6 +39,7 @@ export default class extends Vue {
             if (this.alias) {
                 this.data = await getCmsDetailByAlias(this.alias as any);
                 console.log("data", this.data);
+                document.title = this.data.title;
             } else {
                 this.$message(`error`);
             }

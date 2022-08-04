@@ -112,18 +112,12 @@ import {
     CustomListColumnType,
     CustomListConf,
 } from "@/components/custom-list/customType";
-import {
-    cancelOrder,
-    getOrderDetail,
-    refund,
-    returnOrder,
-    returnOrderBroken,
-} from "@/api/order";
+import { cancelOrder, getOrderDetail, refund } from "@/api/order";
 import { IpageDataDto } from "@/api/types";
 import { VipcardSkuStatusConf } from "@/api/sku";
 
 @Component({
-    name: "VipcardOrderDetail",
+    name: "SubscribeOrderDetail",
     components: {},
 })
 export default class extends Vue {

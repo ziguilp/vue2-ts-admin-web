@@ -72,12 +72,7 @@ import {
     CustomListColumnType,
     CustomListConf,
 } from "@/components/custom-list/customType";
-import {
-    cancelOrder,
-    confirmOrder,
-    getBorrowOrderList,
-    OrderStatusConf,
-} from "@/api/order";
+import { cancelOrder, OrderStatusConf } from "@/api/order";
 import { IpageDataDto } from "@/api/types";
 import DetailVue from "./components/borrowDetail.vue";
 import printJS from "print-js";
@@ -182,13 +177,13 @@ export default class extends Vue {
         ],
         tableSelection: false,
         onLoadData: async (searchForm: any, idata: IpageDataDto<any>) => {
-            const data: any = await getBorrowOrderList({
-                keyword: searchForm.keyword || "",
-                status: searchForm.status_search || "",
-                page: parseInt(String(idata.currentPage)),
-                pageSize: idata.pageSize,
-            });
-            return data;
+            // const data: any = await getBorrowOrderList({
+            //     keyword: searchForm.keyword || "",
+            //     status: searchForm.status_search || "",
+            //     page: parseInt(String(idata.currentPage)),
+            //     pageSize: idata.pageSize,
+            // });
+            // return data;
         },
     };
 
@@ -212,10 +207,10 @@ export default class extends Vue {
                 content: "确定当前订单已配送吗？",
             })
             .then(async () => {
-                const res = await confirmOrder({ orderSn: row.order_sn });
-                if (res) {
-                    (this.$refs.list as any).refresh();
-                }
+                // const res = await confirmOrder({ orderSn: row.order_sn });
+                // if (res) {
+                //     (this.$refs.list as any).refresh();
+                // }
             })
             .catch((e) => {
                 console.log("取消");

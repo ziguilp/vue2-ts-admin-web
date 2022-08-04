@@ -12,13 +12,21 @@
                 <el-button
                     type="text"
                     size="small"
-                    @click="handleRefundDeposit(scope.row)"
-                    v-if="scope.row.deposit_amount > 0"
-                    >退押金</el-button
+                    @click="handleShowSubscribe(scope.row)"
+                    >查看会员订阅</el-button
                 >
-                <div></div>
             </template>
         </custom-list>
+
+        <el-dialog
+            width="1100px"
+            :title="activeUser ? `${activeUser.nickname}订阅的会员礼` : ''"
+            :visible.sync="showSubscribe"
+        >
+            <SubscribeVue
+                :user_id="activeUser ? activeUser.id : 0"
+            ></SubscribeVue>
+        </el-dialog>
     </div>
 </template>
 
@@ -39,13 +47,17 @@ import {
 import { getRoleList } from "@/api/role";
 import { isMobile } from "@/utils/validate";
 import { IpageDataDto } from "@/api/types";
-import CustomList from "@/components/custom-list/list.vue";
+import SubscribeVue from "../giftplan/subscribe.vue";
 
 @Component({
     name: "AdminList",
-    components: {},
+    components: {
+        SubscribeVue,
+    },
 })
 export default class extends Vue {
+    private activeUser: any = null;
+    private showSubscribe: boolean = false;
     private config: CustomListConf = {
         columns: [
             {
@@ -123,19 +135,19 @@ export default class extends Vue {
                     ],
                 },
             },
-            {
-                type: CustomListColumnType.TEXT,
-                prop: "deposit_amount",
-                label: "押金余额",
-            },
-            {
-                type: CustomListColumnType.DATE,
-                dateFormat: "YYYY-MM-DD HH:mm:ss",
-                prop: "vip_expire_time",
-                label: "会员到期时间",
-                canAdd: false,
-                canEdit: false,
-            },
+            // {
+            //     type: CustomListColumnType.TEXT,
+            //     prop: "deposit_amount",
+            //     label: "押金余额",
+            // },
+            // {
+            //     type: CustomListColumnType.DATE,
+            //     dateFormat: "YYYY-MM-DD HH:mm:ss",
+            //     prop: "vip_expire_time",
+            //     label: "会员到期时间",
+            //     canAdd: false,
+            //     canEdit: false,
+            // },
             {
                 type: CustomListColumnType.DATE,
                 dateFormat: "YYYY-MM-DD HH:mm:ss",
@@ -148,7 +160,7 @@ export default class extends Vue {
         tableSelection: false,
         onLoadData: async (searchForm: any, idata: IpageDataDto<any>) => {
             const data: any = await getUserList({
-                keyword: searchForm.mobile || "",
+                data: searchForm,
                 page: parseInt(String(idata.currentPage)),
                 pageSize: idata.pageSize,
             });
@@ -160,21 +172,9 @@ export default class extends Vue {
         },
     };
 
-    private handleRefundDeposit(row: any) {
-        this.$turboConfirm
-            .confirm({
-                type: "warning",
-                title: "确定要申请退回押金吗？",
-            })
-            .then(async () => {
-                const res = await applyRefundDeposit(row.id);
-                if (res) {
-                    (this.$refs.customList as CustomList).refresh(false);
-                }
-            })
-            .catch((e) => {
-                console.log("取消");
-            });
+    private handleShowSubscribe(row: any) {
+        this.activeUser = row;
+        this.showSubscribe = true;
     }
 
     private fen2yuan(v: number) {

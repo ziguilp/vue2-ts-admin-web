@@ -75,7 +75,7 @@ export default new Router({
                 },
                 {
                     path: 'list',
-                    name: 'userList',
+                    name: 'adminUserList',
                     component: () => import(/* webpackChunkName: "dashboard" */ '@/views/admin/list.vue'),
                     meta: {
                         title: '用户列表',
@@ -115,22 +115,22 @@ export default new Router({
                         permission: 'read_userlist'
                     }
                 },
-                {
-                    path: 'vipcard',
-                    name: 'vipcard',
-                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/user/list.vue'),
-                    meta: {
-                        title: '会员卡',
-                        icon: 'users',
-                        permission: 'read_userlist'
-                    }
-                },
+                // {
+                //     path: 'vipcard',
+                //     name: 'vipcard',
+                //     component: () => import(/* webpackChunkName: "dashboard" */ '@/views/user/list.vue'),
+                //     meta: {
+                //         title: '会员卡',
+                //         icon: 'users',
+                //         permission: 'read_userlist'
+                //     }
+                // },
                 {
                     path: 'vipcard/order',
                     name: 'vipcardLog',
-                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/order/vipcard.vue'),
+                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/order/subscribe.vue'),
                     meta: {
-                        title: '会员卡订单',
+                        title: '会员订阅',
                         icon: 'users',
                         permission: 'read_userlist'
                     }
@@ -192,8 +192,9 @@ export default new Router({
                 {
                     path: 'giftplan',
                     name: 'giftplan',
-                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/book/locates.vue'),
+                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/giftplan/list.vue'),
                     meta: {
+                        hidden: true,
                         title: '会员计划',
                         icon: 'circle'
                     }
@@ -212,7 +213,7 @@ export default new Router({
                 {
                     path: 'giftsubscribe',
                     name: 'giftsubscribe',
-                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/order/borrow.vue'),
+                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/order/subscribe.vue'),
                     meta: {
                         title: '会员订阅',
                         icon: 'circle'
@@ -221,7 +222,7 @@ export default new Router({
                 {
                     path: 'gift',
                     name: 'gift',
-                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/order/borrow.vue'),
+                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/order/giftItem.vue'),
                     meta: {
                         title: '会员礼',
                         icon: 'circle'

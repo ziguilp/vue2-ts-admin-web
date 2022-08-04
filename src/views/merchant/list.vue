@@ -28,7 +28,11 @@
                     ></el-button>
                 </el-popover>
 
-                <el-button slot="reference" type="text" size="small"
+                <el-button
+                    slot="reference"
+                    type="text"
+                    size="small"
+                    @click="handleShowGiftPlans(scope.row)"
                     >会员礼 <el-divider direction="vertical"></el-divider
                 ></el-button>
 
@@ -39,6 +43,16 @@
         </custom-list>
 
         <CustomForm ref="checkform" :conf="checkConf"></CustomForm>
+
+        <el-dialog
+            width="1100px"
+            :title="activeMerchant ? `${activeMerchant.name}会员礼` : ''"
+            :visible.sync="showMerchantGiftPlan"
+        >
+            <GiftPlanListVue
+                :merchant_id="activeMerchant ? activeMerchant.id : 0"
+            ></GiftPlanListVue>
+        </el-dialog>
     </div>
 </template>
 
@@ -56,15 +70,19 @@ import {
     MerchantInfoOnlineStatus,
 } from "@/api/merchant";
 import CustomForm from "@/components/custom-list/editForm.vue";
+import GiftPlanListVue from "../giftplan/list.vue";
 import { IpageDataDto } from "@/api/types";
 
 @Component({
     name: "MerchantList",
     components: {
         CustomForm,
+        GiftPlanListVue,
     },
 })
 export default class extends Vue {
+    private activeMerchant: any = null;
+    private showMerchantGiftPlan: boolean = false;
     private config: CustomListConf = {
         columns: [
             {
@@ -358,6 +376,11 @@ export default class extends Vue {
             form: row,
             readonly: false,
         });
+    }
+
+    private handleShowGiftPlans(row: any) {
+        this.showMerchantGiftPlan = true;
+        this.activeMerchant = row;
     }
 }
 </script>
