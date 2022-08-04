@@ -36,7 +36,11 @@
                     >会员礼 <el-divider direction="vertical"></el-divider
                 ></el-button>
 
-                <el-button slot="reference" type="text" size="small"
+                <el-button
+                    slot="reference"
+                    type="text"
+                    size="small"
+                    @click="handleShowMembers(scope.row)"
                     >查看会员
                 </el-button>
             </template>
@@ -52,6 +56,16 @@
             <GiftPlanListVue
                 :merchant_id="activeMerchant ? activeMerchant.id : 0"
             ></GiftPlanListVue>
+        </el-dialog>
+
+        <el-dialog
+            width="1100px"
+            :title="activeMerchant ? `${activeMerchant.name}会员` : ''"
+            :visible.sync="showMembers"
+        >
+            <MembersVue
+                :merchant_id="activeMerchant ? activeMerchant.id : 0"
+            ></MembersVue>
         </el-dialog>
     </div>
 </template>
@@ -71,6 +85,7 @@ import {
 } from "@/api/merchant";
 import CustomForm from "@/components/custom-list/editForm.vue";
 import GiftPlanListVue from "../giftplan/list.vue";
+import MembersVue from "./members.vue";
 import { IpageDataDto } from "@/api/types";
 
 @Component({
@@ -78,11 +93,13 @@ import { IpageDataDto } from "@/api/types";
     components: {
         CustomForm,
         GiftPlanListVue,
+        MembersVue,
     },
 })
 export default class extends Vue {
     private activeMerchant: any = null;
     private showMerchantGiftPlan: boolean = false;
+    private showMembers: boolean = false;
     private config: CustomListConf = {
         columns: [
             {
@@ -380,6 +397,11 @@ export default class extends Vue {
 
     private handleShowGiftPlans(row: any) {
         this.showMerchantGiftPlan = true;
+        this.activeMerchant = row;
+    }
+
+    private handleShowMembers(row: any) {
+        this.showMembers = true;
         this.activeMerchant = row;
     }
 }

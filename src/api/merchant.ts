@@ -119,3 +119,21 @@ export const merchantBan = async ({
     })).data) as any
 }
 
+
+
+export const getMerchantMembers = async ({
+    data,
+    page = 1,
+    pageSize = 10
+}: any) => {
+    return ((await request({
+        url: `/merchant/membersList`,
+        method: 'get',
+        params: {
+            data,
+            page,
+            pageSize
+        }
+    })).data) as any
+}
+
