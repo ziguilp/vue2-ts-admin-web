@@ -81,12 +81,19 @@
                                 <slot :name="v.prop" v-bind:row="scope.row">
                                     <template v-if="v.type === 'image'">
                                         <el-image
-                                            v-if="scope.row[v.prop]"
-                                            :src="scope.row[v.prop]"
+                                            v-if="
+                                                getValueByKey(scope.row, v.prop)
+                                            "
+                                            :src="
+                                                getValueByKey(scope.row, v.prop)
+                                            "
                                             :style="v.style"
                                             :fit="'cover'"
                                             :preview-src-list="[
-                                                scope.row[v.prop],
+                                                getValueByKey(
+                                                    scope.row,
+                                                    v.prop
+                                                ),
                                             ]"
                                             lazy
                                         ></el-image>
@@ -94,11 +101,16 @@
                                     </template>
                                     <div v-else-if="v.type === 'images'">
                                         <el-image
-                                            :src="scope.row[v.prop][0]"
+                                            :src="
+                                                getValueByKey(
+                                                    scope.row,
+                                                    v.prop
+                                                )[0]
+                                            "
                                             :style="v.style"
                                             :fit="'cover'"
                                             :preview-src-list="
-                                                scope.row[v.prop]
+                                                getValueByKey(scope.row, v.prop)
                                             "
                                             lazy
                                         ></el-image>
@@ -111,12 +123,22 @@
                                     >
                                         <el-tag
                                             :type="
-                                                formatEnum(v, scope.row[v.prop])
-                                                    .type
+                                                formatEnum(
+                                                    v,
+                                                    getValueByKey(
+                                                        scope.row,
+                                                        v.prop
+                                                    )
+                                                ).type
                                             "
                                             >{{
-                                                formatEnum(v, scope.row[v.prop])
-                                                    .label
+                                                formatEnum(
+                                                    v,
+                                                    getValueByKey(
+                                                        scope.row,
+                                                        v.prop
+                                                    )
+                                                ).label
                                             }}</el-tag
                                         >
                                     </template>
@@ -130,7 +152,10 @@
                                             trigger="hover"
                                             :content="
                                                 buidTextArray(
-                                                    scope.row[v.prop],
+                                                    getValueByKey(
+                                                        scope.row,
+                                                        v.prop
+                                                    ),
                                                     '/',
                                                     '-'
                                                 )
@@ -138,7 +163,10 @@
                                         >
                                             <el-tag slot="reference">{{
                                                 buidTextArray(
-                                                    scope.row[v.prop],
+                                                    getValueByKey(
+                                                        scope.row,
+                                                        v.prop
+                                                    ),
                                                     "、",
                                                     "-"
                                                 )
@@ -152,7 +180,10 @@
                                         "
                                         >{{
                                             dateFormat(
-                                                scope.row[v.prop],
+                                                getValueByKey(
+                                                    scope.row,
+                                                    v.prop
+                                                ),
                                                 v.dateFormat
                                             )
                                         }}</template
@@ -164,12 +195,18 @@
                                         "
                                         >{{
                                             dateFormat(
-                                                scope.row[v.prop][0],
+                                                getValueByKey(
+                                                    scope.row,
+                                                    v.prop
+                                                )[0],
                                                 v.dateFormat
                                             )
                                         }}~{{
                                             dateFormat(
-                                                scope.row[v.prop][1],
+                                                getValueByKey(
+                                                    scope.row,
+                                                    v.prop
+                                                )[1],
                                                 v.dateFormat
                                             )
                                         }}</template
@@ -178,7 +215,7 @@
                                         v.showFormatInTable(scope.row)
                                     }}</template>
                                     <template v-else>{{
-                                        scope.row[v.prop]
+                                        getValueByKey(scope.row, v.prop)
                                     }}</template>
                                 </slot>
                             </template>
@@ -428,6 +465,19 @@ export default class CustomList extends Vue {
 
     private dateFormat(v: any, format = "YYYY-MM-DD HH:mm:ss") {
         return v ? moment(v).format(format) : "-";
+    }
+
+    private getValueByKey(o: any, key: string) {
+        const ks = key.split(".");
+        if (ks.length == 1) return o[key];
+        let res: any = {
+            ...o,
+        };
+        for (let index = 0; index < ks.length; index++) {
+            const k = ks[index];
+            res = res[k];
+        }
+        return res;
     }
 
     private formatEnum(column: CustomListColumn, value: any) {

@@ -129,7 +129,7 @@ export default class extends Vue {
                 keyword: searchForm.keyword || "",
                 data: {
                     ...searchForm,
-                    type: OrderType.VIP_ORDER,
+                    order_type: OrderType.VIP_ORDER,
                 },
                 page: parseInt(String(idata.currentPage)),
                 pageSize: idata.pageSize,

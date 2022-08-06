@@ -49,59 +49,58 @@
                     </el-table-column> -->
                     <el-table-column
                         label="条码"
-                        prop="goods_barcode"
+                        prop="goods_info.name"
                     ></el-table-column>
-                    <el-table-column
-                        label="SKU编码"
-                        prop="sku_no"
-                    ></el-table-column>
-                    <el-table-column
-                        label="名称"
-                        prop="goods_name"
-                    ></el-table-column>
-                    <el-table-column label="图片" prop="goods_image">
+                    <el-table-column label="图片" prop="goods_info.icon">
                         <template slot-scope="scope">
                             <el-image
                                 style="height: 90px; width: 60px"
-                                :src="scope.row.goods_image"
+                                :src="scope.row.goods_info.icon"
                             ></el-image>
                         </template>
                     </el-table-column>
                     <el-table-column
-                        label="库位"
-                        prop="located"
-                    ></el-table-column>
-                    <el-table-column
                         label="订单金额"
                         prop="rmbYuan.total_amount"
                     ></el-table-column>
-                    <el-table-column label="状态" prop="sku_status">
+                    <el-table-column label="状态" prop="status">
+                        <template slot-scope="scope">
+                            <el-tag :type="formatEnum(scope.row.status).type">{{
+                                formatEnum(scope.row.status).label
+                            }}</el-tag>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="结算状态" prop="settle_status">
                         <template slot-scope="scope">
                             <el-tag
-                                :type="formatEnum(scope.row.sku_status).type"
+                                :type="
+                                    formatSettleEnum(scope.row.settle_status)
+                                        .type
+                                "
                                 >{{
-                                    formatEnum(scope.row.sku_status).label
+                                    formatSettleEnum(scope.row.settle_status)
+                                        .label
                                 }}</el-tag
                             >
                         </template>
                     </el-table-column>
                     <el-table-column label="操作">
                         <template slot-scope="scope">
-                            <el-button
+                            <div></div>
+                            <!-- 该退款交给用户端 -->
+                            <!-- <el-button
                                 v-if="canRefund(scope.row)"
                                 type="text"
                                 size="small"
                                 @click="handleRefund(scope.row)"
                                 >退款</el-divider>
-                            </el-button>
+                            </el-button> -->
                         </template>
                     </el-table-column>
                 </el-table>
             </div>
         </div>
-        <span slot="footer" class="dialog-footer">
-        
-        </span>
+        <span slot="footer" class="dialog-footer"> </span>
     </el-dialog>
 </template>
 
@@ -112,9 +111,14 @@ import {
     CustomListColumnType,
     CustomListConf,
 } from "@/components/custom-list/customType";
-import { cancelOrder, getOrderDetail, refund } from "@/api/order";
+import {
+    cancelOrder,
+    getOrderDetail,
+    OrderGoodsSettleStatusConf,
+    refund,
+    SubscribeOrderGoodsStatusConf,
+} from "@/api/order";
 import { IpageDataDto } from "@/api/types";
-import { VipcardSkuStatusConf } from "@/api/sku";
 
 @Component({
     name: "SubscribeOrderDetail",
@@ -201,10 +205,29 @@ export default class extends Vue {
 
     private formatEnum(value: any) {
         const conf = ["danger", "success", "warning", "info", "primary"];
-        let i = VipcardSkuStatusConf.findIndex((v: any) => v.value === value);
+        let i = SubscribeOrderGoodsStatusConf.findIndex(
+            (v: any) => v.value === value
+        );
         if (i > -1) {
             return {
-                label: VipcardSkuStatusConf[i].label,
+                label: SubscribeOrderGoodsStatusConf[i].label,
+                type: conf[i % 5],
+            };
+        }
+        return {
+            label: value,
+            type: "primary",
+        };
+    }
+
+    private formatSettleEnum(value: any) {
+        const conf = ["danger", "success", "warning", "info", "primary"];
+        let i = OrderGoodsSettleStatusConf.findIndex(
+            (v: any) => v.value === value
+        );
+        if (i > -1) {
+            return {
+                label: OrderGoodsSettleStatusConf[i].label,
                 type: conf[i % 5],
             };
         }

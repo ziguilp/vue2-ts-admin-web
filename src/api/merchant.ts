@@ -119,8 +119,6 @@ export const merchantBan = async ({
     })).data) as any
 }
 
-
-
 export const getMerchantMembers = async ({
     data,
     page = 1,

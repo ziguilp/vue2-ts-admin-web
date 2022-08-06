@@ -206,6 +206,7 @@ export default class extends Vue {
                 page: parseInt(String(idata.currentPage)),
                 pageSize: idata.pageSize,
             });
+            data.list = data.list.map((e: any) => {});
             return data;
         },
     };

@@ -12,17 +12,28 @@
             <template slot="goods" scope="scope">
                 <el-popover
                     placement="top-start"
-                    title="书籍"
+                    title="服务内容"
                     width="300"
                     trigger="click"
-                    :content="booksContent(scope.row)"
                 >
+                    <div>
+                        <p>
+                            <li
+                                v-for="(vo, i) in scope.row.order_goods[0]
+                                    .goods_info.gift_plan_detail"
+                            >
+                                {{ vo }}
+                            </li>
+                        </p>
+                    </div>
                     <el-button
                         slot="reference"
                         type="primary"
                         plain
                         size="small"
-                        >共{{ scope.row.goods.length }}本,点击查看</el-button
+                        >{{
+                            scope.row.order_goods[0].goods_info.gift_plan_name
+                        }}</el-button
                     >
                 </el-popover>
             </template>
@@ -72,7 +83,13 @@ import {
     CustomListColumnType,
     CustomListConf,
 } from "@/components/custom-list/customType";
-import { cancelOrder, OrderStatusConf } from "@/api/order";
+import {
+    getOrderList,
+    cancelOrder,
+    OrderStatusConf,
+    OrderType,
+    OrderDeliveryStatus,
+} from "@/api/order";
 import { IpageDataDto } from "@/api/types";
 import DetailVue from "./components/borrowDetail.vue";
 import printJS from "print-js";
@@ -88,80 +105,92 @@ export default class extends Vue {
         columns: [
             {
                 type: CustomListColumnType.TEXT,
-                label: "检索词",
-                canSearch: true,
-                showInTable: false,
-                canAdd: false,
-                canEdit: false,
-                placeholder: "订单号/手机号/书籍名称/SKU编码/条码",
-                prop: "keyword",
-            },
-            {
-                type: CustomListColumnType.TEXT,
                 label: "订单号",
-                canSearch: false,
+                canSearch: true,
                 canAdd: false,
                 canEdit: false,
                 prop: "order_sn",
             },
             {
                 type: CustomListColumnType.TEXT,
-                label: "用户",
-                canSearch: false,
-                canAdd: false,
-                canEdit: false,
-                prop: "nickname",
-            },
-            {
-                type: CustomListColumnType.TEXT,
-                canSearch: false,
-                canAdd: false,
-                canEdit: false,
                 label: "手机号",
+                canSearch: true,
+                showInTable: false,
+                canAdd: false,
+                canEdit: false,
                 prop: "mobile",
             },
             {
                 type: CustomListColumnType.TEXT,
+                label: "用户ID",
                 canSearch: false,
                 canAdd: false,
                 canEdit: false,
-                label: "书籍数量",
+                prop: "user_id",
+            },
+            {
+                type: CustomListColumnType.TEXT,
+                canSearch: false,
+                canAdd: false,
+                canEdit: false,
+                label: "收件人",
+                prop: "mobile",
+                showFormatInTable: (row: any) => {
+                    const od = row.order_delivery;
+                    if (!od) return "";
+                    return `${od.name}/${od.mobile}/${od.province}${od.city}${od.area}${od.detail}`;
+                },
+            },
+            {
+                type: CustomListColumnType.TEXT,
+                canSearch: false,
+                canAdd: false,
+                canEdit: false,
+                label: "会员礼",
                 prop: "goods",
             },
             {
                 type: CustomListColumnType.SELECT,
                 label: "状态",
-                canSearch: false,
-                canAdd: false,
-                canEdit: false,
-                prop: "status",
-                dataSource: {
-                    key: "value",
-                    value: OrderStatusConf,
-                },
-            },
-            {
-                type: CustomListColumnType.SELECT,
-                label: "状态",
-                showInTable: false,
+                showInTable: true,
                 canSearch: true,
                 canAdd: false,
                 canEdit: false,
-                prop: "status_search",
+                prop: "order_delivery.status",
                 dataSource: {
                     key: "value",
                     value: [
                         {
-                            label: "待配送",
-                            value: "waitConfirm",
+                            label: "备货中",
+                            value: OrderDeliveryStatus.UNTRACK,
                         },
                         {
-                            label: "待归还",
-                            value: "waitReturn",
+                            label: "待揽收",
+                            value: OrderDeliveryStatus.PACKING,
                         },
                         {
-                            label: "已归还",
-                            value: "done",
+                            label: "运输中",
+                            value: OrderDeliveryStatus.TRANSING,
+                        },
+                        {
+                            label: "已签收",
+                            value: OrderDeliveryStatus.RECEIVED,
+                        },
+                        {
+                            label: "发货异常",
+                            value: OrderDeliveryStatus.EXCEPTION,
+                        },
+                        {
+                            label: "退货中",
+                            value: OrderDeliveryStatus.REFUNDING,
+                        },
+                        {
+                            label: "退货完成",
+                            value: OrderDeliveryStatus.REFUNDED,
+                        },
+                        {
+                            label: "退货异常",
+                            value: OrderDeliveryStatus.REFUNDEXCEPTION,
                         },
                     ],
                 },
@@ -177,13 +206,15 @@ export default class extends Vue {
         ],
         tableSelection: false,
         onLoadData: async (searchForm: any, idata: IpageDataDto<any>) => {
-            // const data: any = await getBorrowOrderList({
-            //     keyword: searchForm.keyword || "",
-            //     status: searchForm.status_search || "",
-            //     page: parseInt(String(idata.currentPage)),
-            //     pageSize: idata.pageSize,
-            // });
-            // return data;
+            const data: any = await getOrderList({
+                data: {
+                    ...searchForm,
+                    order_type: OrderType.GIFTS,
+                },
+                page: parseInt(String(idata.currentPage)),
+                pageSize: idata.pageSize,
+            });
+            return data;
         },
     };
 

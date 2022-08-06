@@ -49,6 +49,125 @@ export const OrderStatusConf = [
 ]
 
 /**
+ * 商品类型
+ */
+export enum OrderGoodsType {
+    /**
+     * 会员礼品订阅
+     */
+    VIP_ORDER,
+    /**
+     * 商品
+     */
+    GOODS,
+    /**
+     * 会员礼品
+     */
+    GIFTS
+}
+
+export enum OrderGoodsStatus {
+    /**
+      * 已作废
+      */
+    CANCEL,
+
+    /**
+     * 待支付
+     */
+    BEFORE_PAY,
+
+    /**
+     * 已支付
+     */
+    PAYDONE,
+
+    /**
+     * 部分已退款
+     */
+    REFUND_PARTLY,
+
+    /**
+     * 全部已退款
+     */
+    REFUND_ALL,
+}
+
+
+export enum OrderGoodsSettleStatus {
+    /**
+     * 待结算
+     */
+    UNSETTLE,
+    /**
+    * 结算中
+    */
+    SETTLEING,
+    /**
+    * 结算完成
+    */
+    SETTLEDONE,
+}
+
+
+/**
+ * 运单状态
+ */
+export enum OrderDeliveryStatus {
+    /**
+     * 已废弃
+     */
+    ABANDON,
+    /**
+     * 待绑定物流单
+     */
+    UNTRACK,
+    /**
+     * 待揽收
+     */
+    PACKING,
+    /**
+     * 运输中
+     */
+    TRANSING,
+    /**
+     * 已送达
+     */
+    RECEIVED,
+    /**
+    * 发货异常
+    */
+    EXCEPTION,
+    /**
+     * 退回中
+     */
+    REFUNDING,
+    /**
+    * 退回完成
+    */
+    REFUNDED,
+    /**
+    * 退回异常
+    */
+    REFUNDEXCEPTION,
+}
+
+export const SubscribeOrderGoodsStatusConf = [
+    { value: OrderGoodsStatus.CANCEL, label: "已取消" },
+    { value: OrderGoodsStatus.BEFORE_PAY, label: "待支付" },
+    { value: OrderGoodsStatus.PAYDONE, label: "已支付" },
+    { value: OrderGoodsStatus.REFUND_PARTLY, label: "有退款" },
+    { value: OrderGoodsStatus.REFUND_ALL, label: "全额退款" },
+]
+
+export const OrderGoodsSettleStatusConf = [
+    { value: OrderGoodsSettleStatus.UNSETTLE, label: "待结算" },
+    { value: OrderGoodsSettleStatus.SETTLEING, label: "结算中" },
+    { value: OrderGoodsSettleStatus.SETTLEDONE, label: "结算完成" },
+]
+
+
+/**
  * 读取订单列表
  * @param param0 
  * @returns 

@@ -97,6 +97,7 @@
                 :placeholder="vo.placeholder"
                 :style="customStyle"
                 :disabled="vo.readonly || readonly"
+                :clearable="true"
             ></el-input>
 
             <!-- 数组输入框 -->

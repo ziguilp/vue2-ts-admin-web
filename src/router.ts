@@ -115,19 +115,9 @@ export default new Router({
                         permission: 'read_userlist'
                     }
                 },
-                // {
-                //     path: 'vipcard',
-                //     name: 'vipcard',
-                //     component: () => import(/* webpackChunkName: "dashboard" */ '@/views/user/list.vue'),
-                //     meta: {
-                //         title: '会员卡',
-                //         icon: 'users',
-                //         permission: 'read_userlist'
-                //     }
-                // },
                 {
-                    path: 'vipcard/order',
-                    name: 'vipcardLog',
+                    path: 'giftsubscribe',
+                    name: 'giftSubscribe',
                     component: () => import(/* webpackChunkName: "dashboard" */ '@/views/order/subscribe.vue'),
                     meta: {
                         title: '会员订阅',
@@ -199,6 +189,16 @@ export default new Router({
                         icon: 'circle'
                     }
                 },
+                {
+                    path: 'settlement',
+                    name: 'settlement',
+                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/giftplan/list.vue'),
+                    meta: {
+                        hidden: true,
+                        title: '结算',
+                        icon: 'circle'
+                    }
+                }
             ]
         },
         {
@@ -210,15 +210,15 @@ export default new Router({
                 icon: 'sjbb'
             },
             children: [
-                {
-                    path: 'giftsubscribe',
-                    name: 'giftsubscribe',
-                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/order/subscribe.vue'),
-                    meta: {
-                        title: '会员订阅',
-                        icon: 'circle'
-                    }
-                },
+                // {
+                //     path: 'giftsubscribe',
+                //     name: 'giftsubscribe',
+                //     component: () => import(/* webpackChunkName: "dashboard" */ '@/views/order/subscribe.vue'),
+                //     meta: {
+                //         title: '会员订阅',
+                //         icon: 'circle'
+                //     }
+                // },
                 {
                     path: 'gift',
                     name: 'gift',

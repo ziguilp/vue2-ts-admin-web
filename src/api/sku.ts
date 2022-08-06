@@ -65,14 +65,6 @@ export const SkuStatusConf = [
     { value: SkuStatusDto.DESTORYED, label: "报废" },
 ]
 
-export const VipcardSkuStatusConf = [
-    { value: SkuStatusDto.ON_SHELF, label: "在架" },
-    { value: SkuStatusDto.LOCKED, label: "待支付" },
-    { value: SkuStatusDto.BORROW_OUT, label: "已支付" },
-    { value: SkuStatusDto.SALED, label: "已卖出" },
-    { value: SkuStatusDto.WAIT_ON_SHELF, label: "待入库" },
-    { value: SkuStatusDto.DESTORYED, label: "已退费" },
-]
 
 export const getSkuList = async ({ goodsId, page, pageSize }: any, type = SkuType.BOOK) => {
     const data: any = ((await request({
