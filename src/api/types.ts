@@ -37,14 +37,14 @@ export interface LoginResult {
     userInfo: UserInfoDto
 }
 
-export interface IpageDataDto<T>{
+export interface IpageDataDto<T> {
     list: T[]
     total: number
     currentPage: number
     pageSize?: number
 }
 
-export interface IpageParam{
+export interface IpageParam {
     page: number
     pageSize: number
 }
@@ -56,16 +56,48 @@ export interface GetListParam {
 }
 
 
-export interface AuthRightItem{
+export interface AuthRightItem {
     id?: number
     key: string
     name: string
     children?: AuthRightItem[]
 }
 
-export interface RoleDto{
+export interface RoleDto {
     id?: number
     name: string
     explain: string
     rights: string[]
+}
+
+
+/**
+ * 验证码事件
+ */
+export enum CaptchaVerifyEventType {
+    /**
+     * 测试
+     */
+    TEST = 'test',
+    /**
+    * 登录
+    */
+    LOGIN = 'login',
+    /**
+     * 账户注册
+     */
+    REGISTER = 'register',
+    /**
+     * 修改密码
+     */
+    MODIFY_PASSWORD = 'modify_password',
+    /**
+     * 重置密码
+     */
+    RESET_PASSWORD = 'reset_password',
+}
+
+export interface SendCaptchaDto {
+    username: string,
+    event: CaptchaVerifyEventType
 }

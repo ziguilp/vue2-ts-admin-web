@@ -24,81 +24,60 @@
 
                 <span>
                     <label class="">联系电话:</label>
-                    <label>{{ detail.mobile }}</label>
+                    <label>{{ detail.order_delivery.mobile }}</label>
                 </span>
                 <span class="address">
                     <label class="">地址:</label>
                     <label
-                        >{{ detail.od_province }}{{ detail.od_city
-                        }}{{ detail.od_area }}{{ detail.od_detail }}</label
+                        >{{ detail.order_delivery.province
+                        }}{{ detail.order_delivery.city
+                        }}{{ detail.order_delivery.area
+                        }}{{ detail.order_delivery.detail }}</label
                     >
                 </span>
                 <canvas id="qrcode"></canvas>
             </div>
-            <div class="goods-list">
-                <el-table
-                    :data="detail.goods"
-                    height="250"
-                    border
-                    @selection-change="handleSelectionChange"
-                >
-                    <el-table-column
-                        type="selection"
-                        width="55"
-                        :selectable="selectable"
-                    >
-                    </el-table-column>
-                    <el-table-column
-                        label="条码"
-                        prop="goods_barcode"
-                    ></el-table-column>
-                    <el-table-column
-                        label="SKU编码"
-                        prop="sku_no"
-                    ></el-table-column>
-                    <el-table-column
-                        label="名称"
-                        prop="goods_name"
-                    ></el-table-column>
-                    <el-table-column label="图片" prop="goods_image">
-                        <template slot-scope="scope">
-                            <el-image
-                                style="height: 60px; width: 40px"
-                                :src="scope.row.goods_image"
-                            ></el-image>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                        label="库位"
-                        prop="located"
-                    ></el-table-column>
-                    <el-table-column label="状态" prop="sku_status">
-                        <template slot-scope="scope">
-                            <el-tag
-                                :type="formatEnum(scope.row.sku_status).type"
-                                >{{
-                                    formatEnum(scope.row.sku_status).label
-                                }}</el-tag
+
+            <div v-if="detail.order_delivery">
+                <el-card v-if="detail.order_delivery.refund_express_no">
+                    <div slot="header">
+                        退货物流：{{ detail.order_delivery.refund_express_com }}
+                        {{ detail.order_delivery.refund_express_no }}
+                    </div>
+                    <div class="router">
+                        <el-timeline>
+                            <el-timeline-item
+                                v-for="(activity, index) in detail
+                                    .order_delivery.refund_express_routes"
+                                :key="`rf-wl-${index}`"
+                                :timestamp="activity.time"
                             >
-                        </template>
-                    </el-table-column>
-                </el-table>
+                                {{ activity.context }}
+                            </el-timeline-item>
+                        </el-timeline>
+                    </div>
+                </el-card>
+
+                <el-card v-if="detail.order_delivery.express_no">
+                    <div slot="header">
+                        发货物流：{{ detail.order_delivery.express_com }}
+                        {{ detail.order_delivery.express_no }}
+                    </div>
+                    <div class="router">
+                        <el-timeline>
+                            <el-timeline-item
+                                v-for="(activity, index) in detail
+                                    .order_delivery.express_routes"
+                                :key="`f-wl-${index}`"
+                                :timestamp="activity.time"
+                            >
+                                {{ activity.context }}
+                            </el-timeline-item>
+                        </el-timeline>
+                    </div>
+                </el-card>
             </div>
         </div>
-        <span slot="footer" class="dialog-footer">
-            <el-button
-                v-if="detail.status == 2 || detail.status == 3"
-                type="warning"
-                @click="confirmBack"
-                >确认归还</el-button
-            >
-            <el-button
-                v-if="detail.status == 2 || detail.status == 3"
-                type="danger"
-                @click="confirmBroken"
-                >书籍损坏</el-button
-            >
-        </span>
     </el-dialog>
 </template>
 
@@ -116,7 +95,7 @@ import { IpageDataDto } from "@/api/types";
 import { SkuStatusConf } from "@/api/sku";
 
 @Component({
-    name: "BorrowOrderDetail",
+    name: "GiftItemOrderDetail",
     components: {},
 })
 export default class extends Vue {

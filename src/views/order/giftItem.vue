@@ -33,7 +33,10 @@
                         size="small"
                         >{{
                             scope.row.order_goods[0].goods_info.gift_plan_name
-                        }}</el-button
+                        }}({{ scope.row.order_goods[0].goods_info.rank }}/{{
+                            scope.row.order_goods[0].goods_info
+                                .subscribe_life_times
+                        }})</el-button
                     >
                 </el-popover>
             </template>
@@ -52,23 +55,6 @@
                     size="small"
                     @click="handleCancel(scope.row)"
                     >取消<el-divider direction="vertical"></el-divider>
-                </el-button>
-
-                <el-button
-                    v-if="scope.row.status === 1"
-                    type="text"
-                    size="small"
-                    @click="handlePrint(scope.row)"
-                    >打印面单<el-divider direction="vertical"></el-divider>
-                </el-button>
-
-                <el-button
-                    v-if="scope.row.status === 1"
-                    type="text"
-                    size="small"
-                    @click="handleSendout(scope.row)"
-                    >配送完成
-                    <!-- <el-divider direction="vertical"></el-divider> -->
                 </el-button>
             </template>
         </custom-list>
@@ -89,9 +75,11 @@ import {
     OrderStatusConf,
     OrderType,
     OrderDeliveryStatus,
+    OrderDeliveryStatusConf,
+    OrderGiftStatusConf,
 } from "@/api/order";
 import { IpageDataDto } from "@/api/types";
-import DetailVue from "./components/borrowDetail.vue";
+import DetailVue from "./components/giftItemDetail.vue";
 import printJS from "print-js";
 
 @Component({
@@ -110,6 +98,15 @@ export default class extends Vue {
                 canAdd: false,
                 canEdit: false,
                 prop: "order_sn",
+            },
+            {
+                type: CustomListColumnType.TEXT,
+                label: "商户",
+                canSearch: false,
+                showInTable: true,
+                canAdd: false,
+                canEdit: false,
+                prop: "merchant_info.name",
             },
             {
                 type: CustomListColumnType.TEXT,
@@ -151,7 +148,19 @@ export default class extends Vue {
             },
             {
                 type: CustomListColumnType.SELECT,
-                label: "状态",
+                canSearch: false,
+                canAdd: false,
+                canEdit: false,
+                label: "服务状态",
+                prop: "order_goods.0.status",
+                dataSource: {
+                    key: "value",
+                    value: OrderGiftStatusConf,
+                },
+            },
+            {
+                type: CustomListColumnType.SELECT,
+                label: "物流状态",
                 showInTable: true,
                 canSearch: true,
                 canAdd: false,
@@ -159,40 +168,7 @@ export default class extends Vue {
                 prop: "order_delivery.status",
                 dataSource: {
                     key: "value",
-                    value: [
-                        {
-                            label: "备货中",
-                            value: OrderDeliveryStatus.UNTRACK,
-                        },
-                        {
-                            label: "待揽收",
-                            value: OrderDeliveryStatus.PACKING,
-                        },
-                        {
-                            label: "运输中",
-                            value: OrderDeliveryStatus.TRANSING,
-                        },
-                        {
-                            label: "已签收",
-                            value: OrderDeliveryStatus.RECEIVED,
-                        },
-                        {
-                            label: "发货异常",
-                            value: OrderDeliveryStatus.EXCEPTION,
-                        },
-                        {
-                            label: "退货中",
-                            value: OrderDeliveryStatus.REFUNDING,
-                        },
-                        {
-                            label: "退货完成",
-                            value: OrderDeliveryStatus.REFUNDED,
-                        },
-                        {
-                            label: "退货异常",
-                            value: OrderDeliveryStatus.REFUNDEXCEPTION,
-                        },
-                    ],
+                    value: OrderDeliveryStatusConf,
                 },
             },
             {

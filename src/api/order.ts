@@ -91,6 +91,10 @@ export enum OrderGoodsStatus {
      * 全部已退款
      */
     REFUND_ALL,
+    /**
+    * 完成签收
+    */
+    RECEIVED,
 }
 
 
@@ -152,6 +156,15 @@ export enum OrderDeliveryStatus {
     REFUNDEXCEPTION,
 }
 
+export const OrderGoodsStatusConf = [
+    { value: OrderGoodsStatus.CANCEL, label: "已取消" },
+    { value: OrderGoodsStatus.BEFORE_PAY, label: "待支付" },
+    { value: OrderGoodsStatus.PAYDONE, label: "已支付" },
+    { value: OrderGoodsStatus.REFUND_PARTLY, label: "有退款" },
+    { value: OrderGoodsStatus.REFUND_ALL, label: "全额退款" },
+    { value: OrderGoodsStatus.RECEIVED, label: "订单已签收" },
+]
+
 export const SubscribeOrderGoodsStatusConf = [
     { value: OrderGoodsStatus.CANCEL, label: "已取消" },
     { value: OrderGoodsStatus.BEFORE_PAY, label: "待支付" },
@@ -164,6 +177,47 @@ export const OrderGoodsSettleStatusConf = [
     { value: OrderGoodsSettleStatus.UNSETTLE, label: "待结算" },
     { value: OrderGoodsSettleStatus.SETTLEING, label: "结算中" },
     { value: OrderGoodsSettleStatus.SETTLEDONE, label: "结算完成" },
+]
+
+export const OrderGiftStatusConf = [
+    { value: OrderGoodsStatus.CANCEL, label: "已取消" },
+    { value: OrderGoodsStatus.PAYDONE, label: "进行中" },
+    { value: OrderGoodsStatus.RECEIVED, label: "确认完成" },
+]
+
+export const OrderDeliveryStatusConf = [
+    {
+        label: "备货中",
+        value: OrderDeliveryStatus.UNTRACK,
+    },
+    {
+        label: "待揽收",
+        value: OrderDeliveryStatus.PACKING,
+    },
+    {
+        label: "运输中",
+        value: OrderDeliveryStatus.TRANSING,
+    },
+    {
+        label: "已签收",
+        value: OrderDeliveryStatus.RECEIVED,
+    },
+    {
+        label: "发货异常",
+        value: OrderDeliveryStatus.EXCEPTION,
+    },
+    {
+        label: "退货中",
+        value: OrderDeliveryStatus.REFUNDING,
+    },
+    {
+        label: "退货完成",
+        value: OrderDeliveryStatus.REFUNDED,
+    },
+    {
+        label: "退货异常",
+        value: OrderDeliveryStatus.REFUNDEXCEPTION,
+    },
 ]
 
 
@@ -206,12 +260,23 @@ export const getOrderDetail = async ({ orderSn }: any) => {
             }
             return e
         })
-        detail.status_conf = OrderStatusConf.reduce((p, c) => {
-            if (c.value == detail.status) {
-                p = c
-            }
-            return p
-        }, {})
+
+        if (detail.order_type == OrderType.GIFTS) {
+            detail.status_conf = OrderDeliveryStatusConf.reduce((p, c) => {
+                if (c.value == detail.order_delivery.status) {
+                    p = c
+                }
+                return p
+            }, {})
+        } else {
+            detail.status_conf = OrderStatusConf.reduce((p, c) => {
+                if (c.value == detail.status) {
+                    p = c
+                }
+                return p
+            }, {})
+        }
+
     }
     console.log({ detail })
     return detail

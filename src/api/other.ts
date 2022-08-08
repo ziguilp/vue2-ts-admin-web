@@ -1,4 +1,13 @@
-import request from '@/utils/request'
+import request from '@/utils/request';
+import { SendCaptchaDto } from './types';
+
+export const sendCaptcha = async (data: SendCaptchaDto) => {
+    return (await request({
+        url: `/common/captcha/send`,
+        method: 'POST',
+        data
+    })).data
+}
 
 export const printSku = async (skuNo: string) => {
     return (await request({

@@ -65,12 +65,12 @@ export const getOperateLog = async ({ page, pageSize, user_id }: any) => {
     })).data)
 }
 
-export const modifyPwd = async ({ oldPassword, newPassword }: any) => {
+export const modifyPwd = async ({ oldPassword, newPassword, captchaVerifyData }: any) => {
     return ((await request({
         url: `/auth/modify/password`,
         method: 'POST',
         data: {
-            captcha: '12344442123',
+            captchaVerifyData,
             old_password: oldPassword,
             new_password: newPassword
         }
