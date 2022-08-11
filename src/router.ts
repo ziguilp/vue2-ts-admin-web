@@ -188,16 +188,6 @@ export default new Router({
                         title: '会员计划',
                         icon: 'circle'
                     }
-                },
-                {
-                    path: 'settlement',
-                    name: 'settlement',
-                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/giftplan/list.vue'),
-                    meta: {
-                        hidden: true,
-                        title: '结算',
-                        icon: 'circle'
-                    }
                 }
             ]
         },
@@ -225,6 +215,35 @@ export default new Router({
                     component: () => import(/* webpackChunkName: "dashboard" */ '@/views/order/giftItem.vue'),
                     meta: {
                         title: '会员礼',
+                        icon: 'circle'
+                    }
+                },
+            ]
+        },
+        {
+            path: '/settle',
+            component: Layout,
+            redirect: '/settle/list',
+            meta: {
+                title: '结算管理',
+                icon: 'gl1'
+            },
+            children: [
+                {
+                    path: 'list',
+                    name: 'settleList',
+                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/order/settle.vue'),
+                    meta: {
+                        title: '结算单',
+                        icon: 'circle'
+                    }
+                },
+                {
+                    path: 'waitfor',
+                    name: 'waitforSettle',
+                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/order/waitforsettle.vue'),
+                    meta: {
+                        title: '待结算',
                         icon: 'circle'
                     }
                 },

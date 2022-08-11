@@ -48,7 +48,7 @@
                     >
                     </el-table-column> -->
                     <el-table-column
-                        label="条码"
+                        label="商品"
                         prop="goods_info.name"
                     ></el-table-column>
                     <el-table-column label="图片" prop="goods_info.icon">
