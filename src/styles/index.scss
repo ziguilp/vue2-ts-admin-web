@@ -132,3 +132,7 @@ div:focus {
         }
     }
 }
+
+.el-image-viewer__wrapper{
+    z-index: 9999 !important;
+}

@@ -8,6 +8,15 @@
                 </span> -->
 
                 <span>
+                    <label>状态： </label>
+                    <label>
+                        <el-tag :type="formatEnum(detail.status).type">{{
+                            formatEnum(detail.status).label
+                        }}</el-tag>
+                    </label>
+                </span>
+
+                <span>
                     <label class="">结算金额:</label>
                     <label>{{ detail.rmb.settle_amount }}</label>
                 </span>
@@ -35,18 +44,29 @@
                     <label>{{ detail.date_created_text }}</label>
                 </span>
 
+                <span class="account-detail">
+                    <label class="">收款账户:</label>
+                    <label
+                        >{{ detail.bank }}-{{ detail.account_name }}-{{
+                            detail.account_no
+                        }}</label
+                    >
+                </span>
+
                 <span>
                     <label class="">备注:</label>
                     <label>{{ detail.remark }}</label>
                 </span>
+            </div>
 
-                <span>
-                    <label>
-                        <el-tag :type="formatEnum(detail.status).type">{{
-                            formatEnum(detail.status).label
-                        }}</el-tag>
-                    </label>
-                </span>
+            <div style="margin-top: 20px" v-if="detail.status == 2">
+                <h4>付款凭证：</h4>
+                <div>
+                    <el-image
+                        :src="detail.transfer_image"
+                        :preview-src-list="[detail.transfer_image]"
+                    ></el-image>
+                </div>
             </div>
             <div class="goods-list">
                 <el-table
@@ -383,8 +403,8 @@ export default class extends Vue {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     row-gap: 10px;
-    .address {
-        grid-area: 2 / 2 / span 1 / span 2;
+    .account-detail {
+        grid-area: 3 / 1 / span 1 / span 2;
     }
 }
 .goods-list {

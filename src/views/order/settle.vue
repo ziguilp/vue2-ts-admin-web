@@ -7,7 +7,13 @@
                     type="text"
                     size="small"
                     @click="handleDetail(scope.row)"
-                    >{{ scope.row.status == 0 ? "审核" : "详情" }}
+                    >{{
+                        scope.row.status == 0
+                            ? "审核"
+                            : scope.row.status == 1
+                            ? "确认打款"
+                            : "详情"
+                    }}
                     <!-- <el-divider direction="vertical"></el-divider> -->
                 </el-button>
             </template>
