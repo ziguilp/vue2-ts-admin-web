@@ -468,10 +468,6 @@ export default class CustomList extends Vue {
     }
 
     private getValueByKey(o: any, key: string) {
-        console.log("getValueByKey", {
-            o,
-            key,
-        });
         const ks = key.split(".");
         if (ks.length == 1) return o[key];
         let res: any = {
