@@ -105,7 +105,7 @@ export default class extends Vue {
         type: [String, Array],
         default: () => [],
     })
-    private value!: string | string[];
+    private value: string | string[] = "";
 
     @Prop({
         type: String,

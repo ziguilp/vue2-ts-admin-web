@@ -7,7 +7,8 @@
                     <div>
                         <el-form @submit.prevent="saveUserInfo">
                             <el-row :gutter="10" class="avatar-con">
-                                <el-upload
+                                <Upload v-model="userInfo.avatar"></Upload>
+                                <!-- <el-upload
                                     class="avatar-con-wrap"
                                     action=""
                                     :auto-upload="false"
@@ -26,7 +27,7 @@
                                         class="avatar-default"
                                         name="avatar"
                                     ></svg-icon>
-                                </el-upload>
+                                </el-upload> -->
                             </el-row>
 
                             <el-form-item label="昵称">
@@ -115,9 +116,15 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 import { Tree as ElTree } from "element-ui";
 import { TreeData } from "element-ui/types/tree";
 import { CaptchaVerifyEventType, IpageDataDto, UserInfoDto } from "@/api/types";
-import { getOperateLog, getUserInfo, modifyPwd } from "@/api/users";
+import {
+    getOperateLog,
+    getUserInfo,
+    modifyBaseInfo,
+    modifyPwd,
+} from "@/api/users";
 import { UserModule } from "@/store/modules/user";
 import CaptchaVue from "@/components/custom-list/cps/captcha.vue";
+import Upload from "@/components/custom-list/cps/Upload.vue";
 import {
     CustomListColumnType,
     CustomListConf,
@@ -127,6 +134,7 @@ import {
     name: "UserProfile",
     components: {
         CaptchaVue,
+        Upload,
     },
 })
 export default class extends Vue {
@@ -169,6 +177,28 @@ export default class extends Vue {
 
     private async handleSave() {
         console.log(this.userInfo);
+
+        if (
+            !this.userInfo.old_password &&
+            !this.userInfo.password &&
+            !this.userInfo.repassword
+        ) {
+            if (
+                this.userInfo.avatar &&
+                this.userInfo.avatar != UserModule.avatar
+            ) {
+                const res = await modifyBaseInfo({
+                    avatar: this.userInfo.avatar,
+                });
+                if (res) {
+                    await UserModule.GetUserInfo();
+                } else {
+                    this.$message.error(`头像保存失败`);
+                }
+            }
+            return;
+        }
+
         if (!this.userInfo.old_password) {
             return this.$message.error("请输入旧密码");
         }

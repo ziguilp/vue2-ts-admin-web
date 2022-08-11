@@ -1,14 +1,13 @@
 {
-  "name": "Vue Typescript Admin",
-  "short_name": "Vue Ts Admin",
-  "icons": [
-    {
-      "src": "./img/icons/android-chrome-192x192.png",
+  "name": "XiqueCrm",
+  "short_name": "XiqueCrm",
+  "icons": [{
+      "src": "./favicon.ico",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "./img/icons/android-chrome-512x512.png",
+      "src": "./favicon.ico",
       "sizes": "512x512",
       "type": "image/png"
     }

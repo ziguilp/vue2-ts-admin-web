@@ -77,6 +77,14 @@ export const modifyPwd = async ({ oldPassword, newPassword, captchaVerifyData }:
     })).data)
 }
 
+export const modifyBaseInfo = async (data: any) => {
+    return ((await request({
+        url: `/auth/modify/baseuserInfo`,
+        method: 'POST',
+        data: data
+    })).data)
+}
+
 /**
  * 添加管理员
  */

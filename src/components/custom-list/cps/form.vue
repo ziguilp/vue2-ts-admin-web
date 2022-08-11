@@ -216,6 +216,17 @@
                 :placeholder="vo.placeholder"
             >
             </custom-editor>
+
+            <!-- 验证码 -->
+            <Captcha
+                v-else-if="vo.type === 'captcha'"
+                :username="vo.prop"
+                :event="vo.captchaEvent"
+                v-model="form[vo.prop]"
+                :disabled="vo.readonly || readonly"
+                :placeholder="vo.placeholder"
+            >
+            </Captcha>
         </el-form-item>
 
         <slot> </slot>
@@ -235,6 +246,8 @@ import { Form as ElForm, Input, Message } from "element-ui";
 import Upload from "@/components/custom-list/cps/Upload.vue";
 import InputArray from "@/components/custom-list/cps/InputArray.vue";
 import YearRangerPicker from "@/components/custom-list/cps/YearRangerPicker.vue";
+import Captcha from "./captcha.vue";
+
 @Component({
     name: "CustomForm",
     components: {
@@ -244,6 +257,7 @@ import YearRangerPicker from "@/components/custom-list/cps/YearRangerPicker.vue"
         YearRangerPicker,
         CustomCheckbox,
         CustomEditor,
+        Captcha,
     },
 })
 export default class CustomForm extends Vue {

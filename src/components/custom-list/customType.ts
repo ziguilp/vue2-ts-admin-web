@@ -1,3 +1,4 @@
+import { CaptchaVerifyEventType } from "@/api/types"
 import { Table, TableColumn } from "element-ui"
 
 export enum CustomListColumnType {
@@ -74,6 +75,10 @@ export enum CustomListColumnType {
      * 选择
      */
     SWITCH = 'switch',
+    /**
+     * 验证码
+     */
+    CAPTCHA = 'captcha',
 }
 
 
@@ -115,6 +120,10 @@ export interface CustomListColumn {
     precision?: number,
     showFormatInTable?: Function,
     sortable?: boolean | 'custom',
+    /**
+     * 验证码
+     */
+    captchaEvent?: CaptchaVerifyEventType
 }
 
 export interface CustomListOperationItem {

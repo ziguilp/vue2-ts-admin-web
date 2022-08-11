@@ -11,16 +11,16 @@
                             <h5>用户总量</h5></h5>
                          </el-col>
                          <el-col :span="12" class="b-item">
-                            <h3>{{data.bookTotal}}</h3>
-                            <h5>书籍总量</h5>
+                            <h3>{{data.merchantTotal}}</h3>
+                            <h5>商户总量</h5>
                          </el-col>
                          <el-col :span="12" class="b-item">
-                            <h3>{{data.borrowTotal}}</h3>
-                            <h5>订单总量</h5>
+                            <h3>{{data.vipTotal}}</h3>
+                            <h5>订阅总量</h5>
                          </el-col>
                          <el-col :span="12" class="b-item">
-                            <h3>{{data.borrowToday}}</h3>
-                            <h5>今日订单</h5>
+                            <h3>{{data.vipTotal7d}}</h3>
+                            <h5>订阅7日新增</h5>
                          </el-col>
                        </el-row>
                     </div>
@@ -39,7 +39,7 @@
                             >
                                 <svg-icon class="weather-list-item-icon" name="fuzhaoduzhong"></svg-icon>
                                 <div class="weather-list-item-info">
-                                    <span class="value">{{data.userTotal7d}} <i class="unit">人</i> </span>
+                                    <span class="value">{{data.user7day}} <i class="unit">人</i> </span>
                                     
                                     <h4 class="title">7日用户新增</h4>
                                 </div>
@@ -54,9 +54,9 @@
                             >
                                 <svg-icon class="weather-list-item-icon" name="fuzhaoduzhi"></svg-icon>
                                 <div class="weather-list-item-info">
-                                    <span class="value">{{data.vipuserTotal7d}} <i class="unit">人</i> </span>
+                                    <span class="value">{{data.vipTotal7d}} <i class="unit">人</i> </span>
                                     
-                                    <h4 class="title">7日会员新增</h4>
+                                    <h4 class="title">7日订阅新增</h4>
                                 </div>
                             </el-col>
 
@@ -69,9 +69,9 @@
                             >
                                 <svg-icon class="weather-list-item-icon" name="fuzhaodusan"></svg-icon>
                                 <div class="weather-list-item-info">
-                                    <span class="value">{{data.borrow7d}} <i class="unit"></i> </span>
+                                    <span class="value">{{data.merchantTotal}} <i class="unit"></i> </span>
                                     
-                                    <h4 class="title">7日订单新增</h4>
+                                    <h4 class="title">7日入驻新增</h4>
                                 </div>
                             </el-col>
                         </div>
@@ -147,7 +147,7 @@ export default class extends Vue {
      */
     private async draw() {
         let {
-            chart30: { users, vip, order },
+            chart30: { users, vip },
         }: any = this.data;
 
         let days = [];
@@ -177,14 +177,14 @@ export default class extends Vue {
             return vipDataObj[e] || 0;
         });
 
-        let orderDataObj: any = order.reduce((p: any, c: any) => {
-            p[moment(c.date).format("YYYY-MM-DD")] = c.count;
-            return p;
-        }, {});
+        // let orderDataObj: any = order.reduce((p: any, c: any) => {
+        //     p[moment(c.date).format("YYYY-MM-DD")] = c.count;
+        //     return p;
+        // }, {});
 
-        let orderData: number[] = days.map((e: string) => {
-            return orderDataObj[e] || 0;
-        });
+        // let orderData: number[] = days.map((e: string) => {
+        //     return orderDataObj[e] || 0;
+        // });
 
         let chartDom: any = document.getElementById("shortTermPredict_chart");
         let myChart = echarts.init(chartDom);
@@ -198,7 +198,7 @@ export default class extends Vue {
                 trigger: "axis",
             },
             legend: {
-                data: ["注册用户", "会员人数", "订单数"],
+                data: ["注册用户", "订阅数"],
             },
             grid: {
                 left: "3%",
@@ -227,15 +227,15 @@ export default class extends Vue {
                     data: usersData,
                 },
                 {
-                    name: "会员人数",
+                    name: "订阅数",
                     type: "line",
                     data: vipData,
                 },
-                {
-                    name: "订单数",
-                    type: "line",
-                    data: orderData,
-                },
+                // {
+                //     name: "订单数",
+                //     type: "line",
+                //     data: orderData,
+                // },
             ],
         };
 
