@@ -63,7 +63,7 @@ export default class extends Vue {
     }
     &-header {
         line-height: 1.5;
-        font-size: 16px;
+        font-size: 24px;
         color: #333;
         font-weight: 600;
         text-align: center;

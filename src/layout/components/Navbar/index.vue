@@ -20,9 +20,15 @@
                     <i class="el-icon-caret-bottom" />
                 </div>
                 <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item v-if="$permission.can('refreshRights')">
-                        <span @click="refreshRights">接口权限配置刷新</span>
-                    </el-dropdown-item>
+                    <a
+                        v-if="$permission.can('refreshRights')"
+                        @click="refreshRights"
+                    >
+                        <el-dropdown-item>
+                            <span>接口权限配置刷新</span>
+                        </el-dropdown-item>
+                    </a>
+
                     <router-link to="/">
                         <el-dropdown-item> 首页 </el-dropdown-item>
                     </router-link>

@@ -7,7 +7,22 @@ import { UserModule } from '@/store/modules/user'
 
 NProgress.configure({ showSpinner: false })
 
-const whiteList = ['/login', '/404', '/cms/detail']
+const whiteList = ['/', '/login', '/404', '/cms/detail/:alias']
+
+export const isInWhiteList = (to: any) => {
+    try {
+        if (whiteList.indexOf(to.path) !== -1) {
+            return true
+        }
+
+        if (whiteList.indexOf(to.matched[0].path) !== -1) {
+            return true
+        }
+    } catch (error) {
+
+    }
+    return false
+}
 
 router.beforeEach(async (to: Route, _: Route, next: any) => {
     // Start progress bar
@@ -40,7 +55,7 @@ router.beforeEach(async (to: Route, _: Route, next: any) => {
         }
     } else {
         // Has no token
-        if (whiteList.indexOf(to.path) !== -1) {
+        if (isInWhiteList(to)) {
             // In the free login whitelist, go directly
             next()
         } else {
