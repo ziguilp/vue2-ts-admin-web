@@ -81,13 +81,13 @@
                                 <slot :name="v.prop" v-bind:row="scope.row">
                                     <template v-if="v.type === 'image'">
                                         <el-image
+                                            class="table-image"
                                             v-if="
                                                 getValueByKey(scope.row, v.prop)
                                             "
                                             :src="
                                                 getValueByKey(scope.row, v.prop)
                                             "
-                                            :style="v.style"
                                             :fit="'cover'"
                                             :preview-src-list="[
                                                 getValueByKey(
@@ -101,13 +101,15 @@
                                     </template>
                                     <div v-else-if="v.type === 'images'">
                                         <el-image
-                                            :src="
-                                                getValueByKey(
-                                                    scope.row,
-                                                    v.prop
-                                                )[0]
-                                            "
-                                            :style="v.style"
+                                            class="table-image"
+                                            v-for="(
+                                                item, index
+                                            ) in getValueByKey(
+                                                scope.row,
+                                                v.prop
+                                            )"
+                                            :key="'table_row-images-' + index"
+                                            :src="item"
                                             :fit="'cover'"
                                             :preview-src-list="
                                                 getValueByKey(scope.row, v.prop)
@@ -515,3 +517,12 @@ export default class CustomList extends Vue {
     }
 }
 </script>
+
+<style lang="scss">
+.table-image img {
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+    object-fit: cover;
+}
+</style>

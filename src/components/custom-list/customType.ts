@@ -116,7 +116,7 @@ export interface CustomListColumn {
      */
     max?: number,
     /**
-     * 数值输入或者图片上传最少数量 
+     * 数值输入最小数 
      */
     min?: number,
     /**

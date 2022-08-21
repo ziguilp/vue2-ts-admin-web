@@ -265,9 +265,18 @@ export default new Router({
             redirect: '/sysmsg/merchantMsglist',
             meta: {
                 title: '消息管理',
-                icon: 'gl1'
+                icon: 'gl2'
             },
             children: [
+                {
+                    path: 'adminMsgList',
+                    name: 'adminMsgList',
+                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/sysmsg/adminMsg.vue'),
+                    meta: {
+                        title: '系统消息',
+                        icon: 'circle'
+                    }
+                },
                 {
                     path: 'merchantMsglist',
                     name: 'MerchantMsgList',
@@ -276,7 +285,8 @@ export default new Router({
                         title: '商户消息审核',
                         icon: 'circle'
                     }
-                }
+                },
+
             ]
         },
     ]

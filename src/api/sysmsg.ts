@@ -44,3 +44,25 @@ export const checkMerchantMsg = async ({ msgId, status, check_result }: any) => 
         }
     })).data)
 }
+
+export const adminSendMsg = async ({ title, content, medias, receiver }: any) => {
+    return ((await request({
+        url: `/sysmsg/admin/sendmsg`,
+        method: 'POST',
+        data: {
+            title, content, medias, receiver
+        }
+    })).data)
+}
+
+export const getAdminSendMsgList = async ({ page, pageSize, data }: any) => {
+    return ((await request({
+        url: '/sysmsg/getAdminSendMsg',
+        method: 'get',
+        params: {
+            data,
+            page,
+            pageSize
+        }
+    })).data) as IpageDataDto<any>
+}

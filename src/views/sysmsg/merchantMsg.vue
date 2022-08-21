@@ -13,26 +13,6 @@
         </custom-list>
 
         <CustomForm ref="checkform" :conf="checkConf"></CustomForm>
-
-        <el-dialog
-            width="1100px"
-            :title="activeMerchant ? `${activeMerchant.name}会员礼` : ''"
-            :visible.sync="showMerchantGiftPlan"
-        >
-            <GiftPlanListVue
-                :merchant_id="activeMerchant ? activeMerchant.id : 0"
-            ></GiftPlanListVue>
-        </el-dialog>
-
-        <el-dialog
-            width="1100px"
-            :title="activeMerchant ? `${activeMerchant.name}会员` : ''"
-            :visible.sync="showMembers"
-        >
-            <MembersVue
-                :merchant_id="activeMerchant ? activeMerchant.id : 0"
-            ></MembersVue>
-        </el-dialog>
     </div>
 </template>
 
@@ -136,7 +116,7 @@ export default class extends Vue {
                 pageSize: idata.pageSize,
             });
             data.list = data.list.map((e: any) => {
-                e.images = e.medias
+                e.images = (e.medias || [])
                     .filter((i: any) => i.type == "image")
                     .map((it: any) => it.url);
                 return e;
