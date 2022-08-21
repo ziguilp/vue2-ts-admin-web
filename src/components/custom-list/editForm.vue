@@ -10,6 +10,7 @@
             <div>
                 <CustomForm
                     ref="mainform"
+                    :inline="conf.forminline"
                     :columns="columns"
                     :rules="formRules"
                     :readonly="readonly"

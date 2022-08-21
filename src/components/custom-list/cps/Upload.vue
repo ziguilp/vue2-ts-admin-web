@@ -36,6 +36,10 @@
                                     <el-image
                                         class="file-list-item-file"
                                         :src="vo.url"
+                                        fit="cover"
+                                        :preview-src-list="
+                                            uploaded.map((e) => e.url)
+                                        "
                                     ></el-image>
                                 </div>
                             </li>
@@ -270,6 +274,8 @@ export default class extends Vue {
                     position: relative;
                     align-items: center;
                     justify-content: center;
+                    height: 100%;
+                    width: 100%;
                     &:hover {
                         .file-list-item-file-mask {
                             display: flex;
@@ -278,6 +284,12 @@ export default class extends Vue {
                 }
                 &-file {
                     position: relative;
+                    height: 100%;
+                    width: 100%;
+                    img {
+                        height: 100%;
+                        width: 100%;
+                    }
                     &-mask {
                         position: absolute;
                         z-index: 1;

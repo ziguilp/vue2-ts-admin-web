@@ -12,7 +12,9 @@
             :prop="vo.prop"
             :key="`custom-el-form-item-${vo.prop}-${i}`"
             :style="
-                vo.type === 'textarea'
+                vo.type === 'textarea' ||
+                vo.type === 'image' ||
+                vo.type === 'images'
                     ? 'width: 100%;'
                     : inline
                     ? 'width:auto'
@@ -72,12 +74,14 @@
 
             <!-- 上传 -->
             <upload
-                v-else-if="vo.type === 'image'"
+                v-else-if="vo.type === 'image' || vo.type == 'images'"
                 v-model="form[vo.prop]"
+                :max="vo.max"
                 :style="customStyle"
                 :disabled="vo.readonly || readonly"
-            >
-                <!-- <div>
+            ></upload>
+
+            <!-- <div>
           <el-image
             class="avatar-con-img"
             fit="cover"
@@ -88,7 +92,6 @@
           />
           <i v-else class="el-icon-plus uploader-icon wider"></i>
         </div> -->
-            </upload>
 
             <!-- 输入框 -->
             <el-input

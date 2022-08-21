@@ -111,8 +111,13 @@ export interface CustomListColumn {
     height?: any,
     width?: any,
     dateFormat?: string,
-    // 数值输入
+    /**
+     * 数值输入或者图片上传最大数量
+     */
     max?: number,
+    /**
+     * 数值输入或者图片上传最少数量 
+     */
     min?: number,
     /**
      * 数值精度
@@ -133,6 +138,7 @@ export interface CustomListOperationItem {
 }
 
 export interface CustomListConf {
+    forminline?: boolean,
     columns: CustomListColumn[],
     tableSelection?: Boolean,
     hideOperations?: Boolean,

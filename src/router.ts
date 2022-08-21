@@ -259,5 +259,25 @@ export default new Router({
                 hidden: true
             }
         },
+        {
+            path: '/sysmsg',
+            component: Layout,
+            redirect: '/sysmsg/merchantMsglist',
+            meta: {
+                title: '消息管理',
+                icon: 'gl1'
+            },
+            children: [
+                {
+                    path: 'merchantMsglist',
+                    name: 'MerchantMsgList',
+                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/sysmsg/merchantMsg.vue'),
+                    meta: {
+                        title: '商户消息审核',
+                        icon: 'circle'
+                    }
+                }
+            ]
+        },
     ]
 })
