@@ -1,8 +1,18 @@
 <template>
     <div>
         <custom-list :conf="config" ref="merchantlist">
-            <template slot="content">
-                <div></div>
+            <template slot="content" scope="scope">
+                <el-popover
+                    placement="top-start"
+                    title="内容"
+                    width="300"
+                    trigger="click"
+                    :content="scope.row.content"
+                >
+                    <el-tag slot="reference" type="primary" plain size="small"
+                        >{{ scope.row.content.slice(0, 10) }}...</el-tag
+                    >
+                </el-popover>
             </template>
             <template slot="operations">
                 <div></div>
