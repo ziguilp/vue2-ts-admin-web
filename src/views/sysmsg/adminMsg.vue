@@ -115,7 +115,7 @@ export default class extends Vue {
             return await adminSendMsg({
                 title: form.title,
                 content: form.content,
-                medias: form.images.map((e: string) => {
+                medias: (form.images || []).map((e: string) => {
                     return {
                         type: "image",
                         url: e,

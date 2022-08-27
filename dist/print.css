@@ -1,0 +1,25 @@
+/* Variables */
+:export {
+  menuBg: #304156;
+  menuText: #bfcbd9;
+  menuActiveText: #409EFF;
+}
+
+/* Mixins */
+.order-info {
+  display: grid;
+  grid-template-columns: 20% 40% 40%;
+  row-gap: 10px;
+}
+
+.order-info .address {
+  grid-area: 3/2/span 1/span 2;
+}
+
+.order-info #qrcode {
+  grid-area: 1/1/span 3/span 1;
+}
+
+.goods-list {
+  margin-top: 30px;
+}
