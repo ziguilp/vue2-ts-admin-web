@@ -368,8 +368,8 @@ export default class extends Vue {
                 throw new Error(`请选择审核结果`);
             }
             if (form.check_status === MerchantInfoCheckStatus.CHECK_FAILED) {
-                this.$message.error(`请输入审核未通过原因`);
                 if (!form.check_result) {
+                    this.$message.error(`请输入审核未通过原因`);
                     throw new Error(`请输入审核未通过原因`);
                 }
             }
