@@ -22,5 +22,5 @@ jobs:
       with:
         username: ${{ secrets.HUB_NAME }}
         password: ${{ secrets.HUB_PWD }}
-        repository: ${{ secrets.HUB_NAME }}/${{ env.IMAGE_NAME }}
+        repository: ${{ secrets.HUB_NAME }}/xiquecrmweb
         tag: ${{ steps.short-sha.outputs.sha }}
