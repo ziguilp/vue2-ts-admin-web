@@ -26,51 +26,51 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component, Prop } from "vue-property-decorator";
+import Vue from 'vue'
+import { Component, Prop } from 'vue-property-decorator'
 @Component({
-  name: "InputArray",
+  name: 'InputArray'
 })
 export default class extends Vue {
   @Prop({
     type: Boolean,
-    default: false,
+    default: false
   })
   private disabled!: boolean;
 
   @Prop({
     type: Boolean,
-    default: false,
+    default: false
   })
   private readonly!: boolean;
 
   @Prop({
     type: String,
-    default: "small",
+    default: 'small'
   })
   private size!: string;
 
   @Prop({
     type: Array,
-    default: () => [],
+    default: () => []
   })
   private value!: string[];
 
-  private input: string = "";
+  private input = '';
 
   private onKeyup(e: any) {
-    if (this.disabled || this.readonly) return;
-    if (e.keyCode === 13 && this.input != "") {
-      this.$emit("input", [...this.value, this.input]);
-      this.input = "";
+    if (this.disabled || this.readonly) return
+    if (e.keyCode === 13 && this.input != '') {
+      this.$emit('input', [...this.value, this.input])
+      this.input = ''
     }
   }
 
   private onDelete(index: number) {
-    if (this.disabled || this.readonly) return;
-    let vals = [...this.value];
-    vals.splice(index, 1);
-    this.$emit("input", vals);
+    if (this.disabled || this.readonly) return
+    const vals = [...this.value]
+    vals.splice(index, 1)
+    this.$emit('input', vals)
   }
 }
 </script>

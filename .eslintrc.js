@@ -1,3 +1,13 @@
+/*
+ * @Author        : turbo 664120459@qq.com
+ * @Date          : 2022-12-12 16:09:29
+ * @LastEditors   : turbo 664120459@qq.com
+ * @LastEditTime  : 2022-12-13 22:02:45
+ * @FilePath      : /adminweb/.eslintrc.js
+ * @Description   : 
+ * 
+ * Copyright (c) 2022 by turbo 664120459@qq.com, All Rights Reserved. 
+ */
 module.exports = {
     root: true,
     env: {
@@ -39,7 +49,10 @@ module.exports = {
         'vue/eqeqeq': 'error',
         'vue/key-spacing': 'error',
         'vue/match-component-file-name': 'error',
-        'vue/object-curly-spacing': 'error'
+        'vue/object-curly-spacing': 'error',
+        'no-trailing-spaces': 'off',
+        'semi': 'off',
+        'quotes': 'off'
     },
     overrides: [
         {

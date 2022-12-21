@@ -1,14 +1,14 @@
 import request from '@/utils/request'
 import { IpageDataDto, RoleDto } from './types'
 
-export const getRoleList = async () => {
+export const getRoleList = async() => {
     return ((await request({
         url: '/role/list',
         method: 'get'
     })).data) as IpageDataDto<RoleDto>
 }
 
-export const createRole = async (role: RoleDto) => {
+export const createRole = async(role: RoleDto) => {
     return ((await request({
         url: '/role/create',
         method: 'post',
@@ -16,7 +16,7 @@ export const createRole = async (role: RoleDto) => {
     })).data) as RoleDto
 }
 
-export const updateRole = async (role: RoleDto) => {
+export const updateRole = async(role: RoleDto) => {
     return ((await request({
         url: '/role/update',
         method: 'post',
@@ -24,16 +24,16 @@ export const updateRole = async (role: RoleDto) => {
     })).data) as RoleDto
 }
 
-export const deleteRole = async (role: RoleDto) => {
+export const deleteRole = async(role: RoleDto) => {
     return ((await request({
         url: `/role/delete/${role.id}`,
         method: 'post'
     })).data) as RoleDto
 }
 
-export const refreshAuthRightsConf = async () => {
+export const refreshAuthRightsConf = async() => {
     return ((await request({
-        url: `/refreshRights`,
+        url: '/refreshRights',
         method: 'get'
     })).data) as boolean
 }

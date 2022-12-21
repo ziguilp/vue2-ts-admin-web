@@ -8,9 +8,9 @@
                     size="small"
                     @click="handleDetail(scope.row)"
                     >{{
-                        scope.row.status == 0
+                        scope.row.status === 0
                             ? "审核"
-                            : scope.row.status == 1
+                            : scope.row.status === 1
                             ? "确认打款"
                             : "详情"
                     }}

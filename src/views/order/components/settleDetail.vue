@@ -114,24 +114,24 @@
             </div>
         </div>
 
-        <div v-if="detail && detail.status == 0" style="margin-top: 20px">
+        <div v-if="detail && detail.status === 0" style="margin-top: 20px">
             <h4>审核：</h4>
             <CustomForm :columns="checkColumns" ref="checkForm"> </CustomForm>
         </div>
 
-        <div v-if="detail && detail.status == 1" style="margin-top: 20px">
+        <div v-if="detail && detail.status === 1" style="margin-top: 20px">
             <h4>打款：</h4>
             <CustomForm :columns="transColumns" ref="transForm"> </CustomForm>
         </div>
 
         <span slot="footer" class="dialog-footer">
-            <template v-if="detail && detail.status == 0">
+            <template v-if="detail && detail.status === 0">
                 <el-button type="primary" @click="submitCheck"
                     >提交审核</el-button
                 >
             </template>
 
-            <template v-if="detail && detail.status == 1">
+            <template v-if="detail && detail.status === 1">
                 <el-button type="primary" @click="submitTrans"
                     >确认已打款</el-button
                 >
@@ -139,7 +139,6 @@
         </span>
     </el-dialog>
 </template>
-
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
@@ -166,7 +165,7 @@ import CustomForm from "@/components/custom-list/cps/form.vue";
     },
 })
 export default class extends Vue {
-    private settleNo: string = "";
+    private settleNo = "";
 
     private detail: any = {};
 
@@ -174,13 +173,13 @@ export default class extends Vue {
 
     private choosed: any[] = [];
 
-    private loading: boolean = false;
+    private loading = false;
 
-    private showDetail: boolean = false;
+    private showDetail = false;
 
     @Watch("settleNo")
     settleNoChange() {
-        console.log(`settleNoChange`, this.settleNo);
+        console.log("settleNoChange", this.settleNo);
         // this.getData();
     }
 
@@ -201,7 +200,7 @@ export default class extends Vue {
                 return;
             }
             this.loading = true;
-            let { settle, order_goods } = await getSettleDetail({
+            const { settle, order_goods } = await getSettleDetail({
                 settleNo: this.settleNo,
             });
             if (!settle) {
@@ -273,7 +272,7 @@ export default class extends Vue {
         const form = this.$refs.checkForm;
 
         if (!form) {
-            return this.$message.error(`checkForm初始化失败`);
+            return this.$message.error("checkForm初始化失败");
         }
 
         const data = (form as CustomForm).getFormValue();
@@ -282,11 +281,11 @@ export default class extends Vue {
             data.status != MerchantSettleStatus.CHECKDONE &&
             data.status != MerchantSettleStatus.CHECK_FAILED
         ) {
-            return this.$message.error(`请审核`);
+            return this.$message.error("请审核");
         }
 
         if (data.status == MerchantSettleStatus.CHECK_FAILED && !data.reason) {
-            return this.$message.error(`请输入原因`);
+            return this.$message.error("请输入原因");
         }
 
         const res = await settleCheck({
@@ -317,13 +316,13 @@ export default class extends Vue {
         const form = this.$refs.transForm;
 
         if (!form) {
-            return this.$message.error(`transForm初始化失败`);
+            return this.$message.error("transForm初始化失败");
         }
 
         const data = (form as CustomForm).getFormValue();
 
         if (data.ssettle_image) {
-            return this.$message.error(`请上传打款凭证`);
+            return this.$message.error("请上传打款凭证");
         }
 
         const res = await settleConfirmTrans({
@@ -345,6 +344,7 @@ export default class extends Vue {
         }
         return false;
     }
+
     private handleSelectionChange(e: any) {
         this.choosed = e;
     }
@@ -373,7 +373,7 @@ export default class extends Vue {
 
     private formatEnum(value: any) {
         const conf = ["danger", "success", "warning", "info", "primary"];
-        let i = SettleStatusConf.findIndex((v: any) => v.value === value);
+        const i = SettleStatusConf.findIndex((v: any) => v.value === value);
         if (i > -1) {
             return {
                 label: SettleStatusConf[i].label,

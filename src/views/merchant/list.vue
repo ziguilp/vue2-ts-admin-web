@@ -71,35 +71,35 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
+import { Component, Vue, Watch } from 'vue-property-decorator'
 import {
     CustomListColumnType,
-    CustomListConf,
-} from "@/components/custom-list/customType";
+    CustomListConf
+} from '@/components/custom-list/customType'
 import {
     getMerchantList,
     merchantBan,
     merchantCheck,
     MerchantInfoCheckStatus,
-    MerchantInfoOnlineStatus,
-} from "@/api/merchant";
-import CustomForm from "@/components/custom-list/editForm.vue";
-import GiftPlanListVue from "../giftplan/list.vue";
-import MembersVue from "./members.vue";
-import { IpageDataDto } from "@/api/types";
+    MerchantInfoOnlineStatus
+} from '@/api/merchant'
+import CustomForm from '@/components/custom-list/editForm.vue'
+import GiftPlanListVue from '../giftplan/list.vue'
+import MembersVue from './members.vue'
+import { IpageDataDto } from '@/api/types'
 
 @Component({
-    name: "MerchantList",
+    name: 'MerchantList',
     components: {
         CustomForm,
         GiftPlanListVue,
-        MembersVue,
-    },
+        MembersVue
+    }
 })
 export default class extends Vue {
     private activeMerchant: any = null;
-    private showMerchantGiftPlan: boolean = false;
-    private showMembers: boolean = false;
+    private showMerchantGiftPlan = false;
+    private showMembers = false;
     private config: CustomListConf = {
         columns: [
             {
@@ -108,8 +108,8 @@ export default class extends Vue {
                 canAdd: false,
                 canEdit: false,
                 showInTable: true,
-                label: "序号",
-                prop: "id",
+                label: '序号',
+                prop: 'id'
             },
             {
                 type: CustomListColumnType.TEXT,
@@ -117,58 +117,58 @@ export default class extends Vue {
                 canAdd: false,
                 canEdit: false,
                 showInTable: false,
-                label: "绑定的用户ID",
-                prop: "bind_user_id",
+                label: '绑定的用户ID',
+                prop: 'bind_user_id'
             },
             {
                 type: CustomListColumnType.TEXT,
-                prop: "name",
-                label: "商户名称",
+                prop: 'name',
+                label: '商户名称',
                 canSearch: true,
                 showInTable: true,
-                showInDetail: true,
+                showInDetail: true
             },
             {
                 type: CustomListColumnType.IMAGE,
-                prop: "image",
-                label: "头像",
-                width: "60px",
-                height: "60px",
+                prop: 'image',
+                label: '头像',
+                width: '60px',
+                height: '60px',
                 showInTable: true,
-                showInDetail: true,
+                showInDetail: true
             },
             {
                 type: CustomListColumnType.TEXTAREA,
-                prop: "intro",
-                label: "简介",
+                prop: 'intro',
+                label: '简介',
                 showInTable: false,
-                showInDetail: true,
+                showInDetail: true
             },
             {
                 type: CustomListColumnType.TEXT,
-                prop: "address",
-                label: "地址",
+                prop: 'address',
+                label: '地址',
                 showInDetail: true,
                 showFormatInTable: (row: any) => {
-                    return row.province + row.city + row.area + row.address;
-                },
+                    return row.province + row.city + row.area + row.address
+                }
             },
             {
                 type: CustomListColumnType.TEXT,
-                prop: "location_lng",
-                label: "经纬度",
-                showInTable: false,
+                prop: 'location_lng',
+                label: '经纬度',
+                showInTable: false
             },
             {
                 type: CustomListColumnType.TEXT,
-                prop: "mobile",
-                label: "联系电话",
-                canSearch: true,
+                prop: 'mobile',
+                label: '联系电话',
+                canSearch: true
             },
             {
                 type: CustomListColumnType.TEXT,
-                prop: "wechat",
-                label: "微信号",
+                prop: 'wechat',
+                label: '微信号'
             },
             {
                 type: CustomListColumnType.SELECT,
@@ -176,33 +176,33 @@ export default class extends Vue {
                 canAdd: false,
                 canEdit: true,
                 showInTable: true,
-                label: "审核状态",
-                prop: "check_status",
+                label: '审核状态',
+                prop: 'check_status',
                 dataSource: {
-                    key: "value",
-                    labelKey: "label",
+                    key: 'value',
+                    labelKey: 'label',
                     value: [
                         {
-                            label: "待审核",
-                            value: MerchantInfoCheckStatus.WAIT_CHECK,
+                            label: '待审核',
+                            value: MerchantInfoCheckStatus.WAIT_CHECK
                         },
                         {
-                            label: "审核通过",
-                            value: MerchantInfoCheckStatus.CHECK_SUCCESS,
+                            label: '审核通过',
+                            value: MerchantInfoCheckStatus.CHECK_SUCCESS
                         },
                         {
-                            label: "审核未通过",
-                            value: MerchantInfoCheckStatus.CHECK_FAILED,
-                        },
-                    ],
-                },
+                            label: '审核未通过',
+                            value: MerchantInfoCheckStatus.CHECK_FAILED
+                        }
+                    ]
+                }
             },
             {
                 type: CustomListColumnType.TEXT,
-                prop: "check_result",
-                label: "审核结果",
+                prop: 'check_result',
+                label: '审核结果',
                 showInDetail: true,
-                showInTable: false,
+                showInTable: false
             },
             {
                 type: CustomListColumnType.SELECT,
@@ -211,87 +211,87 @@ export default class extends Vue {
                 canEdit: true,
                 showInTable: true,
                 showInDetail: true,
-                label: "状态",
-                prop: "status",
+                label: '状态',
+                prop: 'status',
                 dataSource: {
-                    key: "value",
-                    labelKey: "label",
+                    key: 'value',
+                    labelKey: 'label',
                     value: [
                         {
-                            label: "下线",
-                            value: MerchantInfoOnlineStatus.OFFLINE,
+                            label: '下线',
+                            value: MerchantInfoOnlineStatus.OFFLINE
                         },
                         {
-                            label: "在线",
-                            value: MerchantInfoOnlineStatus.ONLINE,
+                            label: '在线',
+                            value: MerchantInfoOnlineStatus.ONLINE
                         },
                         {
-                            label: "封禁",
-                            value: MerchantInfoOnlineStatus.BAN,
-                        },
-                    ],
-                },
+                            label: '封禁',
+                            value: MerchantInfoOnlineStatus.BAN
+                        }
+                    ]
+                }
             },
             {
                 type: CustomListColumnType.TEXT,
-                prop: "master",
-                label: "法人代表姓名",
+                prop: 'master',
+                label: '法人代表姓名',
                 showInTable: false,
-                showInDetail: true,
+                showInDetail: true
             },
             {
                 type: CustomListColumnType.TEXT,
-                prop: "master_idcard",
-                label: "法人代表身份证号码",
+                prop: 'master_idcard',
+                label: '法人代表身份证号码',
                 showInTable: false,
-                showInDetail: true,
+                showInDetail: true
             },
             {
                 type: CustomListColumnType.IMAGES,
-                prop: "master_idcard_images",
-                label: "法人代表身份证",
+                prop: 'master_idcard_images',
+                label: '法人代表身份证',
                 showInTable: false,
-                showInDetail: true,
+                showInDetail: true
             },
             {
                 type: CustomListColumnType.TEXT,
-                prop: "contact",
-                label: "联系人",
-                showInDetail: true,
+                prop: 'contact',
+                label: '联系人',
+                showInDetail: true
             },
             {
                 type: CustomListColumnType.IMAGE,
-                prop: "contact_avatar",
-                label: "联系人头像",
+                prop: 'contact_avatar',
+                label: '联系人头像',
                 showInTable: false,
-                showInDetail: true,
+                showInDetail: true
             },
             {
                 type: CustomListColumnType.TEXTAREA,
-                prop: "contact_explain",
-                label: "联系人介绍",
+                prop: 'contact_explain',
+                label: '联系人介绍',
                 showInTable: false,
-                showInDetail: true,
+                showInDetail: true
             },
             {
                 type: CustomListColumnType.TEXT,
-                prop: "license",
-                label: "主体名称",
-                showInDetail: true,
+                prop: 'license',
+                label: '主体名称',
+                showInDetail: true
             },
             {
                 type: CustomListColumnType.TEXT,
-                prop: "license_no",
-                label: "统一信用代码",
+                prop: 'license_no',
+                label: '统一信用代码',
                 showInTable: true,
-                showInDetail: true,
+                showInDetail: true
             },
             {
                 type: CustomListColumnType.IMAGES,
-                prop: "qualifications",
-                label: "资质照片",
+                prop: 'qualifications',
+                label: '资质照片',
                 showInTable: false,
-                showInDetail: true,
+                showInDetail: true
             },
             {
                 type: CustomListColumnType.DATE,
@@ -299,30 +299,30 @@ export default class extends Vue {
                 canAdd: false,
                 canEdit: false,
                 showInTable: true,
-                label: "注册时间",
-                prop: "date_created",
-            },
+                label: '注册时间',
+                prop: 'date_created'
+            }
         ],
         tableSelection: false,
-        onLoadData: async (searchForm: any, idata: IpageDataDto<any>) => {
+        onLoadData: async(searchForm: any, idata: IpageDataDto<any>) => {
             const data: any = await getMerchantList({
                 data: searchForm,
                 page: parseInt(String(idata.currentPage)),
-                pageSize: idata.pageSize,
-            });
-            return data;
-        },
+                pageSize: idata.pageSize
+            })
+            return data
+        }
     };
 
     private checkConf: CustomListConf = {
         columns: [
             {
                 type: CustomListColumnType.TEXT,
-                prop: "name",
-                label: "商户名称",
+                prop: 'name',
+                label: '商户名称',
                 canAdd: false,
                 canEdit: false,
-                showInDetail: true,
+                showInDetail: true
             },
             {
                 type: CustomListColumnType.SELECT,
@@ -330,79 +330,79 @@ export default class extends Vue {
                 canAdd: false,
                 canEdit: true,
                 showInTable: true,
-                label: "审核结果",
-                prop: "check_status",
+                label: '审核结果',
+                prop: 'check_status',
                 dataSource: {
-                    key: "value",
-                    labelKey: "label",
+                    key: 'value',
+                    labelKey: 'label',
                     value: [
                         {
-                            label: "待审核",
-                            value: MerchantInfoCheckStatus.WAIT_CHECK,
+                            label: '待审核',
+                            value: MerchantInfoCheckStatus.WAIT_CHECK
                         },
                         {
-                            label: "审核通过",
-                            value: MerchantInfoCheckStatus.CHECK_SUCCESS,
+                            label: '审核通过',
+                            value: MerchantInfoCheckStatus.CHECK_SUCCESS
                         },
                         {
-                            label: "审核未通过",
-                            value: MerchantInfoCheckStatus.CHECK_FAILED,
-                        },
-                    ],
-                },
+                            label: '审核未通过',
+                            value: MerchantInfoCheckStatus.CHECK_FAILED
+                        }
+                    ]
+                }
             },
             {
                 type: CustomListColumnType.TEXTAREA,
-                prop: "check_result",
-                label: "原因",
+                prop: 'check_result',
+                label: '原因',
                 canEdit: true,
                 showInDetail: true,
-                showInTable: false,
-            },
+                showInTable: false
+            }
         ],
         onLoadData: () => {},
-        onSave: async (form: any) => {
-            console.log(`审核`, form);
+        onSave: async(form: any) => {
+            console.log('审核', form)
             if (form.check_status === MerchantInfoCheckStatus.WAIT_CHECK) {
-                this.$message.error(`请选择审核结果`);
-                throw new Error(`请选择审核结果`);
+                this.$message.error('请选择审核结果')
+                throw new Error('请选择审核结果')
             }
             if (form.check_status === MerchantInfoCheckStatus.CHECK_FAILED) {
                 if (!form.check_result) {
-                    this.$message.error(`请输入审核未通过原因`);
-                    throw new Error(`请输入审核未通过原因`);
+                    this.$message.error('请输入审核未通过原因')
+                    throw new Error('请输入审核未通过原因')
                 }
             }
 
             const res = await merchantCheck({
                 merchantId: form.id,
                 checkStatus: form.check_status,
-                reason: form.check_result,
-            });
+                reason: form.check_result
+            })
 
             if (res) {
-                (this.$refs.merchantlist as any).refresh();
+                (this.$refs.merchantlist as any).refresh()
             }
 
-            return res;
-        },
+            return res
+        }
     };
 
     private handleShowCheckForm(row: any) {
         (this.$refs.checkform as CustomForm).init({
             form: row,
-            readonly: false,
-        });
+            readonly: false
+        })
     }
 
     private handleShowGiftPlans(row: any) {
-        this.showMerchantGiftPlan = true;
-        this.activeMerchant = row;
+        this.showMerchantGiftPlan = true
+        this.activeMerchant = row
     }
 
     private handleShowMembers(row: any) {
-        this.showMembers = true;
-        this.activeMerchant = row;
+        this.showMembers = true
+        this.activeMerchant = row
     }
 }
 </script>

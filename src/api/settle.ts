@@ -1,7 +1,6 @@
 import request from '@/utils/request'
 import { IpageDataDto } from './types'
 
-
 /**
  * 结算状态
  */
@@ -29,29 +28,29 @@ export enum MerchantSettleStatus {
 
 export const SettleStatusConf = [
     {
-        label: "审核未通过",
-        value: MerchantSettleStatus.CHECK_FAILED,
+        label: '审核未通过',
+        value: MerchantSettleStatus.CHECK_FAILED
     },
     {
-        label: "打款完成",
-        value: MerchantSettleStatus.OVER,
+        label: '打款完成',
+        value: MerchantSettleStatus.OVER
     },
     {
-        label: "待审核",
-        value: MerchantSettleStatus.CHECKING,
+        label: '待审核',
+        value: MerchantSettleStatus.CHECKING
     },
     {
-        label: "通过待打款",
-        value: MerchantSettleStatus.CHECKDONE,
-    },
+        label: '通过待打款',
+        value: MerchantSettleStatus.CHECKDONE
+    }
 ]
 
 /**
  * 读取待结算的
- * @param param0 
- * @returns 
+ * @param param0
+ * @returns
  */
-export const getWaitForSettleList = async ({ page, pageSize, data }: any) => {
+export const getWaitForSettleList = async({ page, pageSize, data }: any) => {
     return ((await request({
         url: '/settle/unsettle_list',
         method: 'get',
@@ -65,10 +64,10 @@ export const getWaitForSettleList = async ({ page, pageSize, data }: any) => {
 
 /**
  * 读取结算单
- * @param param0 
- * @returns 
+ * @param param0
+ * @returns
  */
-export const getSettleList = async ({ page, pageSize, data }: any) => {
+export const getSettleList = async({ page, pageSize, data }: any) => {
     return ((await request({
         url: '/settle/list',
         method: 'get',
@@ -80,18 +79,16 @@ export const getSettleList = async ({ page, pageSize, data }: any) => {
     })).data) as IpageDataDto<any>
 }
 
-export const getSettleDetail = async ({ settleNo }: any) => {
+export const getSettleDetail = async({ settleNo }: any) => {
     return ((await request({
         url: `/settle/detail/${settleNo}`,
-        method: 'get',
+        method: 'get'
     })).data)
 }
 
-
-
-export const settleCheck = async ({ settleNo, status, reason }: any) => {
+export const settleCheck = async({ settleNo, status, reason }: any) => {
     return ((await request({
-        url: `/settle/check`,
+        url: '/settle/check',
         method: 'POST',
         data: {
             settleNo, status, reason: reason || ''
@@ -99,13 +96,12 @@ export const settleCheck = async ({ settleNo, status, reason }: any) => {
     })).data)
 }
 
-export const settleConfirmTrans = async ({ settleNo, settle_image, reason }: any) => {
+export const settleConfirmTrans = async({ settleNo, settle_image, reason }: any) => {
     return ((await request({
-        url: `/settle/transOver`,
+        url: '/settle/transOver',
         method: 'POST',
         data: {
             settleNo, settle_image, reason: reason || ''
         }
     })).data)
 }
-

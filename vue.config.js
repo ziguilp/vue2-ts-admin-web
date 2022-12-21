@@ -1,5 +1,15 @@
+/*
+ * @Author        : turbo 664120459@qq.com
+ * @Date          : 2022-12-12 16:09:29
+ * @LastEditors   : turbo 664120459@qq.com
+ * @LastEditTime  : 2022-12-19 16:04:42
+ * @FilePath      : /adminweb/vue.config.js
+ * @Description   : 
+ * 
+ * Copyright (c) 2022 by turbo 664120459@qq.com, All Rights Reserved. 
+ */
 const path = require('path')
-const name = 'XiQueCRM'
+const name = '管理平台'
 
 module.exports = {
     // TODO: Remember to change publicPath to fit your need
@@ -28,15 +38,15 @@ module.exports = {
     },
     devServer: {
         proxy: {
-            "/api/": {
-                target: "http://127.0.0.1:3000/",
+            '/api/': {
+                target: 'http://127.0.0.1:3000/',
                 changeOrigin: true,
                 ws: true,
                 secure: false,
                 pathRewrite: {
-                    "^/api": '/'
+                    '^/api': '/'
                 }
-            },
-        },
-    },
+            }
+        }
+    }
 }

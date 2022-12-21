@@ -1,3 +1,13 @@
+<!--
+ * @Author        : turbo 664120459@qq.com
+ * @Date          : 2022-12-12 16:09:29
+ * @LastEditors   : turbo 664120459@qq.com
+ * @LastEditTime  : 2022-12-13 21:41:31
+ * @FilePath      : /adminweb/src/views/admin/profile.vue
+ * @Description   : 
+ * 
+ * Copyright (c) 2022 by turbo 664120459@qq.com, All Rights Reserved. 
+-->
 <template>
     <div class="app-container">
         <el-row :gutter="20">
@@ -165,8 +175,6 @@ export default class extends Vue {
         pageSize: 10,
     };
 
-    created() {}
-
     private uploadSuccess(e: any) {
         console.log(e);
     }
@@ -185,7 +193,7 @@ export default class extends Vue {
         ) {
             if (
                 this.userInfo.avatar &&
-                this.userInfo.avatar != UserModule.avatar
+                this.userInfo.avatar !== UserModule.avatar
             ) {
                 const res = await modifyBaseInfo({
                     avatar: this.userInfo.avatar,
@@ -193,7 +201,7 @@ export default class extends Vue {
                 if (res) {
                     await UserModule.GetUserInfo();
                 } else {
-                    this.$message.error(`头像保存失败`);
+                    this.$message.error("头像保存失败");
                 }
             }
             return;
@@ -228,10 +236,10 @@ export default class extends Vue {
             setTimeout(() => {
                 UserModule.LogOut();
             }, 1000);
-            return this.$message.success(`修改成功`);
+            return this.$message.success("修改成功");
         }
 
-        return this.$message.error(`修改失败`);
+        return this.$message.error("修改失败");
     }
 
     private opLogConf: CustomListConf = {
@@ -260,7 +268,7 @@ export default class extends Vue {
         hideOperations: true,
         onLoadData: async (form: any, idata: IpageDataDto<any>) => {
             try {
-                console.log(`onLoadData`, form, idata);
+                console.log("onLoadData", form, idata);
                 const log = await getOperateLog({
                     page: parseInt(String(idata.currentPage)),
                     pageSize: idata.pageSize,

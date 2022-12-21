@@ -1,3 +1,13 @@
+<!--
+ * @Author        : turbo 664120459@qq.com
+ * @Date          : 2022-12-12 16:09:29
+ * @LastEditors   : turbo 664120459@qq.com
+ * @LastEditTime  : 2022-12-13 21:58:52
+ * @FilePath      : /adminweb/src/views/user/list.vue
+ * @Description   : 
+ * 
+ * Copyright (c) 2022 by turbo 664120459@qq.com, All Rights Reserved. 
+-->
 <template>
     <div>
         <custom-list ref="customList" :conf="config">
@@ -47,17 +57,14 @@ import {
 import { getRoleList } from "@/api/role";
 import { isMobile } from "@/utils/validate";
 import { IpageDataDto } from "@/api/types";
-import SubscribeVue from "../giftplan/subscribe.vue";
 
 @Component({
     name: "AdminList",
-    components: {
-        SubscribeVue,
-    },
+    components: {},
 })
 export default class extends Vue {
     private activeUser: any = null;
-    private showSubscribe: boolean = false;
+    private showSubscribe = false;
     private config: CustomListConf = {
         columns: [
             {

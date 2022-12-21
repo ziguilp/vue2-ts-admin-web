@@ -1,6 +1,6 @@
 {
-  "name": "XiqueCrm",
-  "short_name": "XiqueCrm",
+  "name": "admin-web",
+  "short_name": "admin-web",
   "icons": [{
       "src": "./favicon.ico",
       "sizes": "192x192",

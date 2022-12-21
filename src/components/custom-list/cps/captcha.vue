@@ -13,31 +13,31 @@
 </template>
 
 <script lang='ts'>
-import { sendCaptcha } from "@/api/other";
-import moment from "moment";
-import Vue, { PropType } from "vue";
-import { Prop, Watch, Component } from "vue-property-decorator";
+import { sendCaptcha } from '@/api/other'
+import moment from 'moment'
+import Vue, { PropType } from 'vue'
+import { Prop, Watch, Component } from 'vue-property-decorator'
 
 @Component({
-    name: "CustomCaptcha",
-    components: {},
+    name: 'CustomCaptcha',
+    components: {}
 })
 export default class extends Vue {
     @Prop({
         type: String,
-        default: () => "",
+        default: () => ''
     })
     username!: string;
 
     @Prop({
         type: String,
-        default: () => "",
+        default: () => ''
     })
     event!: string;
 
     @Prop({
         type: String,
-        default: () => "",
+        default: () => ''
     })
     size!: string;
 
@@ -46,54 +46,54 @@ export default class extends Vue {
      */
     private freezoneTime = 60;
 
-    private captcha: string = "";
+    private captcha = '';
 
-    private sended: boolean = false;
+    private sended = false;
 
     get btnStr() {
-        if (!this.sended) return "发送验证码";
+        if (!this.sended) return '发送验证码'
         if (this.sendTimeout > 0) {
-            return `重新发送${this.sendTimeout}s`;
+            return `重新发送${this.sendTimeout}s`
         }
-        return `重新发送`;
+        return '重新发送'
     }
 
     private sendTime: any = null;
-    private sendTimeout: number = 0;
+    private sendTimeout = 0;
 
     private timer: any = null;
 
-    @Watch("captcha")
+    @Watch('captcha')
     captchaChange() {
-        this.$emit("input", this.captcha);
+        this.$emit('input', this.captcha)
     }
 
     async sendCaptchaFn() {
         if (this.sended && this.timer) {
-            return;
+            return
         }
         if (!this.username) {
-            return this.$message.error(`用户名无效`);
+            return this.$message.error('用户名无效')
         }
 
         const res = await sendCaptcha({
             username: this.username,
-            event: this.event as any,
-        });
-        if (!res) return;
+            event: this.event as any
+        })
+        if (!res) return
 
         try {
-            this.sendTime = moment();
-            this.sended = true;
+            this.sendTime = moment()
+            this.sended = true
             this.timer = setInterval(() => {
                 this.sendTimeout =
-                    this.freezoneTime - moment().diff(this.sendTime, "second");
+                    this.freezoneTime - moment().diff(this.sendTime, 'second')
                 if (this.sendTimeout <= 0) {
-                    clearInterval(this.timer);
+                    clearInterval(this.timer)
                 }
-            }, 90);
+            }, 90)
         } catch (error) {
-            console.error(error);
+            console.error(error)
         }
     }
 }

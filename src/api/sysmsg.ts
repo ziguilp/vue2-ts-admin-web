@@ -3,25 +3,25 @@ import { IpageDataDto } from './types'
 
 export const MsgStatusConf = [
     {
-        label: "待审核",
+        label: '待审核',
         value: 0
     },
     {
-        label: "审核通过并发布",
+        label: '审核通过并发布',
         value: 1
     },
     {
-        label: "审核未通过",
+        label: '审核未通过',
         value: 2
-    },
+    }
 ]
 
 /**
  * 读取商户发送的消息
- * @param param0 
- * @returns 
+ * @param param0
+ * @returns
  */
-export const getMerchantMsgList = async ({ page, pageSize, data }: any) => {
+export const getMerchantMsgList = async({ page, pageSize, data }: any) => {
     return ((await request({
         url: '/sysmsg/getMerchantSendMsg',
         method: 'get',
@@ -33,9 +33,9 @@ export const getMerchantMsgList = async ({ page, pageSize, data }: any) => {
     })).data) as IpageDataDto<any>
 }
 
-export const checkMerchantMsg = async ({ msgId, status, check_result }: any) => {
+export const checkMerchantMsg = async({ msgId, status, check_result }: any) => {
     return ((await request({
-        url: `/sysmsg/msgcheck`,
+        url: '/sysmsg/msgcheck',
         method: 'POST',
         data: {
             msgId,
@@ -45,9 +45,9 @@ export const checkMerchantMsg = async ({ msgId, status, check_result }: any) => 
     })).data)
 }
 
-export const adminSendMsg = async ({ title, content, medias, receiver }: any) => {
+export const adminSendMsg = async({ title, content, medias, receiver }: any) => {
     return ((await request({
-        url: `/sysmsg/admin/sendmsg`,
+        url: '/sysmsg/admin/sendmsg',
         method: 'POST',
         data: {
             title, content, medias, receiver
@@ -55,7 +55,7 @@ export const adminSendMsg = async ({ title, content, medias, receiver }: any) =>
     })).data)
 }
 
-export const getAdminSendMsgList = async ({ page, pageSize, data }: any) => {
+export const getAdminSendMsgList = async({ page, pageSize, data }: any) => {
     return ((await request({
         url: '/sysmsg/getAdminSendMsg',
         method: 'get',

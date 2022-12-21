@@ -9,7 +9,7 @@ const service = axios.create({
     timeout: 5000
 })
 
-let loginConfirm: boolean = false;
+let loginConfirm = false
 
 // Request interceptors
 service.interceptors.request.use(
@@ -65,8 +65,8 @@ service.interceptors.response.use(
         }
         if ((error.response.status == 401) && router.currentRoute.name != 'login') {
             console.log('需要登录', error.response.status)
-            if (loginConfirm) return;
-            loginConfirm = true;
+            if (loginConfirm) return
+            loginConfirm = true
 
             return MessageBox.confirm(
                 '登录已过期，需要重新登录',
@@ -77,13 +77,13 @@ service.interceptors.response.use(
                     type: 'warning'
                 }
             ).then(() => {
-                UserModule.ResetToken();
+                UserModule.ResetToken()
                 // location.reload() // To prevent bugs from vue-router
                 return router.push({
                     path: '/login'
                 })
             }).finally(() => {
-                loginConfirm = false;
+                loginConfirm = false
             })
         }
         if (typeof error.response.data.message !== 'undefined') {

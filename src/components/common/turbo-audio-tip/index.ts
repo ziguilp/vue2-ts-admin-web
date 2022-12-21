@@ -11,19 +11,19 @@ export const TurboAudioTip = {
             const TurboAudioTipConstructor = vue.extend(TurboAudioTipVue)
 
             vue.prototype.$turboAudioTip = {
-                success(src: string = 'https://h5-static.woody.tsingc.com/audio/operate_success.mp3') {
+                success(src = 'https://h5-static.woody.tsingc.com/audio/operate_success.mp3') {
                     const currentDom = new TurboAudioTipConstructor({ ...options })
                     currentDom.play(src)
                     document.body.appendChild(currentDom.$mount().$el)
                     return true
                 },
-                failed(src: string = 'https://h5-static.woody.tsingc.com/audio/operate_failed.mp3') {
+                failed(src = 'https://h5-static.woody.tsingc.com/audio/operate_failed.mp3') {
                     const currentDom = new TurboAudioTipConstructor({ ...options })
                     currentDom.play(src)
                     document.body.appendChild(currentDom.$mount().$el)
                     return true
                 },
-                error(src: string = 'https://h5-static.woody.tsingc.com/audio/error.mp3') {
+                error(src = 'https://h5-static.woody.tsingc.com/audio/error.mp3') {
                     const currentDom = new TurboAudioTipConstructor({ ...options })
                     currentDom.play(src)
                     document.body.appendChild(currentDom.$mount().$el)

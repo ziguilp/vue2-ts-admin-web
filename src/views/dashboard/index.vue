@@ -30,7 +30,7 @@
                     <div slot="header">运营数据</div>
                     <div>
                         <div class="weather-list">
-                            <el-col class="weather-list-item" 
+                            <el-col class="weather-list-item"
                                 :xl="12"
                                 :lg="12"
                                 :md="24"
@@ -40,12 +40,12 @@
                                 <svg-icon class="weather-list-item-icon" name="fuzhaoduzhong"></svg-icon>
                                 <div class="weather-list-item-info">
                                     <span class="value">{{data.user7day}} <i class="unit">人</i> </span>
-                                    
+
                                     <h4 class="title">7日用户新增</h4>
                                 </div>
                             </el-col>
 
-                            <el-col class="weather-list-item" 
+                            <el-col class="weather-list-item"
                                 :xl="12"
                                 :lg="12"
                                 :md="24"
@@ -55,12 +55,12 @@
                                 <svg-icon class="weather-list-item-icon" name="fuzhaoduzhi"></svg-icon>
                                 <div class="weather-list-item-info">
                                     <span class="value">{{data.vipTotal7d}} <i class="unit">人</i> </span>
-                                    
+
                                     <h4 class="title">7日订阅新增</h4>
                                 </div>
                             </el-col>
 
-                            <el-col class="weather-list-item" 
+                            <el-col class="weather-list-item"
                                 :xl="12"
                                 :lg="12"
                                 :md="24"
@@ -70,7 +70,7 @@
                                 <svg-icon class="weather-list-item-icon" name="fuzhaodusan"></svg-icon>
                                 <div class="weather-list-item-info">
                                     <span class="value">{{data.merchantTotal}} <i class="unit"></i> </span>
-                                    
+
                                     <h4 class="title">7日入驻新增</h4>
                                 </div>
                             </el-col>
@@ -95,22 +95,22 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
-import { UserModule } from "@/store/modules/user";
+import { Component, Vue, Watch } from 'vue-property-decorator'
+import { UserModule } from '@/store/modules/user'
 
-import * as echarts from "echarts/core";
+import * as echarts from 'echarts/core'
 import {
     TitleComponent,
     ToolboxComponent,
     TooltipComponent,
     GridComponent,
-    LegendComponent,
-} from "echarts/components";
-import { LineChart } from "echarts/charts";
-import { UniversalTransition } from "echarts/features";
-import { CanvasRenderer } from "echarts/renderers";
-import { dashboard } from "@/api/other";
-import moment from "moment";
+    LegendComponent
+} from 'echarts/components'
+import { LineChart } from 'echarts/charts'
+import { UniversalTransition } from 'echarts/features'
+import { CanvasRenderer } from 'echarts/renderers'
+import { dashboard } from '@/api/other'
+import moment from 'moment'
 
 echarts.use([
     TitleComponent,
@@ -120,11 +120,11 @@ echarts.use([
     LegendComponent,
     LineChart,
     CanvasRenderer,
-    UniversalTransition,
-]);
+    UniversalTransition
+])
 
 @Component({
-    name: "Dashboard",
+    name: 'Dashboard'
 })
 export default class extends Vue {
     private data: any = {};
@@ -132,50 +132,50 @@ export default class extends Vue {
     async created() {}
 
     mounted() {
-        this.getDashBoard();
+        this.getDashBoard()
         // this.draw();
     }
 
     private async getDashBoard() {
-        this.data = await dashboard();
+        this.data = await dashboard()
 
-        this.draw();
+        this.draw()
     }
 
     /**
      * 绘制图表
      */
     private async draw() {
-        let {
-            chart30: { users, vip },
-        }: any = this.data;
+        const {
+            chart30: { users, vip }
+        }: any = this.data
 
-        let days = [];
+        const days = []
         for (let index = 30; index > -1; index--) {
             days.push(
                 moment()
-                    .add(0 - index, "days")
-                    .format("YYYY-MM-DD")
-            );
+                    .add(0 - index, 'days')
+                    .format('YYYY-MM-DD')
+            )
         }
 
-        let usersDataObj: any = users.reduce((p: any, c: any) => {
-            p[moment(c.date).format("YYYY-MM-DD")] = c.count;
-            return p;
-        }, {});
+        const usersDataObj: any = users.reduce((p: any, c: any) => {
+            p[moment(c.date).format('YYYY-MM-DD')] = c.count
+            return p
+        }, {})
 
-        let usersData: number[] = days.map((e: string) => {
-            return usersDataObj[e] || 0;
-        });
+        const usersData: number[] = days.map((e: string) => {
+            return usersDataObj[e] || 0
+        })
 
-        let vipDataObj: any = vip.reduce((p: any, c: any) => {
-            p[moment(c.date).format("YYYY-MM-DD")] = c.count;
-            return p;
-        }, {});
+        const vipDataObj: any = vip.reduce((p: any, c: any) => {
+            p[moment(c.date).format('YYYY-MM-DD')] = c.count
+            return p
+        }, {})
 
-        let vipData: number[] = days.map((e: string) => {
-            return vipDataObj[e] || 0;
-        });
+        const vipData: number[] = days.map((e: string) => {
+            return vipDataObj[e] || 0
+        })
 
         // let orderDataObj: any = order.reduce((p: any, c: any) => {
         //     p[moment(c.date).format("YYYY-MM-DD")] = c.count;
@@ -186,60 +186,60 @@ export default class extends Vue {
         //     return orderDataObj[e] || 0;
         // });
 
-        let chartDom: any = document.getElementById("shortTermPredict_chart");
-        let myChart = echarts.init(chartDom);
-        let option;
+        const chartDom: any = document.getElementById('shortTermPredict_chart')
+        const myChart = echarts.init(chartDom)
+        let option
 
         option = {
             title: {
-                text: "",
+                text: ''
             },
             tooltip: {
-                trigger: "axis",
+                trigger: 'axis'
             },
             legend: {
-                data: ["注册用户", "订阅数"],
+                data: ['注册用户', '订阅数']
             },
             grid: {
-                left: "3%",
-                right: "4%",
-                bottom: "3%",
-                containLabel: true,
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
             },
             toolbox: {
                 feature: {
-                    saveAsImage: {},
-                },
+                    saveAsImage: {}
+                }
             },
             xAxis: {
-                type: "category",
+                type: 'category',
                 boundaryGap: false,
-                data: days,
+                data: days
             },
             yAxis: {
-                type: "value",
-                name: "数",
+                type: 'value',
+                name: '数'
             },
             series: [
                 {
-                    name: "注册用户",
-                    type: "line",
-                    data: usersData,
+                    name: '注册用户',
+                    type: 'line',
+                    data: usersData
                 },
                 {
-                    name: "订阅数",
-                    type: "line",
-                    data: vipData,
-                },
+                    name: '订阅数',
+                    type: 'line',
+                    data: vipData
+                }
                 // {
                 //     name: "订单数",
                 //     type: "line",
                 //     data: orderData,
                 // },
-            ],
-        };
+            ]
+        }
 
-        option && myChart.setOption(option);
+        option && myChart.setOption(option)
     }
 }
 </script>

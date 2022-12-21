@@ -11,19 +11,19 @@
 
 <script >
 export default {
-  name: "turbo-audio-tip-component",
+  name: 'turbo-audio-tip-component',
   props: {
     src: {
-      type: String,
-    },
+      type: String
+    }
   },
   methods: {
     play(src) {
-      this.src = src;
+      this.src = src
     },
     audioEnd() {
-      this.src = "";
-    },
-  },
-};
+      this.src = ''
+    }
+  }
+}
 </script>

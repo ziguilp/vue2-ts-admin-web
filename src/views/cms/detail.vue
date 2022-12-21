@@ -9,44 +9,44 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
-import { CmsContent, getCmsDetailByAlias, getCmsDetailById } from "@/api/cms";
+import { Component, Vue, Watch } from 'vue-property-decorator'
+import { CmsContent, getCmsDetailByAlias, getCmsDetailById } from '@/api/cms'
 
 @Component({
-    name: "CmsPreview",
-    components: {},
+    name: 'CmsPreview',
+    components: {}
 })
 export default class extends Vue {
     private data!: CmsContent;
 
-    private loading: boolean = true;
+    private loading = true;
 
     mounted() {
-        this.getContent();
+        this.getContent()
     }
 
     activated() {
-        console.log("activated", this.$route.query);
+        console.log('activated', this.$route.query)
     }
 
     get alias() {
-        return this.$route.params.alias;
+        return this.$route.params.alias
     }
 
     async getContent() {
         try {
-            this.loading = true;
+            this.loading = true
             if (this.alias) {
-                this.data = await getCmsDetailByAlias(this.alias as any);
-                console.log("data", this.data);
-                document.title = this.data.title;
+                this.data = await getCmsDetailByAlias(this.alias as any)
+                console.log('data', this.data)
+                document.title = this.data.title
             } else {
-                this.$message(`error`);
+                this.$message('error')
             }
         } catch (error) {
-            console.error(error);
+            console.error(error)
         } finally {
-            this.loading = false;
+            this.loading = false
         }
     }
 }

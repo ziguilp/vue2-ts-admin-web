@@ -1,3 +1,13 @@
+<!--
+ * @Author        : turbo 664120459@qq.com
+ * @Date          : 2022-12-12 16:09:29
+ * @LastEditors   : turbo 664120459@qq.com
+ * @LastEditTime  : 2022-12-13 21:42:40
+ * @FilePath      : /adminweb/src/views/order/components/orderDetail.vue
+ * @Description   : 
+ * 
+ * Copyright (c) 2022 by turbo 664120459@qq.com, All Rights Reserved. 
+-->
 <template>
     <el-dialog :title="title" :visible.sync="showDetail" width="800px">
         <div class="order-body">
@@ -104,7 +114,6 @@
     </el-dialog>
 </template>
 
-
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 import {
@@ -121,23 +130,23 @@ import {
 import { IpageDataDto } from "@/api/types";
 
 @Component({
-    name: "SubscribeOrderDetail",
+    name: "orderDetail",
     components: {},
 })
 export default class extends Vue {
-    private orderSn: string = "";
+    private orderSn = "";
 
     private detail: any = {};
 
     private choosed: any[] = [];
 
-    private loading: boolean = false;
+    private loading = false;
 
-    private showDetail: boolean = false;
+    private showDetail = false;
 
     @Watch("orderSn")
     orderSnChange() {
-        console.log(`orderSnChange`, this.orderSn);
+        console.log("orderSnChange", this.orderSn);
         this.getData();
     }
 
@@ -168,6 +177,7 @@ export default class extends Vue {
             this.loading = false;
         }
     }
+
     private selectable(row: any) {
         if (
             (this.detail.status == 2 || this.detail.status == 3) &&
@@ -177,6 +187,7 @@ export default class extends Vue {
         }
         return false;
     }
+
     private handleSelectionChange(e: any) {
         this.choosed = e;
     }
@@ -205,7 +216,7 @@ export default class extends Vue {
 
     private formatEnum(value: any) {
         const conf = ["danger", "success", "warning", "info", "primary"];
-        let i = SubscribeOrderGoodsStatusConf.findIndex(
+        const i = SubscribeOrderGoodsStatusConf.findIndex(
             (v: any) => v.value === value
         );
         if (i > -1) {
@@ -222,7 +233,7 @@ export default class extends Vue {
 
     private formatSettleEnum(value: any) {
         const conf = ["danger", "success", "warning", "info", "primary"];
-        let i = OrderGoodsSettleStatusConf.findIndex(
+        const i = OrderGoodsSettleStatusConf.findIndex(
             (v: any) => v.value === value
         );
         if (i > -1) {

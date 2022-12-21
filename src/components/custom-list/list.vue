@@ -93,7 +93,7 @@
                                                 getValueByKey(
                                                     scope.row,
                                                     v.prop
-                                                ),
+                                                )
                                             ]"
                                             lazy
                                         ></el-image>
@@ -294,136 +294,134 @@
     </div>
 </template>
 
-
-
 <script lang="ts">
-import { PropType } from "vue";
-import { Prop, Vue, Watch } from "vue-property-decorator";
-import exportFromJSON, { ExportType } from "export-from-json";
-import moment from "moment";
-import { CustomListColumn, CustomListConf } from "./customType";
-import CustomForm from "./cps/form.vue";
-import Component from "vue-class-component";
-import EditForm from "./editForm.vue";
-import { IpageDataDto } from "@/api/types";
+import { PropType } from 'vue'
+import { Prop, Vue, Watch } from 'vue-property-decorator'
+import exportFromJSON, { ExportType } from 'export-from-json'
+import moment from 'moment'
+import { CustomListColumn, CustomListConf } from './customType'
+import CustomForm from './cps/form.vue'
+import Component from 'vue-class-component'
+import EditForm from './editForm.vue'
+import { IpageDataDto } from '@/api/types'
 
 @Component({
-    name: "CustomList",
+    name: 'CustomList',
     components: {
         CustomForm,
-        EditForm,
-    },
+        EditForm
+    }
 })
 export default class CustomList extends Vue {
     @Prop({
         type: Object as PropType<CustomListConf>,
-        required: true,
+        required: true
     })
     readonly conf!: CustomListConf;
 
     get searchFormCloumns() {
         return this.conf.columns.reduce((p, c) => {
             if (c.canSearch) {
-                p.push(c);
+                p.push(c)
             }
-            return p;
-        }, [] as CustomListColumn[]);
+            return p
+        }, [] as CustomListColumn[])
     }
 
     get tableCloumns() {
         return this.conf.columns.reduce((p, c) => {
             if (c.showInTable !== false) {
-                p.push(c);
+                p.push(c)
             }
-            return p;
-        }, [] as CustomListColumn[]);
+            return p
+        }, [] as CustomListColumn[])
     }
 
-    private loading: boolean = false;
+    private loading = false;
 
     private data: IpageDataDto<any> = {
         pageSize: 10,
         currentPage: 1,
         total: 0,
-        list: [],
+        list: []
     };
 
     private selectedRows: any[] = [];
 
     async sizeChange(e: any) {
-        this.data.pageSize = e;
-        this.data.currentPage = 1;
-        this.getList();
+        this.data.pageSize = e
+        this.data.currentPage = 1
+        this.getList()
     }
 
     pageChange(e: any) {
-        this.data.currentPage = e;
-        this.getList();
+        this.data.currentPage = e
+        this.getList()
     }
 
     async mounted() {
-        this.getList(true);
+        this.getList(true)
     }
 
-    public refresh(refreshPage: boolean = true) {
-        if (refreshPage) this.data.currentPage = 1;
-        this.getList();
+    public refresh(refreshPage = true) {
+        if (refreshPage) this.data.currentPage = 1
+        this.getList()
     }
 
     private submit() {
-        this.refresh();
+        this.refresh()
     }
 
     private handleAdd() {
-        (this.$refs.EditForm as EditForm).init({ readonly: false });
+        (this.$refs.EditForm as EditForm).init({ readonly: false })
     }
 
     private handleEdit(row: any) {
-        (this.$refs.EditForm as EditForm).init({ form: row, readonly: false });
+        (this.$refs.EditForm as EditForm).init({ form: row, readonly: false })
     }
 
     private handleShow(row: any) {
-        (this.$refs.EditForm as EditForm).init({ form: row, readonly: true });
+        (this.$refs.EditForm as EditForm).init({ form: row, readonly: true })
     }
 
     private handleSelectionChange(e: any[]) {
-        this.selectedRows = e;
+        this.selectedRows = e
     }
 
     private async getList(refresh = false) {
         try {
-            this.loading = true;
+            this.loading = true
             this.data = await this.conf.onLoadData(
                 this.$refs.searchForm
                     ? (this.$refs.searchForm as CustomForm).getFormValue()
                     : {},
                 this.data
-            );
+            )
         } catch (error) {
-            console.error(error);
+            console.error(error)
         } finally {
-            this.loading = false;
+            this.loading = false
         }
     }
 
     private handleDel(row: any) {
         this.$turboConfirm
             .confirm({
-                type: "warning",
-                title: "确定要删除当前记录吗？",
-                content: "你将无法恢复该数据！",
+                type: 'warning',
+                title: '确定要删除当前记录吗？',
+                content: '你将无法恢复该数据！'
             })
-            .then(async () => {
+            .then(async() => {
                 const res = this.conf.onDelete
                     ? await this.conf.onDelete(row)
-                    : false;
+                    : false
                 if (res) {
-                    this.refresh();
+                    this.refresh()
                 }
             })
             .catch((e) => {
-                console.log("取消");
-            });
+                console.log('取消')
+            })
     }
 
     private async exportFile(exportType: ExportType) {
@@ -435,21 +433,21 @@ export default class CustomList extends Vue {
             // const fileName = `${this.selectedFact?.name}-${moment().format('YYYYMMDDHHmm')}`
             // exportFromJSON({ data: data.list, fileName, exportType })
         } catch (error) {
-            console.error(error);
+            console.error(error)
         }
     }
 
     private async handleSortChange(sort: any) {
         if (!(sort instanceof Array)) {
-            sort = [sort];
+            sort = [sort]
         }
         const sortBy = sort.reduce((p: any, c: any) => {
-            p[c.prop] = /^asc/.test(c.order) ? "ASC" : "DESC";
-            return p;
-        }, {});
+            p[c.prop] = /^asc/.test(c.order) ? 'ASC' : 'DESC'
+            return p
+        }, {})
 
         if (this.conf.onSortChange) {
-            this.loading = true;
+            this.loading = true
             try {
                 this.data = await this.conf.onSortChange(
                     this.$refs.searchForm
@@ -457,29 +455,29 @@ export default class CustomList extends Vue {
                         : {},
                     this.data,
                     sortBy
-                );
+                )
             } catch (error) {
             } finally {
-                this.loading = false;
+                this.loading = false
             }
         }
     }
 
-    private dateFormat(v: any, format = "YYYY-MM-DD HH:mm:ss") {
-        return v ? moment(v).format(format) : "-";
+    private dateFormat(v: any, format = 'YYYY-MM-DD HH:mm:ss') {
+        return v ? moment(v).format(format) : '-'
     }
 
     private getValueByKey(o: any, key: string) {
-        const ks = key.split(".");
-        if (ks.length == 1) return o[key];
+        const ks = key.split('.')
+        if (ks.length == 1) return o[key]
         let res: any = {
-            ...o,
-        };
-        for (let index = 0; index < ks.length; index++) {
-            const k = ks[index];
-            res = res[k];
+            ...o
         }
-        return res;
+        for (let index = 0; index < ks.length; index++) {
+            const k = ks[index]
+            res = res[k]
+        }
+        return res
     }
 
     private formatEnum(column: CustomListColumn, value: any) {
@@ -488,32 +486,32 @@ export default class CustomList extends Vue {
             column.dataSource.value &&
             column.dataSource.value instanceof Array
         ) {
-            const conf = ["danger", "success", "warning", "info", "primary"];
-            let i = column.dataSource.value.findIndex(
-                (v: any) => v[column.dataSource?.key || "id"] === value
-            );
+            const conf = ['danger', 'success', 'warning', 'info', 'primary']
+            const i = column.dataSource.value.findIndex(
+                (v: any) => v[column.dataSource?.key || 'id'] === value
+            )
             if (i > -1) {
                 return {
                     label: column.dataSource.value[i][
-                        column.dataSource?.labelKey || "label"
+                        column.dataSource?.labelKey || 'label'
                     ],
-                    type: conf[i % 5],
-                };
+                    type: conf[i % 5]
+                }
             }
         }
         return {
             label: value,
-            type: "primary",
-        };
+            type: 'primary'
+        }
     }
 
     private buidTextArray(
         txts: string[],
-        glue: string = "、",
-        defaultVal: string = ""
+        glue = '、',
+        defaultVal = ''
     ) {
-        const res = txts && txts.length > 0 ? txts.join(glue) : defaultVal;
-        return res;
+        const res = txts && txts.length > 0 ? txts.join(glue) : defaultVal
+        return res
     }
 }
 </script>

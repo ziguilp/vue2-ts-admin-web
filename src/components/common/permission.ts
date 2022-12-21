@@ -1,20 +1,30 @@
+/*
+ * @Author        : turbo 664120459@qq.com
+ * @Date          : 2022-12-12 16:09:29
+ * @LastEditors   : turbo 664120459@qq.com
+ * @LastEditTime  : 2022-12-13 21:53:07
+ * @FilePath      : /adminweb/src/components/common/permission.ts
+ * @Description   : 
+ * 
+ * Copyright (c) 2022 by turbo 664120459@qq.com, All Rights Reserved. 
+ */
 export const Permission = {
     install(vue: any, options: any = {}) {
         vue.prototype.$permission = {
             /**
              * 是否有权限
-             * @param key 
+             * @param key
              */
-            can(key: string, strictMode: boolean = true) {
+            can(key: string, strictMode = true) {
                 try {
-                    if(!key){
+                    if (!key) {
                         return true
                     }
-                    const { permissionObj } = options.store.state.user;
+                    const { permissionObj } = options.store.state.user
                     if (permissionObj && permissionObj[key]) {
                         return true
                     }
-                    if (!strictMode && (!permissionObj || Object.keys(permissionObj).length == 0)) {
+                    if (!strictMode && (!permissionObj || Object.keys(permissionObj).length === 0)) {
                         return true
                     }
                 } catch (error) {
@@ -26,10 +36,10 @@ export const Permission = {
              * 满足任意权限之一
              * @param keys
              */
-            anyCan(keys: string[], strictMode: boolean = true) {
+            anyCan(keys: string[], strictMode = true) {
                 try {
-                    if (keys.length == 0) return false
-                    const { permissionObj } = options.store.state.user;
+                    if (keys.length === 0) return false
+                    const { permissionObj } = options.store.state.user
                     if (permissionObj && Object.keys(permissionObj).length > 0) {
                         for (let index = 0; index < keys.length; index++) {
                             if (permissionObj[keys[index]]) return true
@@ -48,11 +58,11 @@ export const Permission = {
              * 满足所有权限
              * @param keys
              */
-            allCan(keys: string[], strictMode: boolean = true) {
+            allCan(keys: string[], strictMode = true) {
                 try {
-                    if (keys.length == 0) return false
+                    if (keys.length === 0) return false
 
-                    const { permissionObj } = options.store.state.user;
+                    const { permissionObj } = options.store.state.user
                     if (permissionObj && Object.keys(permissionObj).length > 0) {
                         for (let index = 0; index < keys.length; index++) {
                             if (!permissionObj[keys[index]]) return false
@@ -72,7 +82,7 @@ export const Permission = {
              * 是否为超管
              */
             isSuperAdmin(authRights: string | string[]) {
-                if(authRights === '*' || (authRights instanceof Array && authRights.indexOf("*") > -1)){
+                if (authRights === '*' || (authRights instanceof Array && authRights.indexOf('*') > -1)) {
                     return true
                 }
                 return false
@@ -81,24 +91,23 @@ export const Permission = {
     }
 }
 
-
 export interface Permission {
     /**
      * 是否有权限
-     * @param key 
-     * @param strictMode 
+     * @param key
+     * @param strictMode
      */
     can(key: string, strictMode?: boolean): boolean
     /**
      * 满足任意权限之一
      * @param keys
-     * @param strictMode 
+     * @param strictMode
      */
     anyCan(keys: string[], strictMode?: boolean): boolean
     /**
      * 满足所有权限
      * @param keys
-     * @param strictMode 
+     * @param strictMode
      */
     allCan(keys: string[], strictMode?: boolean): boolean
     /**

@@ -1,3 +1,13 @@
+<!--
+ * @Author        : turbo 664120459@qq.com
+ * @Date          : 2022-12-12 16:09:29
+ * @LastEditors   : turbo 664120459@qq.com
+ * @LastEditTime  : 2022-12-13 16:25:06
+ * @FilePath      : /adminweb/src/views/sysmsg/merchantMsg.vue
+ * @Description   : 
+ * 
+ * Copyright (c) 2022 by turbo 664120459@qq.com, All Rights Reserved. 
+-->
 <template>
     <div>
         <custom-list :conf="config" ref="merchantlist">
@@ -38,8 +48,8 @@ import { IpageDataDto } from "@/api/types";
 })
 export default class extends Vue {
     private activeMerchant: any = null;
-    private showMerchantGiftPlan: boolean = false;
-    private showMembers: boolean = false;
+    private showMerchantGiftPlan = false;
+    private showMembers = false;
     private config: CustomListConf = {
         columns: [
             {
@@ -117,7 +127,7 @@ export default class extends Vue {
             });
             data.list = data.list.map((e: any) => {
                 e.images = (e.medias || [])
-                    .filter((i: any) => i.type == "image")
+                    .filter((i: any) => i.type === "image")
                     .map((it: any) => it.url);
                 return e;
             });
@@ -195,14 +205,14 @@ export default class extends Vue {
         ],
         onLoadData: () => {},
         onSave: async (form: any) => {
-            console.log(`审核`, form);
+            console.log("审核", form);
             if (form.status === 0) {
-                this.$message.error(`请选择审核结果`);
-                throw new Error(`请选择审核结果`);
+                this.$message.error("请选择审核结果");
+                throw new Error("请选择审核结果");
             } else if (form.status === 2) {
-                this.$message.error(`请输入审核未通过原因`);
+                this.$message.error("请输入审核未通过原因");
                 if (!form.check_result) {
-                    throw new Error(`请输入审核未通过原因`);
+                    throw new Error("请输入审核未通过原因");
                 }
             } else {
                 form.check_result = "审核通过";

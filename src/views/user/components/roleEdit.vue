@@ -23,7 +23,7 @@
                             :props="treeProps">
                         </el-tree>
                     </el-form-item>
-                     
+
                 </el-form>
             </div>
             <span slot="footer" class="dialog-footer">
@@ -51,11 +51,12 @@ export default class extends Vue {
     private form: any = {
         rights: []
     }
-    get authRights(){
+
+    get authRights() {
         return UserModule.permissionList
     }
 
-    get treeProps(){
+    get treeProps() {
         return {
             label: (data:any, node:any) => {
                 return data.name
@@ -72,30 +73,30 @@ export default class extends Vue {
     private formRules = {
         name: [
             {
-               required: true, message: '请填写角色名称', trigger: 'blur',
-            },
+               required: true, message: '请填写角色名称', trigger: 'blur'
+            }
         ],
         explain: [
             {
-               required: true, message: '请填写角色说明', trigger: 'blur',
-            },
-        ],
+               required: true, message: '请填写角色说明', trigger: 'blur'
+            }
+        ]
     }
 
     public async init({ form = {}, readonly = true }: any = {}) {
         this.loading = true
-        await UserModule.GetPermission({refresh: true})
+        await UserModule.GetPermission({ refresh: true })
         this.readonly = readonly
         this.dialogVisible = true
         if (form) {
             this.form = form
-            if(form.rights){
+            if (form.rights) {
                 this.setCheckedKeys(form.rights)
             }
         } else {
             this.form = {
                 rights: []
-            };
+            }
             this.setCheckedKeys([])
         }
         this.loading = false
@@ -106,9 +107,9 @@ export default class extends Vue {
     }
 
     private handleSave() {
-        (this.$refs.mainform as ElForm).validate(async (valid: boolean) => {
+        (this.$refs.mainform as ElForm).validate(async(valid: boolean) => {
             console.log(this.$refs.mainform)
-         
+
             if (valid) {
                 this.loading = true
                 if (this.form.id) {
@@ -119,7 +120,7 @@ export default class extends Vue {
                     this.loading = false
                     if (res) {
                         this.handleClose()
-                    } 
+                    }
                 } else {
                     const res = await createRole({
                         ...this.form,
@@ -128,7 +129,7 @@ export default class extends Vue {
                     this.loading = false
                     if (res) {
                         this.handleClose()
-                    } 
+                    }
                 }
                 this.$emit('refresh')
             } else {
@@ -138,21 +139,20 @@ export default class extends Vue {
         })
     }
 
-    private getCheckedKeys(){
+    private getCheckedKeys() {
         return (this.$refs.tree as Tree).getCheckedNodes(false, true).map((e:any) => e.key) || []
     }
 
-    private setCheckedKeys(keys:string[]){
-        
-        if(!this.$refs.tree){
-            setTimeout(()=>{
-                this.setCheckedKeys(keys) 
+    private setCheckedKeys(keys:string[]) {
+        if (!this.$refs.tree) {
+            setTimeout(() => {
+                this.setCheckedKeys(keys)
             }, 100)
             return
         }
 
-        const parentKeys:string[] = this.authRights.map((e) => e.key);
-        const ckeys = keys.filter(k=>parentKeys.indexOf(k) == -1);
+        const parentKeys:string[] = this.authRights.map((e) => e.key)
+        const ckeys = keys.filter(k => parentKeys.indexOf(k) == -1);
         (this.$refs.tree as Tree).setCheckedKeys(ckeys)
         console.log({
             keys,

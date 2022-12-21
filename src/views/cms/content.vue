@@ -16,24 +16,24 @@
 </template>
 
 <script lang="ts">
-import { UserModule } from "@/store/modules/user";
-import { Component, Vue, Watch } from "vue-property-decorator";
+import { UserModule } from '@/store/modules/user'
+import { Component, Vue, Watch } from 'vue-property-decorator'
 import {
     CustomListColumnType,
-    CustomListConf,
-} from "@/components/custom-list/customType";
+    CustomListConf
+} from '@/components/custom-list/customType'
 import {
     getCmsPageList,
     getCmsContentList,
     savePage,
     saveContent,
-    CmsContent,
-} from "@/api/cms";
-import { IpageDataDto } from "@/api/types";
+    CmsContent
+} from '@/api/cms'
+import { IpageDataDto } from '@/api/types'
 
 @Component({
-    name: "CmsContent",
-    components: {},
+    name: 'CmsContent',
+    components: {}
 })
 export default class extends Vue {
     private config: CustomListConf = {
@@ -44,69 +44,69 @@ export default class extends Vue {
                 canAdd: false,
                 canEdit: false,
                 showInTable: true,
-                label: "序号",
-                prop: "id",
+                label: '序号',
+                prop: 'id'
             },
             {
                 type: CustomListColumnType.SELECT,
-                label: "页面",
+                label: '页面',
                 canSearch: true,
                 canAdd: true,
                 canEdit: true,
                 showInTable: false,
-                prop: "page_id",
+                prop: 'page_id',
                 multiple: false,
                 formRule: [{ required: true }],
                 dataSource: {
-                    value: async () => {
+                    value: async() => {
                         return (
                             await getCmsPageList({
                                 page: 1,
-                                pageSize: 100,
+                                pageSize: 100
                             })
-                        ).list;
+                        ).list
                     },
-                    key: "id",
-                    labelKey: "name",
-                },
+                    key: 'id',
+                    labelKey: 'name'
+                }
             },
             {
                 type: CustomListColumnType.TEXT,
-                prop: "cmsPage",
+                prop: 'cmsPage',
                 canSearch: false,
                 canAdd: false,
                 canEdit: false,
                 showInTable: true,
-                label: "页面",
+                label: '页面',
                 showFormatInTable: (v: any) => {
-                    return v.cmsPage.name;
-                },
+                    return v.cmsPage.name
+                }
             },
             {
                 type: CustomListColumnType.TEXT,
-                label: "标题",
+                label: '标题',
                 canSearch: true,
                 canAdd: true,
                 canEdit: true,
-                prop: "title",
-                formRule: [{ required: true }],
+                prop: 'title',
+                formRule: [{ required: true }]
             },
             {
                 type: CustomListColumnType.IMAGE,
-                label: "封面",
+                label: '封面',
                 canSearch: false,
                 canAdd: true,
                 canEdit: true,
-                prop: "image",
+                prop: 'image'
             },
             {
                 type: CustomListColumnType.RICHTEXT,
-                label: "内容",
+                label: '内容',
                 canSearch: false,
                 canAdd: true,
                 canEdit: true,
                 showInTable: false,
-                prop: "content",
+                prop: 'content'
             },
             {
                 type: CustomListColumnType.TEXT,
@@ -114,74 +114,74 @@ export default class extends Vue {
                 canAdd: true,
                 canEdit: true,
                 showInTable: true,
-                label: "别名",
-                prop: "alias",
+                label: '别名',
+                prop: 'alias'
             },
             {
                 type: CustomListColumnType.TEXT,
-                label: "位置",
+                label: '位置',
                 canSearch: true,
                 canAdd: true,
                 canEdit: true,
-                prop: "position",
-                formRule: [{ required: true }],
+                prop: 'position',
+                formRule: [{ required: true }]
             },
             {
                 type: CustomListColumnType.NUMBER,
-                label: "排序[越大越靠前]",
+                label: '排序[越大越靠前]',
                 canSearch: false,
                 canAdd: true,
                 canEdit: true,
-                prop: "sort",
-                formRule: [{ required: true }],
+                prop: 'sort',
+                formRule: [{ required: true }]
             },
             {
                 type: CustomListColumnType.DATETIME_RANGER,
-                label: "展示时间",
-                prop: "date_show_ranger",
+                label: '展示时间',
+                prop: 'date_show_ranger',
                 showInTable: true,
                 canSearch: false,
                 canAdd: true,
                 canEdit: true,
                 formRule: [{ required: true }],
-                dateFormat: "YYYY-MM-DD HH:mm:ss",
-            },
+                dateFormat: 'YYYY-MM-DD HH:mm:ss'
+            }
         ],
         tableSelection: false,
         async onLoadData(searchForm: any, idata: IpageDataDto<CmsContent>) {
             const data = await getCmsContentList({
                 data: searchForm,
                 page: parseInt(String(idata.currentPage)),
-                pageSize: idata.pageSize,
-            });
+                pageSize: idata.pageSize
+            })
 
             data.list = data.list.map((e: any) => {
                 e.date_show_ranger = [
                     new Date(e.date_show_start),
-                    new Date(e.date_show_end),
-                ];
-                return e;
-            });
+                    new Date(e.date_show_end)
+                ]
+                return e
+            })
 
-            return data;
+            return data
         },
         async onSave(form: any) {
-            const timeRange = form.date_show_ranger;
+            const timeRange = form.date_show_ranger
 
             const res = await saveContent({
                 ...form,
                 date_show_start: timeRange[0],
-                date_show_end: timeRange[1],
-            });
-            return res;
-        },
+                date_show_end: timeRange[1]
+            })
+            return res
+        }
     };
 
     handelShowInNextTab(row: CmsContent) {
         if (!row.alias) {
-            return this.$message.error("未设置别名");
+            return this.$message.error('未设置别名')
         }
-        window.open("/cms/detail/" + row.alias);
+        window.open('/cms/detail/' + row.alias)
     }
 }
 </script>

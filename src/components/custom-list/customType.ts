@@ -1,5 +1,5 @@
-import { CaptchaVerifyEventType } from "@/api/types"
-import { Table, TableColumn } from "element-ui"
+import { CaptchaVerifyEventType } from '@/api/types'
+import { Table, TableColumn } from 'element-ui'
 
 export enum CustomListColumnType {
     /**
@@ -81,50 +81,49 @@ export enum CustomListColumnType {
     CAPTCHA = 'captcha',
 }
 
-
 export interface CustomDataSource {
-    value: any[] | Object | Function,
-    key: string,
+    value: any[] | Object | Function
+    key: string
     labelKey?: string
 }
 
 export interface CustomListColumn {
-    prop: string,
-    label: string,
-    placeholder?: string,
-    type: CustomListColumnType,
-    canSearch?: Boolean,
-    canAdd?: Boolean,
-    canEdit?: Boolean,
+    prop: string
+    label: string
+    placeholder?: string
+    type: CustomListColumnType
+    canSearch?: Boolean
+    canAdd?: Boolean
+    canEdit?: Boolean
     // 如果是select之类的
-    dataSource?: CustomDataSource,
+    dataSource?: CustomDataSource
     /**
      * 多选
      */
-    multiple?: Boolean,
-    showInTable?: Boolean,
-    showInDetail?: Boolean,
-    readonly?: Boolean,
-    tableConf?: TableColumn,
-    //**参照formRule */
-    formRule?: any[] | Function,
-    height?: any,
-    width?: any,
-    dateFormat?: string,
+    multiple?: Boolean
+    showInTable?: Boolean
+    showInDetail?: Boolean
+    readonly?: Boolean
+    tableConf?: TableColumn
+    //* *参照formRule */
+    formRule?: any[] | Function
+    height?: any
+    width?: any
+    dateFormat?: string
     /**
      * 数值输入或者图片上传最大数量
      */
-    max?: number,
+    max?: number
     /**
-     * 数值输入最小数 
+     * 数值输入最小数
      */
-    min?: number,
+    min?: number
     /**
      * 数值精度
      */
-    precision?: number,
-    showFormatInTable?: Function,
-    sortable?: boolean | 'custom',
+    precision?: number
+    showFormatInTable?: Function
+    sortable?: boolean | 'custom'
     /**
      * 验证码
      */
@@ -132,26 +131,26 @@ export interface CustomListColumn {
 }
 
 export interface CustomListOperationItem {
-    label: string,
-    buttonType: 'success' | 'primary' | 'info' | 'danger' | 'warning',
+    label: string
+    buttonType: 'success' | 'primary' | 'info' | 'danger' | 'warning'
     handle: Function
 }
 
 export interface CustomListConf {
-    forminline?: boolean,
-    columns: CustomListColumn[],
-    tableSelection?: Boolean,
-    hideOperations?: Boolean,
-    onLoadData: Function,
-    onSave?: Function,
-    onDelete?: Function,
-    onExport?: Function,
-    showExport?: Function,
-    onTableSelectionChange?: Function,
-    onSortChange?: Function,
-    permissionAddMark?: string,
-    permissionUpdateMark?: string,
-    permissionDeleteMark?: string,
-    permissionExportMark?: string,
+    forminline?: boolean
+    columns: CustomListColumn[]
+    tableSelection?: Boolean
+    hideOperations?: Boolean
+    onLoadData: Function
+    onSave?: Function
+    onDelete?: Function
+    onExport?: Function
+    showExport?: Function
+    onTableSelectionChange?: Function
+    onSortChange?: Function
+    permissionAddMark?: string
+    permissionUpdateMark?: string
+    permissionDeleteMark?: string
+    permissionExportMark?: string
     operations?: CustomListOperationItem[]
 }

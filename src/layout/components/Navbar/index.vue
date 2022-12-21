@@ -45,57 +45,57 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import { AppModule } from "@/store/modules/app";
-import { UserModule } from "@/store/modules/user";
-import Breadcrumb from "@/components/Breadcrumb/index.vue";
-import Hamburger from "@/components/Hamburger/index.vue";
-import { refreshAuthRightsConf } from "@/api/role";
+import { Component, Vue } from 'vue-property-decorator'
+import { AppModule } from '@/store/modules/app'
+import { UserModule } from '@/store/modules/user'
+import Breadcrumb from '@/components/Breadcrumb/index.vue'
+import Hamburger from '@/components/Hamburger/index.vue'
+import { refreshAuthRightsConf } from '@/api/role'
 
 @Component({
-    name: "Navbar",
+    name: 'Navbar',
     components: {
         Breadcrumb,
-        Hamburger,
-    },
+        Hamburger
+    }
 })
 export default class extends Vue {
     get sidebar() {
-        return AppModule.sidebar;
+        return AppModule.sidebar
     }
 
     get device() {
-        return AppModule.device.toString();
+        return AppModule.device.toString()
     }
 
     get avatar() {
-        return UserModule.avatar;
+        return UserModule.avatar
     }
 
     private toggleSideBar() {
-        AppModule.ToggleSideBar(false);
+        AppModule.ToggleSideBar(false)
     }
 
     private async logout() {
-        await UserModule.LogOut();
-        this.$router.push(`/login?redirect=${this.$route.fullPath}`);
+        await UserModule.LogOut()
+        this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     }
 
     private async refreshRights() {
         try {
             const l = this.$loading({
-                text: "处理中",
-            });
-            await refreshAuthRightsConf();
-            l.close();
+                text: '处理中'
+            })
+            await refreshAuthRightsConf()
+            l.close()
         } catch (error) {
-            console.error(error);
+            console.error(error)
         }
-        console.log("refreshRights");
+        console.log('refreshRights')
     }
 
     mounted() {
-        console.log(this.$permission.can("refresh_auth_conf"));
+        console.log(this.$permission.can('refresh_auth_conf'))
     }
 }
 </script>

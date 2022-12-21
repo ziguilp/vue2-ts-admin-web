@@ -74,34 +74,31 @@ export default class extends Vue {
   @Prop({ default: true }) private isFirstLevel!: boolean
   @Prop({ default: '' }) private basePath!: string
 
-  get CurrentPermission(){
+  get CurrentPermission() {
       return this.$store.state.user.permissionObj
   }
 
-  get hasPermission(){
-      if(!this.item.meta || !this.item.meta.permission)
-      return true;
+  get hasPermission() {
+      if (!this.item.meta || !this.item.meta.permission) { return true }
 
-      if( 'boolean' == typeof this.item.meta.permission )
-      return this.item.meta.permission;
+      if (typeof this.item.meta.permission === 'boolean') { return this.item.meta.permission }
 
-      if( 'string' == typeof this.item.meta.permission ){
+      if (typeof this.item.meta.permission === 'string') {
         // return (this.CurrentPermission[this.item.meta.permission]) ? true : false;
         return this.$permission.can(this.item.meta.permission)
       }
-    
-      if( this.item.meta.permission instanceof Array ){
+
+      if (this.item.meta.permission instanceof Array) {
         //   for (let index = 0; index < this.item.meta.permission.length; index++) {
         //     const pk = this.item.meta.permission[index];
         //     if(this.CurrentPermission[pk]) {
         //         return true;
-        //     } 
+        //     }
         //   }
         return this.$permission.anyCan(this.item.meta.permission)
       }
 
-      if( 'function' == typeof this.item.meta.permission )
-      return this.item.meta.permission(this.item, this.CurrentPermission);
+      if (typeof this.item.meta.permission === 'function') { return this.item.meta.permission(this.item, this.CurrentPermission) }
 
       return false
   }

@@ -19,12 +19,12 @@ export default Vue.extend({
             default: '~'
         },
         min: { type: Date },
-        max: { type: Date },
+        max: { type: Date }
     },
     data() {
         const dataObj: any = {
             rangeStart: '',
-            rangeEnd: '',
+            rangeEnd: ''
         }
         return dataObj
     },
@@ -58,7 +58,7 @@ export default Vue.extend({
                 }
                 this.input()
             }
-        },
+        }
     },
     created() {
 
@@ -67,11 +67,11 @@ export default Vue.extend({
         input() {
             this.$emit('input', [this.rangeStart, this.rangeEnd])
         },
-        disabledDateFn(e:Date){
-            if(this.min && (this.min as any).getFullYear() - e.getFullYear() > 0){
+        disabledDateFn(e:Date) {
+            if (this.min && (this.min as any).getFullYear() - e.getFullYear() > 0) {
                 return true
             }
-            if(this.max && (this.max as any).getFullYear() - e.getFullYear() < 0){
+            if (this.max && (this.max as any).getFullYear() - e.getFullYear() < 0) {
                 return true
             }
             return false
@@ -79,7 +79,6 @@ export default Vue.extend({
     }
 })
 </script>
-
 
 <style lang="scss" scoped>
 .turbo-year-range {

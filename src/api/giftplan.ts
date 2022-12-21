@@ -16,7 +16,6 @@ export enum GitfPlanStatus {
     SHOW,
 }
 
-
 /**
  * 会员礼计划周期
  */
@@ -35,7 +34,6 @@ export enum GitfPlanCycle {
     SEASONLY
 }
 
-
 /**
  * 会员礼计划退款协议
  */
@@ -53,7 +51,6 @@ export enum GitfPlanRefundPolicy {
      */
     SATISFY,
 }
-
 
 /**
  * 会员礼计划履约状态
@@ -77,7 +74,6 @@ export enum GitfPlanItemStatus {
     BACK,
 }
 
-
 export enum GiftSubscribeStatus {
     /**
      * 正常
@@ -93,7 +89,6 @@ export enum GiftSubscribeStatus {
     DESTORYED
 }
 
-
 export enum GiftTransferStatus {
     /**
      * 待领取
@@ -108,7 +103,6 @@ export enum GiftTransferStatus {
      */
     ACCESSED
 }
-
 
 /**
  * 会员礼来源
@@ -126,25 +120,25 @@ export enum GitfPlanSubscribeSource {
 }
 
 export interface GiftPlan {
-    id: number;
-    merchant_id: number;
-    name: string;
-    icon: string;
-    original_price: number;
-    price: number;
-    cycle: GitfPlanCycle;
-    life_time: number;
-    life_days: number;
-    detail: string[];
-    status: GitfPlanStatus;
-    transable: boolean;
-    refund_policy: GitfPlanRefundPolicy;
-    date_created: Date;
-    date_updated: Date;
-    date_deleted: Date;
+    id: number
+    merchant_id: number
+    name: string
+    icon: string
+    original_price: number
+    price: number
+    cycle: GitfPlanCycle
+    life_time: number
+    life_days: number
+    detail: string[]
+    status: GitfPlanStatus
+    transable: boolean
+    refund_policy: GitfPlanRefundPolicy
+    date_created: Date
+    date_updated: Date
+    date_deleted: Date
 }
 
-export const getGiftplanList = async ({ page, pageSize, data = {} }: any) => {
+export const getGiftplanList = async({ page, pageSize, data = {} }: any) => {
     return ((await request({
         url: '/giftplan/list',
         method: 'get',
@@ -157,7 +151,7 @@ export const getGiftplanList = async ({ page, pageSize, data = {} }: any) => {
 }
 
 // subscribeList
-export const getGiftplanSubscribeList = async ({ page, pageSize, data = {} }: any) => {
+export const getGiftplanSubscribeList = async({ page, pageSize, data = {} }: any) => {
     return ((await request({
         url: '/giftplan/subscribeList',
         method: 'get',

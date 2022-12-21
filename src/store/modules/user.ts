@@ -70,7 +70,7 @@ class User extends VuexModule implements IUserState {
 
     @Mutation
     private SET_PERMISSION(authRights: AuthRightItem[]) {
-        console.log(`SET_PERMISSION`, authRights)
+        console.log('SET_PERMISSION', authRights)
         this.permissionList = authRights
         const pl = authRights.reduce((p, c) => {
             p.push(c, ...(c.children || []))

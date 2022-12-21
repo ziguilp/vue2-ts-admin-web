@@ -1,3 +1,13 @@
+<!--
+ * @Author        : turbo 664120459@qq.com
+ * @Date          : 2022-12-12 16:09:29
+ * @LastEditors   : turbo 664120459@qq.com
+ * @LastEditTime  : 2022-12-13 21:49:03
+ * @FilePath      : /adminweb/src/views/order/list.vue
+ * @Description   : 
+ * 
+ * Copyright (c) 2022 by turbo 664120459@qq.com, All Rights Reserved. 
+-->
 <template>
     <div>
         <custom-list ref="list" :conf="config">
@@ -40,7 +50,7 @@ import {
 } from "@/api/order";
 import { isMobile } from "@/utils/validate";
 import { IpageDataDto } from "@/api/types";
-import DetailVue from "./components/subscribeDetail.vue";
+import DetailVue from "./components/orderDetail.vue";
 @Component({
     name: "BorrowOrder",
     components: {
@@ -168,7 +178,5 @@ export default class extends Vue {
                 console.log("取消");
             });
     }
-
-    private async handlePrint() {}
 }
 </script>

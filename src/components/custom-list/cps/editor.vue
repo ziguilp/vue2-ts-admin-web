@@ -12,61 +12,60 @@
         </div>
     </div>
 </template>
- 
 
 <script lang='ts'>
-import Editor from "@tinymce/tinymce-vue";
-import Vue, { PropType } from "vue";
-import UploadVue from "./Upload.vue";
-import { Prop, Watch, Component } from "vue-property-decorator";
+import Editor from '@tinymce/tinymce-vue'
+import Vue, { PropType } from 'vue'
+import UploadVue from './Upload.vue'
+import { Prop, Watch, Component } from 'vue-property-decorator'
 
 @Component({
-    name: "CustomEditor",
+    name: 'CustomEditor',
     components: {
         VueEditor: Editor,
-        UploadVue,
-    },
+        UploadVue
+    }
 })
 export default class extends Vue {
     @Prop({
         type: String,
-        default: () => "",
+        default: () => ''
     })
     private value!: string;
 
     @Prop({
         type: String,
-        default: () => "",
+        default: () => ''
     })
     private placeholder!: string;
 
     @Prop({
         type: Boolean,
-        default: false,
+        default: false
     })
     readonly disabled!: Boolean;
 
     private conf: any = {
-        language_url: "/tinymce/langs/zh-Hans.js",
-        language: "zh-Hans",
-        plugins: "lists link image table code help textcolor wordcount",
+        language_url: '/tinymce/langs/zh-Hans.js',
+        language: 'zh-Hans',
+        plugins: 'lists link image table code help textcolor wordcount',
         height: 400,
-        images_upload_handler: async (
+        images_upload_handler: async(
             v: any,
             success: Function,
             failure: Function
         ) => {
-            console.log(`editor-uploader`, v.blob());
+            console.log('editor-uploader', v.blob())
             const res = await (this.$refs.editorUpload as UploadVue).upload({
-                file: v.blob(),
-            });
+                file: v.blob()
+            })
             if (res) {
-                console.log(`上传成功`, res);
-                success(res);
+                console.log('上传成功', res)
+                success(res)
             } else {
-                failure(res);
+                failure(res)
             }
-        },
+        }
     };
 
     private content: string = this.value;
@@ -75,21 +74,21 @@ export default class extends Vue {
 
     unmounted() {}
 
-    @Watch("value")
+    @Watch('value')
     valueChange() {
-        console.log(`valueChange`, this.value, "----------", this.content);
+        console.log('valueChange', this.value, '----------', this.content)
         // this.$emit("input", this.content);
-        this.content = this.value;
+        this.content = this.value
     }
 
-    @Watch("content")
+    @Watch('content')
     contentChange() {
-        console.log(`contentChange`, this.value);
-        this.$emit("input", this.content);
+        console.log('contentChange', this.value)
+        this.$emit('input', this.content)
     }
 
     imageUpload() {
-        console.log(`imageUpload`, arguments);
+        console.log('imageUpload', arguments)
     }
 }
 </script>

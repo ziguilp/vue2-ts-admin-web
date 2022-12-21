@@ -1,24 +1,24 @@
-import request from '@/utils/request';
-import { SendCaptchaDto } from './types';
+import request from '@/utils/request'
+import { SendCaptchaDto } from './types'
 
-export const sendCaptcha = async (data: SendCaptchaDto) => {
+export const sendCaptcha = async(data: SendCaptchaDto) => {
     return (await request({
-        url: `/common/captcha/send`,
+        url: '/common/captcha/send',
         method: 'POST',
         data
     })).data
 }
 
-export const printSku = async (skuNo: string) => {
+export const printSku = async(skuNo: string) => {
     return (await request({
         url: `/common/printSkuInfo/${skuNo}`,
         method: 'GET'
     })).data
 }
 
-export const printLocated = async (located: string) => {
+export const printLocated = async(located: string) => {
     return (await request({
-        url: `common/printLocation`,
+        url: 'common/printLocation',
         params: {
             location: located
         },
@@ -26,9 +26,9 @@ export const printLocated = async (located: string) => {
     })).data
 }
 
-export const dashboard = async () => {
+export const dashboard = async() => {
     return (await request({
-        url: `dashboard`,
+        url: 'dashboard',
         params: {
         },
         method: 'GET'

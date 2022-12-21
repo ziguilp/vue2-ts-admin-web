@@ -9,17 +9,17 @@ export enum CategoryType{
 }
 
 export interface CategoryItem{
-    id?: number,
-    name: string,
-    model_type: CategoryType,
+    id?: number
+    name: string
+    model_type: CategoryType
     parent_id?: number
 }
 
-export const getCateList = async ({  page, pageSize }: any, type = CategoryType.BOOK) => {
+export const getCateList = async({ page, pageSize }: any, type = CategoryType.BOOK) => {
     const list:CategoryItem[] = ((await request({
         url: `/category/list/${type}`,
         method: 'get'
-    })).data) 
+    })).data)
 
     return {
         total: list.length,
@@ -29,7 +29,7 @@ export const getCateList = async ({  page, pageSize }: any, type = CategoryType.
     } as IpageDataDto<CategoryItem>
 }
 
-export const addCate = async (data: CategoryItem) => {
+export const addCate = async(data: CategoryItem) => {
     return ((await request({
         url: '/category',
         method: 'POST',
@@ -37,7 +37,7 @@ export const addCate = async (data: CategoryItem) => {
     })).data)
 }
 
-export const editCate = async (data: CategoryItem) => {
+export const editCate = async(data: CategoryItem) => {
     return ((await request({
         url: `/category/${data.id}`,
         method: 'PATCH',

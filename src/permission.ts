@@ -1,3 +1,13 @@
+/*
+ * @Author        : turbo 664120459@qq.com
+ * @Date          : 2022-12-12 16:09:29
+ * @LastEditors   : turbo 664120459@qq.com
+ * @LastEditTime  : 2022-12-19 16:08:13
+ * @FilePath      : /adminweb/src/permission.ts
+ * @Description   : 
+ * 
+ * Copyright (c) 2022 by turbo 664120459@qq.com, All Rights Reserved. 
+ */
 import router from './router'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
@@ -42,7 +52,7 @@ router.beforeEach(async (to: Route, _: Route, next: any) => {
                     await UserModule.GetUserInfo()
                     // Set the replace: true, so the navigation will not leave a history record
                     next({ ...to, replace: true })
-                } catch (err) {
+                } catch (err: any) {
                     // Remove token and redirect to login page
                     UserModule.ResetToken()
                     Message.error(err.message || 'Has Error')

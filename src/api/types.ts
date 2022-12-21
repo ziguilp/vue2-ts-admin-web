@@ -55,7 +55,6 @@ export interface GetListParam {
     refresh?: boolean
 }
 
-
 export interface AuthRightItem {
     id?: number
     key: string
@@ -69,7 +68,6 @@ export interface RoleDto {
     explain: string
     rights: string[]
 }
-
 
 /**
  * 验证码事件
@@ -98,6 +96,6 @@ export enum CaptchaVerifyEventType {
 }
 
 export interface SendCaptchaDto {
-    username: string,
+    username: string
     event: CaptchaVerifyEventType
 }

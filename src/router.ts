@@ -1,7 +1,16 @@
+/*
+ * @Author        : turbo 664120459@qq.com
+ * @Date          : 2022-12-12 16:09:29
+ * @LastEditors   : turbo 664120459@qq.com
+ * @LastEditTime  : 2022-12-19 20:09:45
+ * @FilePath      : /adminweb/src/router.ts
+ * @Description   :
+ *
+ * Copyright (c) 2022 by turbo 664120459@qq.com, All Rights Reserved.
+ */
 import Vue from 'vue'
-import Router from 'vue-router'
+import Router, { RouteConfig } from 'vue-router'
 import Layout from '@/layout/index.vue'
-import { AuthRightItem } from './api/types'
 
 Vue.use(Router)
 
@@ -12,11 +21,12 @@ Vue.use(Router)
     icon: 'svg-name'             the icon showed in the sidebar
     breadcrumb: false            if false, the item will be hidden in breadcrumb (default is true)
     hidden: true                 if true, this route will not show in the sidebar (default is false)
-  }
+    permission: ''/['']/() => {}
+}
 */
 
 export default new Router({
-    mode: 'history',  // Enable this if you need.
+    mode: 'history', // Enable this if you need.
     scrollBehavior: (to, from, savedPosition) => {
         if (savedPosition) {
             return savedPosition
@@ -30,13 +40,18 @@ export default new Router({
             path: '/login',
             name: 'login',
             component: () => import(/* webpackChunkName: "login" */ '@/views/login/index.vue'),
-            meta: { hidden: true, title: '系统登录' }
+            meta: {
+                hidden: true,
+                title: '系统登录',
+            }
         },
         {
             path: '/404',
             name: 'notfound',
             component: () => import(/* webpackChunkName: "404" */ '@/views/404.vue'),
-            meta: { hidden: true }
+            meta: {
+                hidden: true
+            }
         },
         {
             path: '/',
@@ -118,13 +133,13 @@ export default new Router({
                 {
                     path: 'giftsubscribe',
                     name: 'giftSubscribe',
-                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/order/subscribe.vue'),
+                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/order/list.vue'),
                     meta: {
                         title: '会员订阅',
                         icon: 'users',
                         permission: 'read_userlist'
                     }
-                },
+                }
             ]
         },
 
@@ -158,66 +173,27 @@ export default new Router({
                         title: '内容',
                         icon: 'circle'
                     }
-                },
-            ]
-        },
-        {
-            path: '/merchant',
-            component: Layout,
-            redirect: '/merchant/list',
-            meta: {
-                title: '商户管理',
-                icon: 'gl1'
-            },
-            children: [
-                {
-                    path: 'list',
-                    name: 'merchantList',
-                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/merchant/list.vue'),
-                    meta: {
-                        title: '商户列表',
-                        icon: 'circle'
-                    }
-                },
-                {
-                    path: 'giftplan',
-                    name: 'giftplan',
-                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/giftplan/list.vue'),
-                    meta: {
-                        hidden: true,
-                        title: '会员计划',
-                        icon: 'circle'
-                    }
                 }
             ]
         },
         {
             path: '/order',
             component: Layout,
-            redirect: '/order/giftsubscribe',
+            redirect: '/order/list',
             meta: {
                 title: '订单管理',
                 icon: 'sjbb'
             },
             children: [
-                // {
-                //     path: 'giftsubscribe',
-                //     name: 'giftsubscribe',
-                //     component: () => import(/* webpackChunkName: "dashboard" */ '@/views/order/subscribe.vue'),
-                //     meta: {
-                //         title: '会员订阅',
-                //         icon: 'circle'
-                //     }
-                // },
                 {
                     path: 'gift',
                     name: 'gift',
-                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/order/giftItem.vue'),
+                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/order/list.vue'),
                     meta: {
-                        title: '会员礼',
+                        title: '订单列表',
                         icon: 'circle'
                     }
-                },
+                }
             ]
         },
         {
@@ -246,7 +222,7 @@ export default new Router({
                         title: '待结算',
                         icon: 'circle'
                     }
-                },
+                }
             ]
         },
         {
@@ -276,18 +252,8 @@ export default new Router({
                         title: '系统消息',
                         icon: 'circle'
                     }
-                },
-                {
-                    path: 'merchantMsglist',
-                    name: 'MerchantMsgList',
-                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/sysmsg/merchantMsg.vue'),
-                    meta: {
-                        title: '商户消息审核',
-                        icon: 'circle'
-                    }
-                },
-
+                }
             ]
-        },
+        }
     ]
 })

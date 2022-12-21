@@ -1,3 +1,13 @@
+<!--
+ * @Author        : turbo 664120459@qq.com
+ * @Date          : 2022-12-12 16:09:29
+ * @LastEditors   : turbo 664120459@qq.com
+ * @LastEditTime  : 2022-12-13 21:40:37
+ * @FilePath      : /adminweb/src/views/sysmsg/adminMsg.vue
+ * @Description   : 
+ * 
+ * Copyright (c) 2022 by turbo 664120459@qq.com, All Rights Reserved. 
+-->
 <template>
     <div>
         <custom-list :conf="config" ref="merchantlist">
@@ -45,8 +55,8 @@ import { IpageDataDto } from "@/api/types";
 })
 export default class extends Vue {
     private activeMerchant: any = null;
-    private showMerchantGiftPlan: boolean = false;
-    private showMembers: boolean = false;
+    private showMerchantGiftPlan = false;
+    private showMembers = false;
     private config: CustomListConf = {
         columns: [
             {
@@ -110,7 +120,7 @@ export default class extends Vue {
         ],
         tableSelection: false,
         onSave: async (form: any) => {
-            console.log(`saveForm`, form);
+            console.log("saveForm", form);
             // adminSendMsg
             return await adminSendMsg({
                 title: form.title,
@@ -132,7 +142,7 @@ export default class extends Vue {
             });
             data.list = data.list.map((e: any) => {
                 e.images = (e.medias || [])
-                    .filter((i: any) => i.type == "image")
+                    .filter((i: any) => i.type === "image")
                     .map((it: any) => it.url);
                 return e;
             });

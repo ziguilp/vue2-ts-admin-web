@@ -1,3 +1,13 @@
+/*
+ * @Author        : turbo 664120459@qq.com
+ * @Date          : 2022-12-12 16:09:29
+ * @LastEditors   : turbo 664120459@qq.com
+ * @LastEditTime  : 2022-12-13 16:21:00
+ * @FilePath      : /adminweb/src/settings.ts
+ * @Description   :
+ *
+ * Copyright (c) 2022 by turbo 664120459@qq.com, All Rights Reserved.
+ */
 interface ISettings {
     title: string // Overrides the default title
     showSettings: boolean // Controls settings panel display
@@ -13,7 +23,7 @@ interface ISettings {
 
 // You can customize below settings :)
 const settings: ISettings = {
-    title: '喜鹊会员管理系统',
+    title: '管理系统',
     showSettings: false,
     showTagsView: true,
     fixedHeader: false,
@@ -22,7 +32,7 @@ const settings: ISettings = {
     sidebarTextTheme: true,
     devServerPort: 9527,
     mockServerPort: 9528,
-    uploadDir: 'xiquecrm'
+    uploadDir: 'adminweb'
 }
 
 export default settings

@@ -1,21 +1,21 @@
 import request from '@/utils/request'
 import { AuthRightItem, LoginResult, UserInfoDto } from './types'
 
-export const getUserInfo = async () => {
+export const getUserInfo = async() => {
     return ((await request({
         url: '/auth/userInfo',
         method: 'get'
     })).data) as UserInfoDto
 }
 
-export const refreshToken = async () => {
+export const refreshToken = async() => {
     return ((await request({
         url: '/auth/refresh',
         method: 'post'
     })).data) as LoginResult
 }
 
-export const getUserList = async ({ data, page, pageSize }: any) => {
+export const getUserList = async({ data, page, pageSize }: any) => {
     return ((await request({
         url: '/auth/userlist',
         method: 'get',
@@ -27,7 +27,7 @@ export const getUserList = async ({ data, page, pageSize }: any) => {
     })).data) as UserInfoDto
 }
 
-export const getAdminList = async ({ keyword, page, pageSize }: any) => {
+export const getAdminList = async({ keyword, page, pageSize }: any) => {
     return ((await request({
         url: '/auth/adminlist',
         method: 'get',
@@ -39,7 +39,7 @@ export const getAdminList = async ({ keyword, page, pageSize }: any) => {
     })).data) as UserInfoDto
 }
 
-export const login = async (data: any): Promise<LoginResult> => {
+export const login = async(data: any): Promise<LoginResult> => {
     return ((await request({
         url: '/auth/login',
         method: 'post',
@@ -53,9 +53,9 @@ export const logout = () =>
         method: 'get'
     })
 
-export const getOperateLog = async ({ page, pageSize, user_id }: any) => {
+export const getOperateLog = async({ page, pageSize, user_id }: any) => {
     return ((await request({
-        url: `/auth/operatorLog`,
+        url: '/auth/operatorLog',
         method: 'GET',
         params: {
             page,
@@ -65,9 +65,9 @@ export const getOperateLog = async ({ page, pageSize, user_id }: any) => {
     })).data)
 }
 
-export const modifyPwd = async ({ oldPassword, newPassword, captchaVerifyData }: any) => {
+export const modifyPwd = async({ oldPassword, newPassword, captchaVerifyData }: any) => {
     return ((await request({
-        url: `/auth/modify/password`,
+        url: '/auth/modify/password',
         method: 'POST',
         data: {
             captchaVerifyData,
@@ -77,9 +77,9 @@ export const modifyPwd = async ({ oldPassword, newPassword, captchaVerifyData }:
     })).data)
 }
 
-export const modifyBaseInfo = async (data: any) => {
+export const modifyBaseInfo = async(data: any) => {
     return ((await request({
-        url: `/auth/modify/baseuserInfo`,
+        url: '/auth/modify/baseuserInfo',
         method: 'POST',
         data: data
     })).data)
@@ -88,9 +88,9 @@ export const modifyBaseInfo = async (data: any) => {
 /**
  * 添加管理员
  */
-export const createAdmin = async (data: any) => {
+export const createAdmin = async(data: any) => {
     return ((await request({
-        url: `/auth/regAdmin`,
+        url: '/auth/regAdmin',
         method: 'POST',
         data
     })).data)
@@ -99,19 +99,19 @@ export const createAdmin = async (data: any) => {
 /**
  * 读取当前用户的权限配置
  */
-export const getAuthRights = async () => {
+export const getAuthRights = async() => {
     return ((await request({
-        url: `/auth/rightslist`,
-        method: 'GET',
+        url: '/auth/rightslist',
+        method: 'GET'
     })).data) as AuthRightItem[]
 }
 
 /**
  * 申请退押金
  */
-export const applyRefundDeposit = async (userId: string) => {
+export const applyRefundDeposit = async(userId: string) => {
     return ((await request({
         url: `/payment/refundDeposit/${userId}`,
-        method: 'POST',
+        method: 'POST'
     })).data) as any
 }

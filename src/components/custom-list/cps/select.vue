@@ -18,89 +18,89 @@
 </template>
 
 <script lang='ts'>
-import Vue, { PropType } from "vue";
-import Component from "vue-class-component";
-import { Prop, Watch } from "vue-property-decorator";
-import { CustomDataSource } from "../customType";
+import Vue, { PropType } from 'vue'
+import Component from 'vue-class-component'
+import { Prop, Watch } from 'vue-property-decorator'
+import { CustomDataSource } from '../customType'
 
 @Component({
-  name: "CustomSelect",
+  name: 'CustomSelect'
 })
 export default class CustomSelect extends Vue {
   @Prop({
     type: [String, Number, Array],
-    default: () => '',
+    default: () => ''
   })
   readonly value!: string | number | any[];
 
   @Prop({
     type: String,
-    required: true,
+    required: true
   })
   readonly prop!: string;
 
   @Prop({
     type: Boolean,
-    default: false,
+    default: false
   })
   readonly disabled!: Boolean;
 
   @Prop({
     type: Boolean,
-    default: false,
+    default: false
   })
   readonly multiple!: Boolean;
 
   @Prop({
     type: String,
     required: false,
-    default: "",
+    default: ''
   })
   readonly rootStyle!: string;
 
   @Prop({
     type: String,
-    default: "",
+    default: ''
   })
   readonly placeholder!: string;
 
   @Prop({
     type: Object as PropType<CustomDataSource>,
-    required: true,
+    required: true
   })
   readonly dataSource!: CustomDataSource;
 
   private options: any[] = [];
-  private val: any = "";
+  private val: any = '';
 
-  @Watch("value")
+  @Watch('value')
   valChange() {
-    this.val = this.value;
+    this.val = this.value
   }
 
   private changeVal(e: any) {
-    this.$emit("input", e);
+    this.$emit('input', e)
   }
 
   mounted() {
-    this.initOptions();
+    this.initOptions()
   }
 
-  @Watch("dataSource", {
-    deep: true,
+  @Watch('dataSource', {
+    deep: true
   })
   async initOptions() {
-    console.log(`init-ops`, this.options, this.dataSource);
+    console.log('init-ops', this.options, this.dataSource)
     if (!this.dataSource || !this.dataSource.value) {
-      this.options = [];
-      return;
+      this.options = []
+      return
     }
     if (this.dataSource.value instanceof Array) {
-      this.options = this.dataSource.value;
-      return;
+      this.options = this.dataSource.value
+      return
     }
     if (this.dataSource.value instanceof Function) {
-      this.options = await this.dataSource.value();
+      this.options = await this.dataSource.value()
     }
   }
 }
