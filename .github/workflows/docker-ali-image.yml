@@ -1,0 +1,27 @@
+on:
+  push:
+    tags:
+      - v**
+      - release-v**
+  workflow_dispatch:
+
+env:
+  IMAGE_NAME: ${{ github.event.repository.name }}
+  IMAGE_VERSION: ${{ github.sha }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: benjlevesque/short-sha@v1.2
+      id: short-sha
+      with:
+        length: 7
+    - uses: mr-smithers-excellent/docker-build-push@v5.8
+      with:
+        image: ${{ secrets.ALIYUN_DOCKER_IMAGESTORE_ZONE }}/${{env.IMAGE_NAME}}
+        tags: ${{steps.short-sha.outputs.sha}}
+        username: ${{ secrets.ALIYUN_DOCKER_IMAGESTORE_USERNAME }} 
+        password: ${{ secrets.ALIYUN_DOCKER_IMAGESTORE_PASSWORD }}
+        registry: registry.cn-beijing.aliyuncs.com
