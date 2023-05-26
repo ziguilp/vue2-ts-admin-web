@@ -1,5 +1,15 @@
+<!--
+ * @Author        : turbo 664120459@qq.com
+ * @Date          : 2023-05-23 16:13:04
+ * @LastEditors   : turbo 664120459@qq.com
+ * @LastEditTime  : 2023-05-26 12:11:25
+ * @FilePath      : /nls-admin/src/layout/components/Sidebar/SidebarLogo.vue
+ * @Description   : 
+ * 
+ * Copyright (c) 2023 by turbo 664120459@qq.com, All Rights Reserved. 
+-->
 <template>
-    <div class="sidebar-logo-container" :class="{collapse: collapse}">
+    <div class="sidebar-logo-container" :class="{ collapse: collapse }">
         <transition name="sidebarLogoFade">
             <router-link
                 v-if="collapse"
@@ -7,7 +17,12 @@
                 class="sidebar-logo-link"
                 to="/"
             >
-                <img src="/favicon.ico" class="sidebar-logo" />
+                <svg-icon
+                    name="logo"
+                    class="sidebar-logo"
+                    :original="true"
+                    style="height: 32px; width: 32px; fill: #fff"
+                ></svg-icon>
             </router-link>
             <router-link v-else key="expand" class="sidebar-logo-link" to="/">
                 <!-- <img
@@ -18,7 +33,7 @@
                     name="logo"
                     class="sidebar-logo"
                     :original="true"
-                    style="height: 32px; width: 32px"
+                    style="height: 32px; width: 32px; fill: #fff"
                 ></svg-icon>
 
                 <h1 class="sidebar-title">
@@ -30,11 +45,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
-import settings from '@/settings'
+import { Component, Prop, Vue } from "vue-property-decorator";
+import settings from "@/settings";
 
 @Component({
-    name: 'SidebarLogo'
+    name: "SidebarLogo",
 })
 export default class extends Vue {
     @Prop({ required: true }) private collapse!: boolean;

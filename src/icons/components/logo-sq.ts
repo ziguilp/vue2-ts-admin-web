@@ -3,7 +3,7 @@
 // @ts-ignore
 import icon from 'vue-svgicon'
 icon.register({
-  'logo': {
+  'logo-sq': {
     width: 16,
     height: 16,
     viewBox: '0 0 90.6 43.2',

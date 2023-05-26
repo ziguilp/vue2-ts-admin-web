@@ -12,9 +12,11 @@
             :prop="vo.prop"
             :key="`custom-el-form-item-${vo.prop}-${i}`"
             :style="
-                vo.type === 'textarea' ||
-                vo.type === 'image' ||
-                vo.type === 'images'
+                vo.style
+                    ? vo.style
+                    : vo.type === 'textarea' ||
+                      vo.type === 'image' ||
+                      vo.type === 'images'
                     ? 'width: 100%;'
                     : inline
                     ? 'width:auto'
@@ -237,22 +239,27 @@
 </template>
 
 <script lang='ts'>
-import Vue, { PropType } from 'vue'
-import Component from 'vue-class-component'
-import { Prop, Watch } from 'vue-property-decorator'
-import { CustomDataSource, CustomListColumnType, CustomListColumn, CustomListConf } from '../customType'
+import Vue, { PropType } from "vue";
+import Component from "vue-class-component";
+import { Prop, Watch } from "vue-property-decorator";
+import {
+    CustomDataSource,
+    CustomListColumnType,
+    CustomListColumn,
+    CustomListConf,
+} from "../customType";
 
-import CustomSelect from './select.vue'
-import CustomEditor from './editor.vue'
-import CustomCheckbox from './checkbox.vue'
-import { Form as ElForm, Input, Message } from 'element-ui'
-import Upload from '@/components/custom-list/cps/Upload.vue'
-import InputArray from '@/components/custom-list/cps/InputArray.vue'
-import YearRangerPicker from '@/components/custom-list/cps/YearRangerPicker.vue'
-import Captcha from './captcha.vue'
+import CustomSelect from "./select.vue";
+import CustomEditor from "./editor.vue";
+import CustomCheckbox from "./checkbox.vue";
+import { Form as ElForm, Input, Message } from "element-ui";
+import Upload from "@/components/custom-list/cps/Upload.vue";
+import InputArray from "@/components/custom-list/cps/InputArray.vue";
+import YearRangerPicker from "@/components/custom-list/cps/YearRangerPicker.vue";
+import Captcha from "./captcha.vue";
 
 @Component({
-    name: 'CustomForm',
+    name: "CustomForm",
     components: {
         CustomSelect,
         InputArray,
@@ -260,56 +267,56 @@ import Captcha from './captcha.vue'
         YearRangerPicker,
         CustomCheckbox,
         CustomEditor,
-        Captcha
-    }
+        Captcha,
+    },
 })
 export default class CustomForm extends Vue {
     @Prop({
         type: Boolean,
-        default: true
+        default: true,
     })
     readonly inline!: Boolean;
 
     @Prop({
         type: Boolean,
-        default: false
+        default: false,
     })
     readonly readonly!: Boolean;
 
     @Prop({
         type: Object,
-        default: () => {}
+        default: () => {},
     })
     readonly rules!: any;
 
     @Prop({
         type: Array,
         required: true,
-        default: () => []
+        default: () => [],
     })
     readonly columns!: CustomListColumn[];
 
     private form: any = {};
 
     get customStyle() {
-        return this.inline ? 'width: 200px;' : ''
+        return this.inline ? "width: 200px;" : "";
     }
 
     public getFormValue() {
-        return this.form
+        return this.form;
     }
 
     public init(form = undefined) {
-        this.form = form || {}
+        this.form = form || {};
     }
 
     public async validate(): Promise<boolean> {
         return new Promise((resolve, reject) => {
-            (this.$refs.mainform as ElForm).validate(async(valid: boolean) => {
-                if (valid) resolve(true)
-                reject(valid)
-            })
-        })
+            (this.$refs.mainform as ElForm).validate(async (valid: boolean) => {
+                if (valid) resolve(true);
+                reject(valid);
+            });
+        });
     }
 }
 </script>
