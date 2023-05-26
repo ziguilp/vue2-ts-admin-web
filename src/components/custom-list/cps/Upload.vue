@@ -29,7 +29,7 @@
                                     <div
                                         class="file-list-item-file-mask"
                                         @click.stop="onDelete(i)"
-                                        v-if="max > 1"
+                                        v-if="max > 0"
                                     >
                                         <i class="el-icon-delete tool-icon"></i>
                                     </div>
@@ -65,55 +65,55 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { qiniuUpload } from '@/api/upload'
-import { Component, Prop, Watch } from 'vue-property-decorator'
+import Vue from "vue";
+import { qiniuUpload } from "@/api/upload";
+import { Component, Prop, Watch } from "vue-property-decorator";
 
 interface UploadProgres {
-    loaded: number
-    percent: number
-    size: number
+    loaded: number;
+    percent: number;
+    size: number;
 }
 
 interface UploadedFile {
-    uid: string
-    url: string
-    file?: File
-    uploading: boolean
-    progress: UploadProgres
+    uid: string;
+    url: string;
+    file?: File;
+    uploading: boolean;
+    progress: UploadProgres;
 }
 
 @Component({
-    name: 'customUpload'
+    name: "customUpload",
 })
 export default class extends Vue {
     @Prop({
         type: Boolean,
-        default: true
+        default: true,
     })
     private showFileList!: boolean;
 
     @Prop({
         type: Number,
-        default: 1
+        default: 1,
     })
     readonly max!: number;
 
     @Prop({
         type: Boolean,
-        default: false
+        default: false,
     })
     readonly disabled!: Boolean;
 
     @Prop({
         type: [String, Array],
-        default: () => []
+        default: () => [],
     })
-    private value: string | string[] = '';
+    private value: string | string[] = "";
 
     @Prop({
         type: String,
-        default: 'image/png, image/jpeg'
+        default: "image/png, image/jpeg",
     })
     private accept!: string;
 
@@ -122,32 +122,31 @@ export default class extends Vue {
             ? this.uploaded.length >= 1
                 ? this.uploaded[0].url
                 : 0
-            : this.uploaded.map((e) => e.url)
+            : this.uploaded.map((e) => e.url);
     }
 
     get IsImage() {
-        return /image/.test(this.accept)
+        return /image/.test(this.accept);
     }
 
     get uploadingNum() {
-        return this.uploaded.filter((e) => e.uploading).length
+        return this.uploaded.filter((e) => e.uploading).length;
     }
 
     get modelVal() {
-        return this.value
+        return this.value;
     }
 
-    @Watch('modelVal', {
-        deep: true
+    @Watch("modelVal", {
+        deep: true,
     })
     changeModelVal() {
         setTimeout(() => {
             let images: string[] =
-                this.value instanceof Array ? this.value : []
-            if (typeof this.value === 'string') {
-                images = [this.value]
+                this.value instanceof Array ? this.value : [];
+            if (typeof this.value === "string") {
+                images = [this.value];
             }
-            console.log('init-images', images)
             this.uploaded = images.map((uri: string) => {
                 return {
                     uid: uri,
@@ -156,81 +155,81 @@ export default class extends Vue {
                     progress: {
                         loaded: 0,
                         percent: 100,
-                        size: 0
-                    }
-                } as UploadedFile
-            })
-        })
+                        size: 0,
+                    },
+                } as UploadedFile;
+            });
+        });
     }
 
     private uploaded: UploadedFile[] = [];
 
     public updateUploadItem(e: UploadedFile) {
-        const i = this.uploaded.findIndex((item) => item.uid === e.uid)
+        const i = this.uploaded.findIndex((item) => item.uid === e.uid);
         if (i > -1) {
-            this.uploaded[i] = e
+            this.uploaded[i] = e;
         } else {
             if (this.max === 1) {
-                this.uploaded = [e]
+                this.uploaded = [e];
             } else {
-                this.uploaded.push(e)
+                this.uploaded.push(e);
             }
         }
     }
 
     private onDelete(i: number) {
-        this.uploaded.splice(i, 1)
-        this.$emit('input', this.finalVal)
+        this.uploaded.splice(i, 1);
+        this.$emit("input", this.finalVal);
     }
 
     private onSuccess(e: any) {
-        console.log('onSuccess', e)
+        console.log("onSuccess", e);
     }
 
     private beforeUpload(e: any) {
-        console.log('beforeUpload', e)
+        console.log("beforeUpload", e);
     }
 
     public async upload(e: any) {
-        console.log('upload', e)
-        if (this.uploaded.findIndex((item) => item.uid === e.uid) > -1) return
+        console.log("upload", e);
+        if (this.uploaded.findIndex((item) => item.uid === e.uid) > -1) return;
         const uploadingItem: UploadedFile = {
             uid: e.uid,
-            url: '',
+            url: "",
             file: e.file,
             uploading: true,
             progress: {
                 loaded: 0,
                 percent: 0,
-                size: e.file.size
-            }
-        }
-        this.updateUploadItem(uploadingItem)
-        const qn = new qiniuUpload()
+                size: e.file.size,
+            },
+        };
+        this.updateUploadItem(uploadingItem);
+        const qn = new qiniuUpload();
         const res = await qn
             .upload(e.file, (p: any) => {
-                console.log('upload-gp', p)
+                console.log("upload-gp", p);
                 uploadingItem.progress = {
                     ...p.total,
-                    percent: parseInt(p.total.percent)
-                }
-                this.updateUploadItem(uploadingItem)
+                    percent: parseInt(p.total.percent),
+                };
+                this.updateUploadItem(uploadingItem);
             })
             .catch((e) => {
-                console.error(e)
-                this.$message.error(e.message)
+                console.error(e);
+                this.$message.error(e.message);
             })
             .finally(() => {
-                uploadingItem.uploading = false
-                this.updateUploadItem(uploadingItem)
-            })
-        console.log('===上传结果===', res)
+                uploadingItem.uploading = false;
+                this.updateUploadItem(uploadingItem);
+            });
+        console.log("===上传结果===", res);
         if (res) {
-            uploadingItem.url = res
-            this.updateUploadItem(uploadingItem)
-            this.$emit('input', this.finalVal)
+            uploadingItem.url = res;
+            this.updateUploadItem(uploadingItem);
+            this.$emit("input", this.finalVal);
         }
-        return res
+        return res;
     }
 }
 </script>
