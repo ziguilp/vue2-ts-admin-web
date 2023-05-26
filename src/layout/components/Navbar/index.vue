@@ -1,3 +1,13 @@
+<!--
+ * @Author        : turbo 664120459@qq.com
+ * @Date          : 2023-05-23 16:13:04
+ * @LastEditors   : turbo 664120459@qq.com
+ * @LastEditTime  : 2023-05-26 12:35:19
+ * @FilePath      : /nls-admin/src/layout/components/Navbar/index.vue
+ * @Description   : 
+ * 
+ * Copyright (c) 2023 by turbo 664120459@qq.com, All Rights Reserved. 
+-->
 <template>
     <div class="navbar">
         <hamburger
@@ -17,7 +27,8 @@
                         :src="avatar + '?imageView2/1/w/80/h/80'"
                         class="user-avatar"
                     />
-                    <i class="el-icon-caret-bottom" />
+                    <a>{{ nickname }}</a>
+                    <i class="el-icon-caret-bottom"></i>
                 </div>
                 <el-dropdown-menu slot="dropdown">
                     <a
@@ -45,57 +56,61 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
-import { AppModule } from '@/store/modules/app'
-import { UserModule } from '@/store/modules/user'
-import Breadcrumb from '@/components/Breadcrumb/index.vue'
-import Hamburger from '@/components/Hamburger/index.vue'
-import { refreshAuthRightsConf } from '@/api/role'
+import { Component, Vue } from "vue-property-decorator";
+import { AppModule } from "@/store/modules/app";
+import { UserModule } from "@/store/modules/user";
+import Breadcrumb from "@/components/Breadcrumb/index.vue";
+import Hamburger from "@/components/Hamburger/index.vue";
+import { refreshAuthRightsConf } from "@/api/role";
 
 @Component({
-    name: 'Navbar',
+    name: "Navbar",
     components: {
         Breadcrumb,
-        Hamburger
-    }
+        Hamburger,
+    },
 })
 export default class extends Vue {
     get sidebar() {
-        return AppModule.sidebar
+        return AppModule.sidebar;
     }
 
     get device() {
-        return AppModule.device.toString()
+        return AppModule.device.toString();
     }
 
     get avatar() {
-        return UserModule.avatar
+        return UserModule.avatar;
+    }
+
+    get nickname() {
+        return UserModule.name;
     }
 
     private toggleSideBar() {
-        AppModule.ToggleSideBar(false)
+        AppModule.ToggleSideBar(false);
     }
 
     private async logout() {
-        await UserModule.LogOut()
-        this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+        await UserModule.LogOut();
+        this.$router.push(`/login?redirect=${this.$route.fullPath}`);
     }
 
     private async refreshRights() {
         try {
             const l = this.$loading({
-                text: '处理中'
-            })
-            await refreshAuthRightsConf()
-            l.close()
+                text: "处理中",
+            });
+            await refreshAuthRightsConf();
+            l.close();
         } catch (error) {
-            console.error(error)
+            console.error(error);
         }
-        console.log('refreshRights')
+        console.log("refreshRights");
     }
 
     mounted() {
-        console.log(this.$permission.can('refresh_auth_conf'))
+        console.log(this.$permission.can("refresh_auth_conf"));
     }
 }
 </script>
@@ -157,21 +172,22 @@ export default class extends Vue {
             margin-right: 30px;
 
             .avatar-wrapper {
-                margin-top: 5px;
                 position: relative;
-
+                display: flex;
+                align-items: center;
                 .user-avatar {
                     cursor: pointer;
                     width: 40px;
                     height: 40px;
                     border-radius: 10px;
+                    margin-right: 6px;
                 }
 
                 .el-icon-caret-bottom {
                     cursor: pointer;
                     position: absolute;
                     right: -20px;
-                    top: 25px;
+                    top: 20px;
                     font-size: 12px;
                 }
             }
