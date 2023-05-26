@@ -1,3 +1,13 @@
+/*
+ * @Author        : turbo 664120459@qq.com
+ * @Date          : 2023-05-23 16:13:04
+ * @LastEditors   : turbo 664120459@qq.com
+ * @LastEditTime  : 2023-05-26 09:35:24
+ * @FilePath      : /nls-admin/src/api/types.ts
+ * @Description   : 
+ * 
+ * Copyright (c) 2023 by turbo 664120459@qq.com, All Rights Reserved. 
+ */
 export interface IArticleData {
     id: number
     status: string
@@ -28,6 +38,7 @@ export interface UserInfoDto {
     nickname: string
     roleId?: number
     role_name: string
+    role_rights: string[]
     status: UserStatusDto
     userId: string
 }

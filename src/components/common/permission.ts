@@ -2,8 +2,8 @@
  * @Author        : turbo 664120459@qq.com
  * @Date          : 2022-12-12 16:09:29
  * @LastEditors   : turbo 664120459@qq.com
- * @LastEditTime  : 2022-12-13 21:53:07
- * @FilePath      : /adminweb/src/components/common/permission.ts
+ * @LastEditTime  : 2023-05-26 09:38:52
+ * @FilePath      : /nls-admin/src/components/common/permission.ts
  * @Description   : 
  * 
  * Copyright (c) 2022 by turbo 664120459@qq.com, All Rights Reserved. 
@@ -79,14 +79,20 @@ export const Permission = {
                 return false
             },
             /**
-             * 是否为超管
+             * 判断是否为超管
+             * 默认判断当前用户是否为超管
              */
-            isSuperAdmin(authRights: string | string[]) {
+            isSuperAdmin(authRights?: string | string[]) {
+                if ('undefined' === typeof authRights) {
+                    const { roleRights } = options.store.state.user;
+                    authRights = roleRights || []
+                }
                 if (authRights === '*' || (authRights instanceof Array && authRights.indexOf('*') > -1)) {
                     return true
                 }
                 return false
-            }
+            },
+
         }
     }
 }

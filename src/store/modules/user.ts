@@ -2,7 +2,7 @@
  * @Author        : turbo 664120459@qq.com
  * @Date          : 2023-05-23 16:13:04
  * @LastEditors   : turbo 664120459@qq.com
- * @LastEditTime  : 2023-05-25 22:29:36
+ * @LastEditTime  : 2023-05-26 09:33:56
  * @FilePath      : /nls-admin/src/store/modules/user.ts
  * @Description   : 
  * 
@@ -38,6 +38,7 @@ class User extends VuexModule implements IUserState {
     public avatar = ''
     public introduction = ''
     public roles: string[] = []
+    public roleRights: string[] = [];
     public permissionList: AuthRightItem[] = []
     public permissionObj: any = {}
 
@@ -79,6 +80,11 @@ class User extends VuexModule implements IUserState {
     }
 
     @Mutation
+    private SET_ROLE_RIGHTS(rights: string[]) {
+        this.roleRights = rights
+    }
+
+    @Mutation
     private SET_PERMISSION(authRights: AuthRightItem[]) {
         console.log('SET_PERMISSION', authRights)
         this.permissionList = authRights
@@ -101,6 +107,7 @@ class User extends VuexModule implements IUserState {
         console.log('===登录成功===', loginResult.access_token)
         setToken(loginResult.access_token)
         this.SET_USER_ID(loginResult.userInfo.userId)
+        this.SET_ROLE_RIGHTS(loginResult.userInfo.role_rights || [])
         this.SET_TOKEN(loginResult.access_token)
         this.SET_AVATAR(loginResult.userInfo.avatar)
         this.SET_NAME(loginResult.userInfo.nickname)
@@ -126,9 +133,11 @@ class User extends VuexModule implements IUserState {
         if (!data) {
             throw Error('获取信息失败')
         }
-        const { role_name, nickname, avatar, mobile } = data
-        this.SET_USER_ID(data.userId)
+        const { role_name, role_rights = [], nickname, avatar, mobile } = data
+        // @ts-ignore
+        this.SET_USER_ID(data.id)
         this.SET_ROLES([role_name])
+        this.SET_ROLE_RIGHTS(role_rights)
         this.SET_NAME(nickname)
         this.SET_MOBILE(mobile)
         this.SET_AVATAR(avatar)
@@ -148,6 +157,7 @@ class User extends VuexModule implements IUserState {
         this.SET_NAME(loginResult.userInfo.nickname)
         this.SET_MOBILE(loginResult.userInfo.mobile)
         this.SET_ROLES([loginResult.userInfo.role_name])
+        this.SET_ROLE_RIGHTS(loginResult.userInfo.role_rights || [])
     }
 
     @Action
