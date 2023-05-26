@@ -1,3 +1,13 @@
+/*
+ * @Author        : turbo 664120459@qq.com
+ * @Date          : 2023-05-23 16:13:04
+ * @LastEditors   : turbo 664120459@qq.com
+ * @LastEditTime  : 2023-05-25 22:29:36
+ * @FilePath      : /nls-admin/src/store/modules/user.ts
+ * @Description   : 
+ * 
+ * Copyright (c) 2023 by turbo 664120459@qq.com, All Rights Reserved. 
+ */
 import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-decorators'
 import { login, logout, getUserInfo, refreshToken, getAuthRights } from '@/api/users'
 import { getToken, setToken, removeToken } from '@/utils/cookies'
@@ -84,10 +94,10 @@ class User extends VuexModule implements IUserState {
     }
 
     @Action
-    public async Login(userInfo: { username: string, password: string }) {
-        let { username, password } = userInfo
+    public async Login(userInfo: { username: string, password: string, roleId: number }) {
+        let { username, password, roleId } = userInfo
         username = username.trim()
-        const loginResult = await login({ username, password })
+        const loginResult = await login({ username, password, role_id: roleId })
         console.log('===登录成功===', loginResult.access_token)
         setToken(loginResult.access_token)
         this.SET_USER_ID(loginResult.userInfo.userId)

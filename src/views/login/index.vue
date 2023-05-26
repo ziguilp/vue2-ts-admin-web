@@ -12,6 +12,27 @@
                 <h3 class="title">{{ settings.title }}</h3>
             </div>
 
+            <el-form-item prop="roleId">
+                <span class="svg-container">
+                    <!-- <svg-icon name="cpu" /> -->
+                    <i class="el-icon-cpu"></i>
+                </span>
+
+                <el-select
+                    v-model="loginForm.roleId"
+                    placeholder="请选择登录角色"
+                >
+                    <el-option
+                        v-for="item in roles"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                        :disabled="item.disabled"
+                    >
+                    </el-option>
+                </el-select>
+            </el-form-item>
+
             <el-form-item prop="username">
                 <span class="svg-container">
                     <svg-icon name="user" />
@@ -61,123 +82,127 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator'
-import { Route } from 'vue-router'
-import { Dictionary } from 'vue-router/types/router'
-import { Form as ElForm, Input } from 'element-ui'
-import { UserModule } from '@/store/modules/user'
-import { isValidUsername } from '@/utils/validate'
-import settings from '@/settings'
+import { Component, Vue, Watch } from "vue-property-decorator";
+import { Route } from "vue-router";
+import { Dictionary } from "vue-router/types/router";
+import { Form as ElForm, Input } from "element-ui";
+import { UserModule } from "@/store/modules/user";
+import { isValidUsername } from "@/utils/validate";
+import settings from "@/settings";
 
 @Component({
-    name: 'Login'
+    name: "Login",
 })
 export default class extends Vue {
     private settings = settings;
+    private roles = [
+        { label: "管理员", value: 1 },
+        { label: "商户", value: 3 },
+    ];
     private validateUsername = (
         rule: any,
         value: string,
         callback: Function
     ) => {
         if (!isValidUsername(value)) {
-            callback(new Error('请输入正确的用户名'))
+            callback(new Error("请输入正确的用户名"));
         } else {
-            callback()
+            callback();
         }
     };
-
     private validatePassword = (
         rule: any,
         value: string,
         callback: Function
     ) => {
         if (value.length < 6) {
-            callback(new Error('密码至少6位'))
+            callback(new Error("密码至少6位"));
         } else {
-            callback()
+            callback();
         }
     };
 
     private loginForm = {
-        username: '',
-        password: ''
+        roleId: 1,
+        username: "",
+        password: "",
     };
 
     private loginRules = {
-        username: [{ validator: this.validateUsername, trigger: 'blur' }],
-        password: [{ validator: this.validatePassword, trigger: 'blur' }]
+        username: [{ validator: this.validateUsername, trigger: "blur" }],
+        password: [{ validator: this.validatePassword, trigger: "blur" }],
     };
 
-    private passwordType = 'password';
+    private passwordType = "password";
     private loading = false;
     private showDialog = false;
     private redirect?: string;
     private otherQuery: Dictionary<string> = {};
 
-    @Watch('$route', { immediate: true })
+    @Watch("$route", { immediate: true })
     private onRouteChange(route: Route) {
         // TODO: remove the "as Dictionary<string>" hack after v4 release for vue-router
         // See https://github.com/vuejs/vue-router/pull/2050 for details
-        const query = route.query as Dictionary<string>
+        const query = route.query as Dictionary<string>;
         if (query) {
-            this.redirect = query.redirect
-            this.otherQuery = this.getOtherQuery(query)
+            this.redirect = query.redirect;
+            this.otherQuery = this.getOtherQuery(query);
         }
     }
 
     mounted() {
-        if (this.loginForm.username === '') {
-            (this.$refs.username as Input).focus()
-        } else if (this.loginForm.password === '') {
-            (this.$refs.password as Input).focus()
+        if (this.loginForm.username === "") {
+            (this.$refs.username as Input).focus();
+        } else if (this.loginForm.password === "") {
+            (this.$refs.password as Input).focus();
         }
     }
 
     private showPwd() {
-        if (this.passwordType === 'password') {
-            this.passwordType = ''
+        if (this.passwordType === "password") {
+            this.passwordType = "";
         } else {
-            this.passwordType = 'password'
+            this.passwordType = "password";
         }
         this.$nextTick(() => {
-            (this.$refs.password as Input).focus()
-        })
+            (this.$refs.password as Input).focus();
+        });
     }
 
     private handleLogin() {
-        (this.$refs.loginForm as ElForm).validate(async(valid: boolean) => {
+        (this.$refs.loginForm as ElForm).validate(async (valid: boolean) => {
             if (valid) {
-                this.loading = true
+                this.loading = true;
                 const loginRes = await UserModule.Login(this.loginForm).catch(
                     () => {
-                        this.loading = false
+                        this.loading = false;
                     }
-                )
+                );
                 if (!loginRes) {
-                    return
+                    return;
                 }
                 this.$router.push({
-                    path: this.redirect || '/',
-                    query: this.otherQuery
-                })
-                UserModule.GetPermission()
+                    path: this.redirect || "/",
+                    query: this.otherQuery,
+                });
+                UserModule.GetPermission();
                 // Just to simulate the time of the request
                 setTimeout(() => {
-                    this.loading = false
-                }, 0.5 * 1000)
+                    this.loading = false;
+                }, 0.5 * 1000);
             } else {
-                return false
+                return false;
             }
-        })
+        });
     }
 
     private getOtherQuery(query: Dictionary<string>) {
         return Object.keys(query).reduce((acc, cur) => {
-            if (cur !== 'redirect') {
-                acc[cur] = query[cur]
+            if (cur !== "redirect") {
+                acc[cur] = query[cur];
             }
-            return acc
-        }, {} as Dictionary<string>)
+            return acc;
+        }, {} as Dictionary<string>);
     }
 }
 </script>
@@ -215,6 +240,17 @@ export default class extends Vue {
                 box-shadow: 0 0 0px 1000px $loginBg inset !important;
                 -webkit-text-fill-color: #fff !important;
             }
+        }
+    }
+
+    .el-select {
+        width: 100%;
+        position: absolute;
+        .el-input {
+            width: 100%;
+        }
+        &__caret {
+            margin-left: -92px;
         }
     }
 

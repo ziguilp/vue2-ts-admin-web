@@ -1,3 +1,13 @@
+<!--
+ * @Author        : turbo 664120459@qq.com
+ * @Date          : 2023-05-23 16:13:04
+ * @LastEditors   : turbo 664120459@qq.com
+ * @LastEditTime  : 2023-05-26 08:17:05
+ * @FilePath      : /nls-admin/README.md
+ * @Description   : 
+ * 
+ * Copyright (c) 2023 by turbo 664120459@qq.com, All Rights Reserved. 
+-->
 # vue-typescript-admin-template
 
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](http://makeapullrequest.com)
@@ -66,6 +76,16 @@ yarn test:unit
 ```bash
 yarn svg
 ```
+
+### 封装功能
+- 表格表单，直接见示例即可
+- 权限检查： 
+    ```Typescript
+    this.$permission.can('权限名称') ;
+    
+    this.$permission.anyCan(['权限名称1','权限名称2'])
+    ```
+
 
 ### 自定义 Vue 配置
 
