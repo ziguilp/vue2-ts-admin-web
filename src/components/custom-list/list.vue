@@ -133,16 +133,27 @@
                                                     )
                                                 ).type
                                             "
-                                            >{{
-                                                formatEnum(
-                                                    v,
-                                                    getValueByKey(
-                                                        scope.row,
-                                                        v.prop
-                                                    )
-                                                ).label
-                                            }}</el-tag
                                         >
+                                            <template
+                                                v-if="v.showFormatInTable"
+                                                >{{
+                                                    v.showFormatInTable(
+                                                        scope.row
+                                                    )
+                                                }}</template
+                                            >
+                                            <template v-else>
+                                                {{
+                                                    formatEnum(
+                                                        v,
+                                                        getValueByKey(
+                                                            scope.row,
+                                                            v.prop
+                                                        )
+                                                    ).label
+                                                }}
+                                            </template>
+                                        </el-tag>
                                     </template>
                                     <template
                                         v-else-if="v.type === 'text-array'"
