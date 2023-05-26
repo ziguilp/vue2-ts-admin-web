@@ -2,7 +2,7 @@
  * @Author        : turbo 664120459@qq.com
  * @Date          : 2023-05-23 16:13:04
  * @LastEditors   : turbo 664120459@qq.com
- * @LastEditTime  : 2023-05-26 07:51:14
+ * @LastEditTime  : 2023-05-27 07:23:23
  * @FilePath      : /nls-admin/src/components/custom-list/customType.ts
  * @Description   : 
  * 
@@ -105,6 +105,10 @@ export interface CustomListColumn {
     canSearch?: Boolean
     canAdd?: Boolean
     canEdit?: Boolean
+    /**
+     * 当条件达成时才可进行编辑，否则值置空
+     */
+    editableWhen?: Function;
     // 如果是select之类的
     dataSource?: CustomDataSource
     /**
