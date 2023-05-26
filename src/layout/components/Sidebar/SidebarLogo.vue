@@ -2,7 +2,7 @@
  * @Author        : turbo 664120459@qq.com
  * @Date          : 2023-05-23 16:13:04
  * @LastEditors   : turbo 664120459@qq.com
- * @LastEditTime  : 2023-05-26 12:11:25
+ * @LastEditTime  : 2023-05-26 12:20:50
  * @FilePath      : /nls-admin/src/layout/components/Sidebar/SidebarLogo.vue
  * @Description   : 
  * 
@@ -85,7 +85,7 @@ export default class extends Vue {
             width: 32px;
             height: 32px;
             vertical-align: middle;
-            margin-right: 12px;
+            margin-right: 2px;
         }
 
         & .sidebar-title {
