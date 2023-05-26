@@ -2,7 +2,7 @@
  * @Author        : turbo 664120459@qq.com
  * @Date          : 2022-12-12 16:09:29
  * @LastEditors   : turbo 664120459@qq.com
- * @LastEditTime  : 2023-05-26 09:38:52
+ * @LastEditTime  : 2023-05-26 09:43:15
  * @FilePath      : /nls-admin/src/components/common/permission.ts
  * @Description   : 
  * 
@@ -119,7 +119,7 @@ export interface Permission {
     /**
      * 是否为超管
      */
-    isSuperAdmin(authRights: string | string[]): boolean
+    isSuperAdmin(authRights?: string | string[]): boolean
 }
 
 declare module 'vue/types/vue' {
