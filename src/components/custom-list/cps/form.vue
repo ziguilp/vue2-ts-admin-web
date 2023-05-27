@@ -351,6 +351,14 @@ export default class CustomForm extends Vue {
             display: inline-block;
             margin-right: 10px;
             vertical-align: top;
+            &__label {
+                float: none;
+                display: inline-block;
+            }
+            &__content {
+                display: inline-block;
+                vertical-align: top;
+            }
         }
     }
 }
