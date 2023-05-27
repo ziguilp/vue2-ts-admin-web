@@ -2,7 +2,7 @@
  * @Author        : turbo 664120459@qq.com
  * @Date          : 2022-12-12 16:09:29
  * @LastEditors   : turbo 664120459@qq.com
- * @LastEditTime  : 2023-05-27 11:22:12
+ * @LastEditTime  : 2023-05-27 12:30:35
  * @FilePath      : /nls-admin/src/components/custom-list/editForm.vue
  * @Description   :
  *
@@ -156,7 +156,7 @@ export default class extends Vue {
             this.form = {};
         }
         setTimeout(() => {
-            (this.$refs.mainform as CustomForm).init(this.form);
+            (this.$refs.mainform as CustomForm).init({ ...this.form });
             this.loading = false;
         });
     }
@@ -166,17 +166,41 @@ export default class extends Vue {
     }
 
     public handleClose(done?: any) {
-        const vals = Object.values(this.getForm()).filter((e) => !!e);
+        const formVal = this.getForm();
+        const vals = Object.values(formVal).filter((e) => !!e);
         if (this.readonly || !vals || vals.length < 1) {
             this.dialogVisible = false;
             return;
         }
-        // 未保存信息时提醒保存
-        this.$confirm("内容尚未保存，确认关闭？")
-            .then((_) => {
-                done ? done() : (this.dialogVisible = false);
-            })
-            .catch((_) => {});
+
+        // 信息一致时不提醒
+        const lks = Object.keys(this.form);
+        const vks = Object.keys(formVal);
+        let diff = false;
+        if (lks.length != vks.length) {
+            console.log(`vdiff-l`, this.form, formVal);
+            diff = true;
+        }
+        if (!diff) {
+            for (let index = 0; index < lks.length; index++) {
+                const k = lks[index];
+                if (this.form[k] != formVal[k]) {
+                    console.log(`vdiff`, k, this.form, formVal);
+                    diff = true;
+                    break;
+                }
+            }
+        }
+        if (diff) {
+            // 未保存信息时提醒保存
+            this.$confirm("内容尚未保存，确认关闭？")
+                .then((_) => {
+                    done ? done() : (this.dialogVisible = false);
+                })
+                .catch((_) => {});
+        } else {
+            this.dialogVisible = false;
+        }
     }
 
     private async handleSave() {
