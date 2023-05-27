@@ -2,7 +2,7 @@
  * @Author        : turbo 664120459@qq.com
  * @Date          : 2022-12-12 16:09:29
  * @LastEditors   : turbo 664120459@qq.com
- * @LastEditTime  : 2023-05-26 08:13:24
+ * @LastEditTime  : 2023-05-27 11:22:12
  * @FilePath      : /nls-admin/src/components/custom-list/editForm.vue
  * @Description   :
  *
@@ -10,34 +10,45 @@
 -->
 <template>
     <div class="turbo-form text-left">
-        <el-dialog
+        <!-- <el-dialog
             v-loading="loading"
             :title="title || (form && form.id ? '修改' : '新增')"
             :visible.sync="dialogVisible"
             width="800px"
             :before-close="handleClose"
+        > -->
+        <el-drawer
+            ref="drawer"
+            v-loading="loading"
+            :title="title || (form && form.id ? '修改' : '新增')"
+            :visible.sync="dialogVisible"
+            direction="rtl"
+            :before-close="handleClose"
         >
-            <div>
+            <div class="d-body">
                 <CustomForm
                     ref="mainform"
-                    :inline="conf.forminline"
+                    :inline="conf.forminline || false"
                     :columns="columns"
                     :rules="formRules"
                     :readonly="readonly"
                 ></CustomForm>
+                <div class="drawer__footer">
+                    <el-button v-if="readonly" @click="close()"
+                        >关 闭</el-button
+                    >
+                    <el-button v-if="!readonly" @click="close()"
+                        >取 消</el-button
+                    >
+                    <el-button
+                        v-if="!readonly"
+                        type="primary"
+                        @click="handleSave()"
+                        >提 交</el-button
+                    >
+                </div>
             </div>
-            <span slot="footer" class="dialog-footer">
-                <el-button v-if="readonly" @click="dialogVisible = false"
-                    >关 闭</el-button
-                >
-                <el-button v-if="!readonly" @click="dialogVisible = false"
-                    >取 消</el-button
-                >
-                <el-button v-if="!readonly" type="primary" @click="handleSave()"
-                    >提 交</el-button
-                >
-            </span>
-        </el-dialog>
+        </el-drawer>
     </div>
 </template>
 
@@ -119,6 +130,7 @@ export default class extends Vue {
                                         e.formRule instanceof Function &&
                                         e.formRule(val, this.getForm());
                                 } catch (error) {
+                                    // @ts-ignore
                                     return callback(new Error(error.message));
                                 }
                                 callback();
@@ -149,8 +161,22 @@ export default class extends Vue {
         });
     }
 
-    public handleClose() {
-        this.dialogVisible = false;
+    public close() {
+        (this.$refs.drawer as any).closeDrawer();
+    }
+
+    public handleClose(done?: any) {
+        const vals = Object.values(this.getForm()).filter((e) => !!e);
+        if (this.readonly || !vals || vals.length < 1) {
+            this.dialogVisible = false;
+            return;
+        }
+        // 未保存信息时提醒保存
+        this.$confirm("内容尚未保存，确认关闭？")
+            .then((_) => {
+                done ? done() : (this.dialogVisible = false);
+            })
+            .catch((_) => {});
     }
 
     private async handleSave() {
@@ -178,3 +204,25 @@ export default class extends Vue {
     }
 }
 </script>
+
+<style lang="scss" scope>
+.d-body {
+    padding: 0 20px;
+    position: relative;
+    min-width: 300px;
+    height: calc(100vh - 60px);
+    overflow-y: scroll;
+    padding-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    &-form {
+        flex: 1;
+    }
+    .drawer__footer {
+        display: flex;
+        justify-content: flex-end;
+        padding: 20px 0;
+        width: 100%;
+    }
+}
+</style>

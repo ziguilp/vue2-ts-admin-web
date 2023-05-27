@@ -2,7 +2,11 @@
     <div class="app-container">
         <el-card v-if="searchFormCloumns && searchFormCloumns.length > 0">
             <div>
-                <CustomForm :columns="searchFormCloumns" ref="searchForm">
+                <CustomForm
+                    :inline="true"
+                    :columns="searchFormCloumns"
+                    ref="searchForm"
+                >
                     <el-button-group>
                         <el-button type="primary" @click="submit(true)"
                             >确认</el-button

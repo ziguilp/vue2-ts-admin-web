@@ -1,5 +1,12 @@
 <template>
-    <el-form ref="mainform" :inline="inline" :rules="rules" :model="form">
+    <el-form
+        :class="
+            inline ? 'turbo-form turbo-form-row' : 'turbo-form turbo-form-col'
+        "
+        ref="mainform"
+        :rules="rules"
+        :model="form"
+    >
         <template v-for="(vo, i) in columns">
             <el-form-item
                 :label="vo.label || vo.prop"
@@ -269,7 +276,7 @@ import Captcha from "./captcha.vue";
 export default class CustomForm extends Vue {
     @Prop({
         type: Boolean,
-        default: true,
+        default: false,
     })
     readonly inline!: Boolean;
 
@@ -328,5 +335,23 @@ export default class CustomForm extends Vue {
 }
 </script>
 
-<style>
+<style lang="scss">
+.turbo-form {
+    &-col {
+        .el-form-item {
+            display: flex;
+            flex-direction: column;
+            &__label {
+                text-align: left;
+            }
+        }
+    }
+    &-row {
+        .el-form-item {
+            display: inline-block;
+            margin-right: 10px;
+            vertical-align: top;
+        }
+    }
+}
 </style>
