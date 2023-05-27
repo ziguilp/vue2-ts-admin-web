@@ -2,7 +2,7 @@
  * @Author        : turbo 664120459@qq.com
  * @Date          : 2022-12-12 16:09:29
  * @LastEditors   : turbo 664120459@qq.com
- * @LastEditTime  : 2023-05-27 12:30:35
+ * @LastEditTime  : 2023-05-27 19:39:41
  * @FilePath      : /nls-admin/src/components/custom-list/editForm.vue
  * @Description   :
  *
@@ -210,6 +210,7 @@ export default class extends Vue {
             if (valid && this.conf.onSave) {
                 return await this.conf.onSave(this.getForm()).then(() => {
                     const form = this.getForm();
+                    this.form = form;
                     this.$emit("refresh", !form.id);
                     this.handleClose();
                 });

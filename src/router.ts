@@ -2,8 +2,8 @@
  * @Author        : turbo 664120459@qq.com
  * @Date          : 2022-12-12 16:09:29
  * @LastEditors   : turbo 664120459@qq.com
- * @LastEditTime  : 2022-12-19 20:09:45
- * @FilePath      : /adminweb/src/router.ts
+ * @LastEditTime  : 2023-05-26 10:35:16
+ * @FilePath      : /nls-admin/src/router.ts
  * @Description   :
  *
  * Copyright (c) 2022 by turbo 664120459@qq.com, All Rights Reserved.
@@ -197,32 +197,55 @@ export default new Router({
             ]
         },
         {
-            path: '/settle',
+            path: '/marketing',
             component: Layout,
-            redirect: '/settle/list',
+            redirect: '/marketing',
             meta: {
-                title: '结算管理',
-                icon: 'gl1'
+                title: '营销系统',
+                icon: 'gl1',
+                permission: ['attach_MarketingMerchantController']
             },
             children: [
                 {
-                    path: 'list',
-                    name: 'settleList',
-                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/order/settle.vue'),
+                    path: 'merchant/list',
+                    name: 'merchantList',
+                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/merchant/list.vue'),
                     meta: {
-                        title: '结算单',
-                        icon: 'circle'
+                        title: '商户管理',
+                        icon: 'circle',
+                        permission: ['read_marketing_merchant_list']
                     }
                 },
                 {
-                    path: 'waitfor',
-                    name: 'waitforSettle',
-                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/order/waitforsettle.vue'),
+                    path: 'activity/list',
+                    name: 'activityList',
+                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/activity/list.vue'),
                     meta: {
-                        title: '待结算',
-                        icon: 'circle'
+                        title: '活动管理',
+                        icon: 'circle',
+                        permission: ['read_activity_list']
                     }
-                }
+                },
+                {
+                    path: 'agent/list',
+                    name: 'agentList',
+                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/merchant/list.vue'),
+                    meta: {
+                        title: '代理商列表',
+                        icon: 'circle',
+                        permission: ['read_marketing_merchant_list']
+                    }
+                },
+                {
+                    path: 'merchant/recharge/log',
+                    name: 'merchantRechargeLog',
+                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/merchant/list.vue'),
+                    meta: {
+                        title: '充值记录',
+                        icon: 'circle',
+                        permission: ['read_marketing_merchant_list']
+                    }
+                },
             ]
         },
         {

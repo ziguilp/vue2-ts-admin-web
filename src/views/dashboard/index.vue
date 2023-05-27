@@ -95,22 +95,22 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator'
-import { UserModule } from '@/store/modules/user'
+import { Component, Vue, Watch } from "vue-property-decorator";
+import { UserModule } from "@/store/modules/user";
 
-import * as echarts from 'echarts/core'
+import * as echarts from "echarts/core";
 import {
     TitleComponent,
     ToolboxComponent,
     TooltipComponent,
     GridComponent,
-    LegendComponent
-} from 'echarts/components'
-import { LineChart } from 'echarts/charts'
-import { UniversalTransition } from 'echarts/features'
-import { CanvasRenderer } from 'echarts/renderers'
-import { dashboard } from '@/api/other'
-import moment from 'moment'
+    LegendComponent,
+} from "echarts/components";
+import { LineChart } from "echarts/charts";
+import { UniversalTransition } from "echarts/features";
+import { CanvasRenderer } from "echarts/renderers";
+import { dashboard } from "@/api/other";
+import moment from "moment";
 
 echarts.use([
     TitleComponent,
@@ -120,11 +120,11 @@ echarts.use([
     LegendComponent,
     LineChart,
     CanvasRenderer,
-    UniversalTransition
-])
+    UniversalTransition,
+]);
 
 @Component({
-    name: 'Dashboard'
+    name: "Dashboard",
 })
 export default class extends Vue {
     private data: any = {};
@@ -132,14 +132,14 @@ export default class extends Vue {
     async created() {}
 
     mounted() {
-        this.getDashBoard()
+        this.getDashBoard();
         // this.draw();
     }
 
     private async getDashBoard() {
-        this.data = await dashboard()
+        this.data = await dashboard();
 
-        this.draw()
+        this.draw();
     }
 
     /**
@@ -147,35 +147,35 @@ export default class extends Vue {
      */
     private async draw() {
         const {
-            chart30: { users, vip }
-        }: any = this.data
+            chart30: { users, vip },
+        }: any = this.data;
 
-        const days = []
+        const days = [];
         for (let index = 30; index > -1; index--) {
             days.push(
                 moment()
-                    .add(0 - index, 'days')
-                    .format('YYYY-MM-DD')
-            )
+                    .add(0 - index, "days")
+                    .format("YYYY-MM-DD")
+            );
         }
 
         const usersDataObj: any = users.reduce((p: any, c: any) => {
-            p[moment(c.date).format('YYYY-MM-DD')] = c.count
-            return p
-        }, {})
+            p[moment(c.date).format("YYYY-MM-DD")] = c.count;
+            return p;
+        }, {});
 
         const usersData: number[] = days.map((e: string) => {
-            return usersDataObj[e] || 0
-        })
+            return usersDataObj[e] || 0;
+        });
 
-        const vipDataObj: any = vip.reduce((p: any, c: any) => {
-            p[moment(c.date).format('YYYY-MM-DD')] = c.count
-            return p
-        }, {})
+        const vipDataObj: any = (vip || []).reduce((p: any, c: any) => {
+            p[moment(c.date).format("YYYY-MM-DD")] = c.count;
+            return p;
+        }, {});
 
         const vipData: number[] = days.map((e: string) => {
-            return vipDataObj[e] || 0
-        })
+            return vipDataObj[e] || 0;
+        });
 
         // let orderDataObj: any = order.reduce((p: any, c: any) => {
         //     p[moment(c.date).format("YYYY-MM-DD")] = c.count;
@@ -186,60 +186,60 @@ export default class extends Vue {
         //     return orderDataObj[e] || 0;
         // });
 
-        const chartDom: any = document.getElementById('shortTermPredict_chart')
-        const myChart = echarts.init(chartDom)
-        let option
+        const chartDom: any = document.getElementById("shortTermPredict_chart");
+        const myChart = echarts.init(chartDom);
+        let option;
 
         option = {
             title: {
-                text: ''
+                text: "",
             },
             tooltip: {
-                trigger: 'axis'
+                trigger: "axis",
             },
             legend: {
-                data: ['注册用户', '订阅数']
+                data: ["注册用户", "订阅数"],
             },
             grid: {
-                left: '3%',
-                right: '4%',
-                bottom: '3%',
-                containLabel: true
+                left: "3%",
+                right: "4%",
+                bottom: "3%",
+                containLabel: true,
             },
             toolbox: {
                 feature: {
-                    saveAsImage: {}
-                }
+                    saveAsImage: {},
+                },
             },
             xAxis: {
-                type: 'category',
+                type: "category",
                 boundaryGap: false,
-                data: days
+                data: days,
             },
             yAxis: {
-                type: 'value',
-                name: '数'
+                type: "value",
+                name: "数",
             },
             series: [
                 {
-                    name: '注册用户',
-                    type: 'line',
-                    data: usersData
+                    name: "注册用户",
+                    type: "line",
+                    data: usersData,
                 },
                 {
-                    name: '订阅数',
-                    type: 'line',
-                    data: vipData
-                }
+                    name: "订阅数",
+                    type: "line",
+                    data: vipData,
+                },
                 // {
                 //     name: "订单数",
                 //     type: "line",
                 //     data: orderData,
                 // },
-            ]
-        }
+            ],
+        };
 
-        option && myChart.setOption(option)
+        option && myChart.setOption(option);
     }
 }
 </script>

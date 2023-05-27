@@ -18,7 +18,11 @@ export enum OrderType {
     /**
      * 会员礼履约订单
      */
-    GIFTS
+    GIFTS,
+    /**
+    * 商户充值订单
+    */
+    MERCHANT_RECHARGE,
 }
 
 /**
@@ -222,7 +226,7 @@ export const OrderDeliveryStatusConf = [
  * @param param0
  * @returns
  */
-export const getOrderList = async({ page, pageSize, data }: any) => {
+export const getOrderList = async ({ page, pageSize, data }: any) => {
     return ((await request({
         url: '/order/list',
         method: 'get',
@@ -239,7 +243,7 @@ export const getOrderList = async({ page, pageSize, data }: any) => {
 * @param param0
 * @returns
 */
-export const getOrderDetail = async({ orderSn }: any) => {
+export const getOrderDetail = async ({ orderSn }: any) => {
     const detail = ((await request({
         url: `/order/detail/${orderSn}`,
         method: 'get'
@@ -282,7 +286,7 @@ export const getOrderDetail = async({ orderSn }: any) => {
 * @param param0
 * @returns
 */
-export const cancelOrder = async({ orderSn }: any) => {
+export const cancelOrder = async ({ orderSn }: any) => {
     return ((await request({
         url: `/order/cancel/${orderSn}`,
         method: 'POST'
@@ -294,7 +298,7 @@ export const cancelOrder = async({ orderSn }: any) => {
 * @param param0
 * @returns
 */
-export const refund = async({ orderGoodsId, refundAmount, reason }: any) => {
+export const refund = async ({ orderGoodsId, refundAmount, reason }: any) => {
     return ((await request({
         url: '/payment/refund',
         method: 'POST',

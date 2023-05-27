@@ -2,8 +2,8 @@
  * @Author        : turbo 664120459@qq.com
  * @Date          : 2022-12-12 16:09:29
  * @LastEditors   : turbo 664120459@qq.com
- * @LastEditTime  : 2022-12-19 16:04:42
- * @FilePath      : /adminweb/vue.config.js
+ * @LastEditTime  : 2023-05-25 22:08:00
+ * @FilePath      : /nls-admin/vue.config.js
  * @Description   : 
  * 
  * Copyright (c) 2022 by turbo 664120459@qq.com, All Rights Reserved. 
@@ -39,12 +39,12 @@ module.exports = {
     devServer: {
         proxy: {
             '/api/': {
-                target: 'http://127.0.0.1:3000/',
+                target: 'http://127.0.0.1:3001/',
                 changeOrigin: true,
                 ws: true,
                 secure: false,
                 pathRewrite: {
-                    '^/api': '/'
+                    '^/api': '/api'
                 }
             }
         }

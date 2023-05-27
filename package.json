@@ -1,8 +1,8 @@
 {
-  "name": "vue-typescript-admin-template",
+  "name": "vue-typescript-admin",
   "version": "1.0.0",
   "private": true,
-  "author": "Chong Guo <armourcy@gmail.com>",
+  "author": "turbole@163.com",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",

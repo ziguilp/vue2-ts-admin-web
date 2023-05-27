@@ -2,8 +2,8 @@
  * @Author        : turbo 664120459@qq.com
  * @Date          : 2023-05-23 16:13:04
  * @LastEditors   : turbo 664120459@qq.com
- * @LastEditTime  : 2023-05-27 20:36:54
- * @FilePath      : /nls-admin/src/views/merchant/list.vue
+ * @LastEditTime  : 2023-05-27 20:31:43
+ * @FilePath      : /nls-admin/src/views/activity/list.vue
  * @Description   : 
  * 
  * Copyright (c) 2023 by turbo 664120459@qq.com, All Rights Reserved. 
@@ -20,35 +20,16 @@
                     >审核 <el-divider direction="vertical"></el-divider
                 ></el-button> -->
 
-                <!-- <el-button
-                    slot="reference"
-                    type="text"
-                    size="small"
-                    @click="handleShowGiftPlans(scope.row)"
-                    >营销活动 <el-divider direction="vertical"></el-divider
-                ></el-button> -->
-
                 <el-button
                     slot="reference"
                     type="text"
                     size="small"
-                    @click="handleShowMembers(scope.row)"
-                    >余额充值
+                    @click="handleShowRewards(scope.row)"
+                    >活动奖品
                 </el-button>
             </template>
         </custom-list>
-
-        <!-- <CustomForm ref="checkform" :conf="checkConf"></CustomForm> -->
-
-        <el-dialog
-            width="1100px"
-            :title="activeMerchant ? `${activeMerchant.name}的营销活动` : ''"
-            :visible.sync="showMerchantGiftPlan"
-        >
-            <GiftPlanListVue
-                :merchant_id="activeMerchant ? activeMerchant.id : 0"
-            ></GiftPlanListVue>
-        </el-dialog>
+        <Reward ref="rewardRef"></Reward>
     </div>
 </template>
 
@@ -59,21 +40,23 @@ import {
     CustomListConf,
 } from "@/components/custom-list/customType";
 import {
-    createMerchant,
-    editMerchant,
-    getMerchantList,
-    MarketingMerchantStatus,
-    MerchantInfo,
-} from "@/api/merchant";
+    getAcivityList,
+    createActivity,
+    MarketingActivityStatus,
+    ActivityInfo,
+    MarketingActivityType,
+    editActivity,
+} from "@/api/activity";
 import CustomForm from "@/components/custom-list/editForm.vue";
-import MembersVue from "./members.vue";
 import { IpageDataDto } from "@/api/types";
+import moment from "moment";
+import Reward from "./reward.vue";
 
 @Component({
-    name: "MerchantList",
+    name: "ActivityList",
     components: {
         CustomForm,
-        MembersVue,
+        Reward,
     },
 })
 export default class extends Vue {
@@ -81,7 +64,7 @@ export default class extends Vue {
     private showMerchantGiftPlan = false;
     private showMembers = false;
     private config: CustomListConf = {
-        permissionAddMark: "create_marketing_merchant",
+        permissionAddMark: "add_activity",
         columns: [
             {
                 type: CustomListColumnType.NUMBER,
@@ -98,14 +81,15 @@ export default class extends Vue {
                 canAdd: false,
                 canEdit: false,
                 showInTable: false,
-                label: "账户ID",
-                prop: "user_id",
+                label: "商户ID",
+                prop: "merchant_id",
             },
             {
                 type: CustomListColumnType.TEXT,
                 prop: "name",
                 label: "名称",
                 canEdit: true,
+                canAdd: true,
                 canSearch: true,
                 showInTable: true,
                 showInDetail: true,
@@ -113,9 +97,21 @@ export default class extends Vue {
             {
                 type: CustomListColumnType.IMAGE,
                 prop: "logo",
-                label: "头像",
+                label: "活动LOGO",
                 width: "60px",
                 height: "60px",
+                canAdd: true,
+                canEdit: true,
+                showInTable: true,
+                showInDetail: true,
+            },
+            {
+                type: CustomListColumnType.IMAGE,
+                prop: "main_image",
+                label: "宣发图",
+                width: "140px",
+                height: "80px",
+                canAdd: true,
                 canEdit: true,
                 showInTable: true,
                 showInDetail: true,
@@ -128,45 +124,57 @@ export default class extends Vue {
             //     showInDetail: true,
             // },
             {
-                type: CustomListColumnType.TEXT,
-                prop: "contact_user",
-                showInDetail: true,
-                canEdit: true,
-                label: "联系人",
-                showInTable: true,
-            },
-            {
-                type: CustomListColumnType.TEXT,
-                prop: "contact_mobile",
-                showInDetail: true,
-                label: "联系电话",
-                canEdit: true,
+                type: CustomListColumnType.SELECT,
                 canSearch: true,
+                canAdd: false,
+                canEdit: true,
+                showInTable: true,
+                showInDetail: true,
+                label: "类型",
+                prop: "type",
+                dataSource: {
+                    key: "value",
+                    labelKey: "label",
+                    value: [
+                        {
+                            label: "抽奖",
+                            value: MarketingActivityType.LOTTERY,
+                        },
+                    ],
+                },
             },
             {
-                type: CustomListColumnType.TEXT,
-                prop: "kefu_mobile",
-                label: "客服电话",
-                canSearch: false,
+                type: CustomListColumnType.RICHTEXT,
+                prop: "rule",
+                label: "活动规则",
+                canAdd: true,
                 canEdit: true,
+                showInTable: false,
                 showInDetail: true,
             },
             {
-                type: CustomListColumnType.TEXT,
-                prop: "account_balance",
-                label: "账户余额",
-                showInDetail: false,
+                type: CustomListColumnType.DATETIME,
                 canSearch: false,
-                canEdit: false,
-                showFormatInTable: (row: MerchantInfo) => {
-                    return Number(row.account_balance).div(100).toFixed(2);
-                },
+                canAdd: true,
+                canEdit: true,
+                showInTable: true,
+                label: "开始时间",
+                prop: "date_start",
+            },
+            {
+                type: CustomListColumnType.DATETIME,
+                canSearch: false,
+                canAdd: true,
+                canEdit: true,
+                showInTable: true,
+                label: "结束时间",
+                prop: "date_end",
             },
             {
                 type: CustomListColumnType.SELECT,
                 canSearch: true,
                 canAdd: false,
-                canEdit: this.$permission.can("toggleban_marketing_merchant"),
+                canEdit: true,
                 showInTable: true,
                 showInDetail: true,
                 label: "状态",
@@ -176,47 +184,28 @@ export default class extends Vue {
                     labelKey: "label",
                     value: [
                         {
-                            label: "封禁",
-                            value: MarketingMerchantStatus.BAN,
+                            label: "活动停止",
+                            value: MarketingActivityStatus.BAN,
                         },
                         {
-                            label: "正常",
-                            value: MarketingMerchantStatus.NORMAL,
+                            label: "正常进行",
+                            value: MarketingActivityStatus.NORMAL,
                         },
                     ],
                 },
+                showFormatInTable: (row: ActivityInfo) => {
+                    const now = moment().unix();
+                    if (moment(row.date_start).unix() > now) {
+                        return `未开始`;
+                    }
+                    if (moment(row.date_end).unix() < now) {
+                        return `已结束`;
+                    }
+                    return MarketingActivityStatus.BAN === row.status
+                        ? "活动停止"
+                        : "正常进行";
+                },
             },
-            {
-                type: CustomListColumnType.NUMBER,
-                canSearch: false,
-                canAdd: true,
-                canEdit: this.$permission.isSuperAdmin(),
-                showInTable: true,
-                label: "充值服务费率[千分之](‰)",
-                min: 0,
-                max: 300,
-                prop: "fee_rate",
-            },
-            // {
-            //     type: CustomListColumnType.TEXT,
-            //     prop: "license",
-            //     label: "主体名称",
-            //     showInDetail: true,
-            // },
-            // {
-            //     type: CustomListColumnType.TEXT,
-            //     prop: "license_no",
-            //     label: "统一信用代码",
-            //     showInTable: true,
-            //     showInDetail: true,
-            // },
-            // {
-            //     type: CustomListColumnType.IMAGES,
-            //     prop: "qualifications",
-            //     label: "资质照片",
-            //     showInTable: false,
-            //     showInDetail: true,
-            // },
             {
                 type: CustomListColumnType.DATE,
                 canSearch: false,
@@ -224,21 +213,21 @@ export default class extends Vue {
                 canEdit: false,
                 showInTable: true,
                 showInDetail: true,
-                label: "注册时间",
+                label: "创建时间",
                 prop: "date_created",
             },
         ],
         tableSelection: false,
         onSave: async (form: any) => {
-            console.log("save", form);
             if (form.id) {
-                return await editMerchant(form);
+                return await editActivity(form);
             } else {
-                return await createMerchant(form);
+                form.type = MarketingActivityType.LOTTERY;
+                return await createActivity(form);
             }
         },
         onLoadData: async (searchForm: any, idata: IpageDataDto<any>) => {
-            const data: any = await getMerchantList({
+            const data: any = await getAcivityList({
                 data: searchForm,
                 page: parseInt(String(idata.currentPage)),
                 pageSize: idata.pageSize,
@@ -247,21 +236,9 @@ export default class extends Vue {
         },
     };
 
-    private handleShowCheckForm(row: any) {
-        (this.$refs.checkform as CustomForm).init({
-            form: row,
-            readonly: false,
-        });
-    }
-
-    private handleShowGiftPlans(row: any) {
-        this.showMerchantGiftPlan = true;
-        this.activeMerchant = row;
-    }
-
-    private handleShowMembers(row: any) {
-        this.showMembers = true;
-        this.activeMerchant = row;
+    private handleShowRewards(row: ActivityInfo) {
+        const ele = this.$refs.rewardRef as Reward;
+        ele.init(row);
     }
 }
 </script>

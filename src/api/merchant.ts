@@ -1,77 +1,51 @@
+/*
+ * @Author        : turbo 664120459@qq.com
+ * @Date          : 2023-05-23 16:13:04
+ * @LastEditors   : turbo 664120459@qq.com
+ * @LastEditTime  : 2023-05-26 10:26:58
+ * @FilePath      : /nls-admin/src/api/merchant.ts
+ * @Description   : 
+ * 
+ * Copyright (c) 2023 by turbo 664120459@qq.com, All Rights Reserved. 
+ */
 import request from '@/utils/request'
+import { OrderType } from './order';
 import { IpageDataDto, RoleDto } from './types'
 
-export enum MerchantInfoCheckStatus {
+/**
+ * 营销商户状态
+ */
+export enum MarketingMerchantStatus {
     /**
-     * 信息待审核
+     * 正常
      */
-    WAIT_CHECK,
-
+    NORMAL = 'normal',
     /**
-     * 信息待审核驳回
+     * 禁用
      */
-    CHECK_FAILED,
-    /**
-     * 信息待审核
-     */
-    CHECK_SUCCESS,
-}
-
-export enum MerchantInfoOnlineStatus {
-    /**
-     * 下线
-     */
-    OFFLINE,
-
-    /**
-     * 上线
-     */
-
-    ONLINE,
-    /**
-     * 封禁
-     */
-    BAN,
+    BAN = 'ban'
 }
 
 export interface MerchantInfo {
-    id: number
-    bind_user_id: string
-    name: string
-    image: string
-    intro: string
-    level: number
-    province: string
-    city: string
-    area: string
-    address: string
-    location_lng: number
-    location_lat: number
-    mobile: string
-    wechat: string
-    master: string
-    master_idcard: string
-    master_idcard_images: string[]
-    contact: string
-    contact_avatar: string
-    contact_explain: string
-    license: string
-    license_no: string
-    qualifications: string[]
-    check_status: MerchantInfoCheckStatus
-    check_result: string
-    status: MerchantInfoOnlineStatus
-    sales_man: string
-    service_man: string
-    balance: number
+    id: number;
+    user_id: string;
+    name: string;
+    logo: string;
+    contact_user: string;
+    contact_mobile: string;
+    kefu_mobile: string;
+    status: MarketingMerchantStatus;
+    account_balance: number;
+    fee_rate: number;
+    remark: string;
     date_created: Date
     date_updated: Date
     date_deleted: Date
 }
 
-export const getMerchantList = async({ keyword, page, pageSize, data = {} }: any) => {
+export const getMerchantList = async ({ keyword, page, pageSize, data = {} }: any) => {
     return ((await request({
-        url: '/merchant/list',
+        url: '/marketing/merchant/list',
         method: 'get',
         params: {
             keyword,
@@ -82,50 +56,66 @@ export const getMerchantList = async({ keyword, page, pageSize, data = {} }: any
     })).data) as IpageDataDto<MerchantInfo>
 }
 
-export const merchantCheck = async({
-    merchantId,
-    checkStatus,
-    reason
-}: any) => {
+export const createMerchant = async (data: any) => {
     return ((await request({
-        url: '/merchant/check',
+        url: '/marketing/merchant/add',
+        method: 'POST',
+        data
+    })).data) as MerchantInfo
+}
+
+export const editMerchant = async (data: any) => {
+    return ((await request({
+        url: '/marketing/merchant/edit',
+        method: 'POST',
+        data
+    })).data) as MerchantInfo
+}
+
+/**
+ * 商户自行发起充值
+ * @param amount 充值金额元 
+ * @returns 
+ */
+export const merchantRecharge = async ({
+    amount
+}: { amount: number }) => {
+    return ((await request({
+        url: `/order/createOrder`,
         method: 'POST',
         data: {
-            merchantId,
-            checkStatus,
-            reason
-        }
-    })).data) as any
+            orderType: OrderType.MERCHANT_RECHARGE,
+            orderGoodsList: [
+                {
+                    goodsType: OrderType.MERCHANT_RECHARGE,
+                    goodsId: 0,
+                    goodsNum: Number(amount).mul(100)
+                }
+            ]
+        },
+    })).data)
 }
 
-export const merchantBan = async({
-    merchantId,
-    status,
-    reason
-}: any) => {
+/**
+ * 超管给他充值[直接到账]
+ */
+export const merchantRechargeByAdmin = async (data: {
+    /**
+     * 充值金额元
+     */
+    amount: number,
+    /**
+     * 充值方式
+     */
+    way: 'cash' | 'bank' | 'wechat' | 'alipay',
+    /**
+     * 三方流水号
+     */
+    thirdOrderSn?: string
+}) => {
     return ((await request({
-        url: '/merchant/toggleBan',
-        method: 'post',
-        data: {
-            merchantId,
-            status,
-            reason
-        }
-    })).data) as any
-}
-
-export const getMerchantMembers = async({
-    data,
-    page = 1,
-    pageSize = 10
-}: any) => {
-    return ((await request({
-        url: '/merchant/membersList',
-        method: 'get',
-        params: {
-            data,
-            page,
-            pageSize
-        }
-    })).data) as any
+        url: `/merchant/rechargeByAdmin`,
+        method: 'POST',
+        data
+    })).data)
 }
