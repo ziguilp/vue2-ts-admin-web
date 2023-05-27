@@ -306,16 +306,14 @@ export default class CustomForm extends Vue {
     }
 
     public getFormValue() {
-        const res = this.columns.reduce(
-            (p, c) => {
-                if (c.editableWhen && !c.editableWhen(this, this.form)) {
-                    if (p[c.prop]) delete p[c.prop];
-                }
-                return p;
-            },
-            { ...this.form } as any
-        );
-        console.log({ form: this.form, res });
+        const formVal = { ...this.form };
+        const res = this.columns.reduce((p, c) => {
+            if (c.editableWhen && !c.editableWhen(formVal)) {
+                if (p[c.prop]) delete p[c.prop];
+            }
+            return p;
+        }, formVal as any);
+        console.log({ form: formVal, res });
         return res;
     }
 
