@@ -2,7 +2,7 @@
  * @Author        : turbo 664120459@qq.com
  * @Date          : 2023-05-23 16:13:04
  * @LastEditors   : turbo 664120459@qq.com
- * @LastEditTime  : 2023-05-27 20:31:43
+ * @LastEditTime  : 2023-05-28 08:49:23
  * @FilePath      : /nls-admin/src/views/activity/list.vue
  * @Description   : 
  * 
@@ -169,6 +169,14 @@ export default class extends Vue {
                 showInTable: true,
                 label: "结束时间",
                 prop: "date_end",
+            },
+            {
+                type: CustomListColumnType.TEXT,
+                label: "附言",
+                prop: "remark",
+                canAdd: true,
+                canEdit: true,
+                showInTable: false,
             },
             {
                 type: CustomListColumnType.SELECT,

@@ -2,7 +2,7 @@
  * @Author        : turbo 664120459@qq.com
  * @Date          : 2023-05-23 16:13:04
  * @LastEditors   : turbo 664120459@qq.com
- * @LastEditTime  : 2023-05-27 18:00:58
+ * @LastEditTime  : 2023-05-28 23:45:13
  * @FilePath      : /nls-admin/src/api/reward.ts
  * @Description   : 
  * 
@@ -27,7 +27,11 @@ export enum MarketingLotteryRewardType {
     // /**
     //  * 优惠券
     //  */
-    // COUPON = 'coupon'
+    // COUPON = 'coupon',
+    /**
+     * 其他
+     */
+    OTHER = 'other'
 }
 
 export interface RewardInfo {

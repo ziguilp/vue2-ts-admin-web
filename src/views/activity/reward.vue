@@ -255,6 +255,10 @@ export default class extends Vue {
                             label: "实物",
                             value: MarketingLotteryRewardType.GOODS,
                         },
+                        {
+                            label: "空奖",
+                            value: MarketingLotteryRewardType.OTHER,
+                        },
                     ],
                 },
                 formRule: [{ required: true }],
