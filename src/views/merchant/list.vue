@@ -2,7 +2,7 @@
  * @Author        : turbo 664120459@qq.com
  * @Date          : 2023-05-23 16:13:04
  * @LastEditors   : turbo 664120459@qq.com
- * @LastEditTime  : 2023-05-27 20:36:54
+ * @LastEditTime  : 2023-05-29 08:55:09
  * @FilePath      : /nls-admin/src/views/merchant/list.vue
  * @Description   : 
  * 
@@ -66,14 +66,12 @@ import {
     MerchantInfo,
 } from "@/api/merchant";
 import CustomForm from "@/components/custom-list/editForm.vue";
-import MembersVue from "./members.vue";
 import { IpageDataDto } from "@/api/types";
 
 @Component({
     name: "MerchantList",
     components: {
         CustomForm,
-        MembersVue,
     },
 })
 export default class extends Vue {
