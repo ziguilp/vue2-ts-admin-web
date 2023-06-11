@@ -2,7 +2,7 @@
  * @Author        : turbo 664120459@qq.com
  * @Date          : 2023-05-23 16:13:04
  * @LastEditors   : turbo 664120459@qq.com
- * @LastEditTime  : 2023-05-29 08:55:09
+ * @LastEditTime  : 2023-06-11 13:14:18
  * @FilePath      : /nls-admin/src/views/merchant/list.vue
  * @Description   : 
  * 
@@ -32,23 +32,24 @@
                     slot="reference"
                     type="text"
                     size="small"
-                    @click="handleShowMembers(scope.row)"
+                    @click="handleShowRecharge(scope.row)"
                     >余额充值
                 </el-button>
+
+                <el-button
+                    slot="reference"
+                    type="text"
+                    size="small"
+                    @click="showQrcode(scope.row)"
+                    >二维码</el-button
+                >
             </template>
         </custom-list>
 
-        <!-- <CustomForm ref="checkform" :conf="checkConf"></CustomForm> -->
+        <Qrcode ref="qrcode" title.sync="商户二维码"></Qrcode>
+        <Recharge ref="recharge"></Recharge>
 
-        <el-dialog
-            width="1100px"
-            :title="activeMerchant ? `${activeMerchant.name}的营销活动` : ''"
-            :visible.sync="showMerchantGiftPlan"
-        >
-            <GiftPlanListVue
-                :merchant_id="activeMerchant ? activeMerchant.id : 0"
-            ></GiftPlanListVue>
-        </el-dialog>
+        <!-- <CustomForm ref="checkform" :conf="checkConf"></CustomForm> -->
     </div>
 </template>
 
@@ -66,18 +67,20 @@ import {
     MerchantInfo,
 } from "@/api/merchant";
 import CustomForm from "@/components/custom-list/editForm.vue";
+import Recharge from "./components/recharge.vue";
+import Qrcode from "./components/qrcode.vue";
 import { IpageDataDto } from "@/api/types";
 
 @Component({
     name: "MerchantList",
     components: {
         CustomForm,
+        Recharge,
+        Qrcode,
     },
 })
 export default class extends Vue {
-    private activeMerchant: any = null;
-    private showMerchantGiftPlan = false;
-    private showMembers = false;
+    private qrcodeDrawer = false;
     private config: CustomListConf = {
         permissionAddMark: "create_marketing_merchant",
         columns: [
@@ -103,6 +106,7 @@ export default class extends Vue {
                 type: CustomListColumnType.TEXT,
                 prop: "name",
                 label: "名称",
+                canAdd: true,
                 canEdit: true,
                 canSearch: true,
                 showInTable: true,
@@ -114,6 +118,7 @@ export default class extends Vue {
                 label: "头像",
                 width: "60px",
                 height: "60px",
+                canAdd: true,
                 canEdit: true,
                 showInTable: true,
                 showInDetail: true,
@@ -127,8 +132,17 @@ export default class extends Vue {
             // },
             {
                 type: CustomListColumnType.TEXT,
+                prop: "address",
+                label: "地址",
+                canAdd: true,
+                canEdit: true,
+                showInDetail: true,
+            },
+            {
+                type: CustomListColumnType.TEXT,
                 prop: "contact_user",
                 showInDetail: true,
+                canAdd: true,
                 canEdit: true,
                 label: "联系人",
                 showInTable: true,
@@ -138,6 +152,7 @@ export default class extends Vue {
                 prop: "contact_mobile",
                 showInDetail: true,
                 label: "联系电话",
+                canAdd: true,
                 canEdit: true,
                 canSearch: true,
             },
@@ -245,21 +260,13 @@ export default class extends Vue {
         },
     };
 
-    private handleShowCheckForm(row: any) {
-        (this.$refs.checkform as CustomForm).init({
-            form: row,
-            readonly: false,
-        });
+    private handleShowRecharge(row: any) {
+        (this.$refs.recharge as Recharge).init(row);
     }
 
-    private handleShowGiftPlans(row: any) {
-        this.showMerchantGiftPlan = true;
-        this.activeMerchant = row;
-    }
-
-    private handleShowMembers(row: any) {
-        this.showMembers = true;
-        this.activeMerchant = row;
+    private showQrcode(row: MerchantInfo) {
+        // @ts-ignore
+        this.$refs.qrcode.init(row.id);
     }
 }
 </script>

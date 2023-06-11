@@ -2,7 +2,7 @@
  * @Author        : turbo 664120459@qq.com
  * @Date          : 2022-12-12 16:09:29
  * @LastEditors   : turbo 664120459@qq.com
- * @LastEditTime  : 2023-05-26 09:43:15
+ * @LastEditTime  : 2023-06-11 13:12:15
  * @FilePath      : /nls-admin/src/components/common/permission.ts
  * @Description   : 
  * 
@@ -19,6 +19,9 @@ export const Permission = {
                 try {
                     if (!key) {
                         return true
+                    }
+                    if (this.isSuperAdmin()) {
+                        return true;
                     }
                     const { permissionObj } = options.store.state.user
                     if (permissionObj && permissionObj[key]) {

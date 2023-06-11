@@ -2,7 +2,7 @@
  * @Author        : turbo 664120459@qq.com
  * @Date          : 2023-05-23 16:13:04
  * @LastEditors   : turbo 664120459@qq.com
- * @LastEditTime  : 2023-05-26 10:26:58
+ * @LastEditTime  : 2023-06-07 11:08:35
  * @FilePath      : /nls-admin/src/api/merchant.ts
  * @Description   : 
  * 
@@ -72,50 +72,25 @@ export const editMerchant = async (data: any) => {
     })).data) as MerchantInfo
 }
 
-/**
- * 商户自行发起充值
- * @param amount 充值金额元 
- * @returns 
- */
-export const merchantRecharge = async ({
-    amount
-}: { amount: number }) => {
+export const getMerchantInfo = async (mid: number) => {
     return ((await request({
-        url: `/order/createOrder`,
-        method: 'POST',
-        data: {
-            orderType: OrderType.MERCHANT_RECHARGE,
-            orderGoodsList: [
-                {
-                    goodsType: OrderType.MERCHANT_RECHARGE,
-                    goodsId: 0,
-                    goodsNum: Number(amount).mul(100)
-                }
-            ]
-        },
-    })).data)
+        url: '/marketing/merchant/detail/' + mid,
+        method: 'GET',
+    })).data) as MerchantInfo
 }
 
 /**
- * 超管给他充值[直接到账]
+ * 充值记录
  */
-export const merchantRechargeByAdmin = async (data: {
-    /**
-     * 充值金额元
-     */
-    amount: number,
-    /**
-     * 充值方式
-     */
-    way: 'cash' | 'bank' | 'wechat' | 'alipay',
-    /**
-     * 三方流水号
-     */
-    thirdOrderSn?: string
-}) => {
+export const getRechargeLog = async ({ keyword, page, pageSize, data = {} }: any) => {
     return ((await request({
-        url: `/merchant/rechargeByAdmin`,
-        method: 'POST',
-        data
-    })).data)
+        url: '/marketing/merchant/recharge/log',
+        method: 'get',
+        params: {
+            keyword,
+            page,
+            pageSize,
+            data
+        }
+    })).data) as IpageDataDto<any>
 }

@@ -185,7 +185,7 @@ export default class extends Vue {
                     path: this.redirect || "/",
                     query: this.otherQuery,
                 });
-                UserModule.GetPermission();
+                UserModule.GetPermission({ refresh: true });
                 // Just to simulate the time of the request
                 setTimeout(() => {
                     this.loading = false;

@@ -2,7 +2,7 @@
  * @Author        : turbo 664120459@qq.com
  * @Date          : 2023-05-23 16:13:04
  * @LastEditors   : turbo 664120459@qq.com
- * @LastEditTime  : 2023-05-26 12:35:19
+ * @LastEditTime  : 2023-06-02 16:51:11
  * @FilePath      : /nls-admin/src/layout/components/Navbar/index.vue
  * @Description   : 
  * 
@@ -32,7 +32,10 @@
                 </div>
                 <el-dropdown-menu slot="dropdown">
                     <a
-                        v-if="$permission.can('refreshRights')"
+                        v-if="
+                            $permission.isSuperAdmin() ||
+                            $permission.can('refreshRights')
+                        "
                         @click="refreshRights"
                     >
                         <el-dropdown-item>

@@ -219,7 +219,31 @@ export const OrderDeliveryStatusConf = [
         label: '退货异常',
         value: OrderDeliveryStatus.REFUNDEXCEPTION
     }
-]
+];
+
+export interface ConfirmPaydonByAdminDto {
+    /**
+     * 订单号
+     */
+    order_no: string;
+
+    /**
+     * 支付通道
+     */
+    tradeWay: "alipay" | "wechat" | "cash";
+
+    /**
+     * 交易金额【分】
+     */
+    amount: number;
+
+    /**
+     * 三方流水号
+     */
+    third_order_no: string;
+
+    remark: string;
+}
 
 /**
  * 读取订单列表
@@ -237,6 +261,54 @@ export const getOrderList = async ({ page, pageSize, data }: any) => {
         }
     })).data) as IpageDataDto<any>
 }
+
+/**
+ * 订单发起支付
+ * @param data 
+ * @returns 
+ */
+export const payorder = async (orderSn: string, tradeWay: string = "wechat", client = 'web') => {
+    return ((await request({
+        url: `/payment/pay/${orderSn}/${tradeWay}/${client}`,
+        method: 'post',
+    })).data) as any
+}
+
+
+/**
+ * 订单确认支付
+ * @param param0
+ * @returns
+ */
+export const confirmPaydone = async (data: ConfirmPaydonByAdminDto) => {
+    return ((await request({
+        url: '/payment/confirm/paydone',
+        method: 'post',
+        data
+    })).data) as any
+}
+
+/**
+ * 商户充值下单
+ * @param merchantUserId
+ * @param amount 充值金额
+ * @returns
+ */
+export const createMerchantReOrder = async (merchantUserId: string, amount: number, remark: string = '') => {
+    return ((await request({
+        url: '/order/create/merchant/rechargeorder',
+        method: 'post',
+        data: {
+            orderType: OrderType.MERCHANT_RECHARGE,
+            orderGoodsList: [
+                { goodsNum: parseInt(Number(amount).mul(100) + '') },
+            ],
+            merchantUserId,
+            remark
+        }
+    })).data) as any
+}
+
 
 /*
 * 订单详情

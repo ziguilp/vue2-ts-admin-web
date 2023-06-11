@@ -299,10 +299,22 @@ export default class CustomForm extends Vue {
     })
     readonly columns!: CustomListColumn[];
 
+    @Prop({
+        type: Function,
+        required: false,
+        default: () => {},
+    })
+    readonly onChange!: () => void;
+
     private form: any = {};
 
     get customStyle() {
         return this.inline ? "width: 200px;" : "";
+    }
+
+    @Watch("form", { deep: true })
+    formchange() {
+        this.$emit("input", this.form);
     }
 
     public getFormValue() {

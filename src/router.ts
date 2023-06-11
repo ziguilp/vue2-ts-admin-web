@@ -2,7 +2,7 @@
  * @Author        : turbo 664120459@qq.com
  * @Date          : 2022-12-12 16:09:29
  * @LastEditors   : turbo 664120459@qq.com
- * @LastEditTime  : 2023-05-26 10:35:16
+ * @LastEditTime  : 2023-06-03 10:30:41
  * @FilePath      : /nls-admin/src/router.ts
  * @Description   :
  *
@@ -115,7 +115,7 @@ export default new Router({
             component: Layout,
             redirect: '/user/list',
             meta: {
-                title: '会员管理',
+                title: '用户管理',
                 icon: 'users',
                 permission: 'attach_AuthController'
             },
@@ -125,21 +125,21 @@ export default new Router({
                     name: 'userList',
                     component: () => import(/* webpackChunkName: "dashboard" */ '@/views/user/list.vue'),
                     meta: {
-                        title: '会员列表',
+                        title: '用户列表',
                         icon: 'users',
                         permission: 'read_userlist'
                     }
                 },
-                {
-                    path: 'giftsubscribe',
-                    name: 'giftSubscribe',
-                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/order/list.vue'),
-                    meta: {
-                        title: '会员订阅',
-                        icon: 'users',
-                        permission: 'read_userlist'
-                    }
-                }
+                // {
+                //     path: 'giftsubscribe',
+                //     name: 'giftSubscribe',
+                //     component: () => import(/* webpackChunkName: "dashboard" */ '@/views/order/list.vue'),
+                //     meta: {
+                //         title: '会员订阅',
+                //         icon: 'users',
+                //         permission: 'read_userlist'
+                //     }
+                // }
             ]
         },
 
@@ -176,26 +176,26 @@ export default new Router({
                 }
             ]
         },
-        {
-            path: '/order',
-            component: Layout,
-            redirect: '/order/list',
-            meta: {
-                title: '订单管理',
-                icon: 'sjbb'
-            },
-            children: [
-                {
-                    path: 'gift',
-                    name: 'gift',
-                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/order/list.vue'),
-                    meta: {
-                        title: '订单列表',
-                        icon: 'circle'
-                    }
-                }
-            ]
-        },
+        // {
+        //     path: '/order',
+        //     component: Layout,
+        //     redirect: '/order/list',
+        //     meta: {
+        //         title: '订单管理',
+        //         icon: 'sjbb'
+        //     },
+        //     children: [
+        //         {
+        //             path: 'gift',
+        //             name: 'gift',
+        //             component: () => import(/* webpackChunkName: "dashboard" */ '@/views/order/list.vue'),
+        //             meta: {
+        //                 title: '订单列表',
+        //                 icon: 'circle'
+        //             }
+        //         }
+        //     ]
+        // },
         {
             path: '/marketing',
             component: Layout,
@@ -231,7 +231,7 @@ export default new Router({
                     name: 'agentList',
                     component: () => import(/* webpackChunkName: "dashboard" */ '@/views/merchant/list.vue'),
                     meta: {
-                        title: '代理商列表',
+                        title: '经销商管理',
                         icon: 'circle',
                         permission: ['read_marketing_merchant_list']
                     }
@@ -239,11 +239,21 @@ export default new Router({
                 {
                     path: 'merchant/recharge/log',
                     name: 'merchantRechargeLog',
-                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/merchant/list.vue'),
+                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/merchant/rechargelog.vue'),
                     meta: {
                         title: '充值记录',
                         icon: 'circle',
-                        permission: ['read_marketing_merchant_list']
+                        permission: ['marketing_merchant_recharge_log']
+                    }
+                },
+                {
+                    path: 'merchant/consumer/log',
+                    name: 'merchantConsumerLog',
+                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/merchant/rechargelog.vue'),
+                    meta: {
+                        title: '消费记录',
+                        icon: 'circle',
+                        permission: ['marketing_merchant_consumer_log']
                     }
                 },
             ]
