@@ -2,7 +2,7 @@
  * @Author        : turbo 664120459@qq.com
  * @Date          : 2023-05-26 20:09:38
  * @LastEditors   : turbo 664120459@qq.com
- * @LastEditTime  : 2023-05-27 20:32:38
+ * @LastEditTime  : 2023-06-11 15:29:52
  * @FilePath      : /nls-admin/src/views/activity/reward.vue
  * @Description   : 
  * 
@@ -232,7 +232,9 @@ export default class extends Vue {
     }
 
     get readOnlyExpPending() {
-        return this.activity && this.activity.statusText === "pending"
+        return this.activity &&
+            (this.activity.statusText === "pending" ||
+                this.activity.status === "ban")
             ? false
             : true;
     }
@@ -262,7 +264,7 @@ export default class extends Vue {
                     ],
                 },
                 formRule: [{ required: true }],
-                readonly: this.readOnlyExpPending,
+                // readonly: this.readOnlyExpPending,
             },
             {
                 type: CustomListColumnType.TEXT,
@@ -291,7 +293,7 @@ export default class extends Vue {
                 label: "红包金额[元]",
                 precision: 2,
                 prop: "reward_amount",
-                readonly: this.readOnlyExpPending,
+                // readonly: this.readOnlyExpPending,
                 editableWhen: (form: any) => {
                     return (
                         form.type ===
@@ -324,8 +326,20 @@ export default class extends Vue {
             },
             {
                 type: CustomListColumnType.TEXTAREA,
-                label: "中奖后领取提示",
+                label: "中奖后给用户的领取提示",
                 prop: "tip",
+                readonly: this.readOnlyExpOver,
+            },
+            {
+                type: CustomListColumnType.TEXT,
+                label: "红包祝福语",
+                prop: "wishing",
+                readonly: this.readOnlyExpOver,
+            },
+            {
+                type: CustomListColumnType.TEXT,
+                label: "红包备注",
+                prop: "remark",
                 readonly: this.readOnlyExpOver,
             },
         ] as CustomListColumn[];
