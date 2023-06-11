@@ -2,7 +2,7 @@
  * @Author        : turbo 664120459@qq.com
  * @Date          : 2023-05-26 20:09:38
  * @LastEditors   : turbo 664120459@qq.com
- * @LastEditTime  : 2023-06-11 15:45:59
+ * @LastEditTime  : 2023-06-11 15:47:35
  * @FilePath      : /nls-admin/src/views/activity/reward.vue
  * @Description   : 
  * 
@@ -216,7 +216,11 @@ export default class extends Vue {
                     this.getList();
                 });
             }
-            (this.$refs.mainform as CustomForm).init();
+            (this.$refs.mainform as CustomForm).init({
+                tip: vals.tip || "",
+                wishing: vals.wishing || "",
+                remark: vals.remark || "",
+            } as any);
         } catch (error) {
             console.log("error submit!!", error);
             return false;
