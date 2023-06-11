@@ -2,7 +2,7 @@
  * @Author        : turbo 664120459@qq.com
  * @Date          : 2023-05-23 16:13:04
  * @LastEditors   : turbo 664120459@qq.com
- * @LastEditTime  : 2023-05-28 08:49:23
+ * @LastEditTime  : 2023-06-11 18:03:01
  * @FilePath      : /nls-admin/src/views/activity/list.vue
  * @Description   : 
  * 
@@ -24,12 +24,21 @@
                     slot="reference"
                     type="text"
                     size="small"
+                    @click="handleShowCodes(scope.row)"
+                    >活动码管理
+                </el-button>
+
+                <el-button
+                    slot="reference"
+                    type="text"
+                    size="small"
                     @click="handleShowRewards(scope.row)"
                     >活动奖品
                 </el-button>
             </template>
         </custom-list>
         <Reward ref="rewardRef"></Reward>
+        <Codes ref="codesRef"></Codes>
     </div>
 </template>
 
@@ -51,12 +60,14 @@ import CustomForm from "@/components/custom-list/editForm.vue";
 import { IpageDataDto } from "@/api/types";
 import moment from "moment";
 import Reward from "./reward.vue";
+import Codes from "./code.vue";
 
 @Component({
     name: "ActivityList",
     components: {
         CustomForm,
         Reward,
+        Codes,
     },
 })
 export default class extends Vue {
@@ -246,6 +257,11 @@ export default class extends Vue {
 
     private handleShowRewards(row: ActivityInfo) {
         const ele = this.$refs.rewardRef as Reward;
+        ele.init(row);
+    }
+
+    private handleShowCodes(row: ActivityInfo) {
+        const ele = this.$refs.codesRef as Codes;
         ele.init(row);
     }
 }

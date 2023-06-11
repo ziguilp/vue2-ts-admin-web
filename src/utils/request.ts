@@ -1,3 +1,13 @@
+/*
+ * @Author        : turbo 664120459@qq.com
+ * @Date          : 2023-05-23 16:13:04
+ * @LastEditors   : turbo 664120459@qq.com
+ * @LastEditTime  : 2023-06-11 21:14:20
+ * @FilePath      : /nls-admin/src/utils/request.ts
+ * @Description   : 
+ * 
+ * Copyright (c) 2023 by turbo 664120459@qq.com, All Rights Reserved. 
+ */
 import axios from 'axios'
 import { Loading, Message, MessageBox } from 'element-ui'
 import { UserModule } from '@/store/modules/user'
@@ -47,6 +57,18 @@ service.interceptors.response.use(
             const { config: { loading } }: any = response
             if (loading) {
                 loading.close()
+            }
+            if (response.data instanceof Blob) {
+                const filename = response.headers["content-disposition"];
+                const blob = new Blob([response.data]);
+                var downloadElement = document.createElement("a");
+                var href = window.URL.createObjectURL(blob);
+                downloadElement.href = href;
+                downloadElement.download = decodeURIComponent(filename.split("filename=")[1]);
+                document.body.appendChild(downloadElement);
+                downloadElement.click();
+                document.body.removeChild(downloadElement);
+                window.URL.revokeObjectURL(href);
             }
         } catch (error) {
 

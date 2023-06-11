@@ -2,7 +2,7 @@
  * @Author        : turbo 664120459@qq.com
  * @Date          : 2022-12-12 16:09:29
  * @LastEditors   : turbo 664120459@qq.com
- * @LastEditTime  : 2023-05-27 19:39:41
+ * @LastEditTime  : 2023-06-11 19:43:48
  * @FilePath      : /nls-admin/src/components/custom-list/editForm.vue
  * @Description   :
  *
@@ -22,6 +22,7 @@
             v-loading="loading"
             :title="title || (form && form.id ? '修改' : '新增')"
             :visible.sync="dialogVisible"
+            :append-to-body="true"
             direction="rtl"
             :before-close="handleClose"
         >
