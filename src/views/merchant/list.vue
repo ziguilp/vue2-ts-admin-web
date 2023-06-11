@@ -2,7 +2,7 @@
  * @Author        : turbo 664120459@qq.com
  * @Date          : 2023-05-23 16:13:04
  * @LastEditors   : turbo 664120459@qq.com
- * @LastEditTime  : 2023-06-11 13:14:18
+ * @LastEditTime  : 2023-06-11 14:47:58
  * @FilePath      : /nls-admin/src/views/merchant/list.vue
  * @Description   : 
  * 
@@ -161,6 +161,7 @@ export default class extends Vue {
                 prop: "kefu_mobile",
                 label: "客服电话",
                 canSearch: false,
+                canAdd: true,
                 canEdit: true,
                 showInDetail: true,
             },
@@ -210,6 +211,15 @@ export default class extends Vue {
                 max: 300,
                 prop: "fee_rate",
             },
+            {
+                type: CustomListColumnType.TEXT,
+                prop: "remark",
+                label: "备注",
+                canSearch: false,
+                canAdd: true,
+                canEdit: true,
+                showInDetail: true,
+            },
             // {
             //     type: CustomListColumnType.TEXT,
             //     prop: "license",
@@ -247,7 +257,10 @@ export default class extends Vue {
             if (form.id) {
                 return await editMerchant(form);
             } else {
-                return await createMerchant(form);
+                return await createMerchant({
+                    ...form,
+                    status: MarketingMerchantStatus.NORMAL,
+                });
             }
         },
         onLoadData: async (searchForm: any, idata: IpageDataDto<any>) => {
