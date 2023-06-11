@@ -2,7 +2,7 @@
  * @Author        : turbo 664120459@qq.com
  * @Date          : 2023-06-11 17:58:25
  * @LastEditors   : turbo 664120459@qq.com
- * @LastEditTime  : 2023-06-11 21:24:49
+ * @LastEditTime  : 2023-06-11 21:35:29
  * @FilePath      : /nls-admin/src/views/activity/code.vue
  * @Description   : 
  * 
@@ -122,6 +122,7 @@ export default class extends Vue {
 
     private queryProcess(waveCode: string) {
         if (this.timer) {
+            // @ts-ignore
             clearInterval(this.timer);
         }
         // @ts-ignore
@@ -141,6 +142,7 @@ export default class extends Vue {
 
     unmounted() {
         if (this.timer) {
+            // @ts-ignore
             clearInterval(this.timer);
         }
     }
