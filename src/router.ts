@@ -2,7 +2,7 @@
  * @Author        : turbo 664120459@qq.com
  * @Date          : 2022-12-12 16:09:29
  * @LastEditors   : turbo 664120459@qq.com
- * @LastEditTime  : 2023-06-15 07:59:58
+ * @LastEditTime  : 2023-06-15 08:46:34
  * @FilePath      : /nls-admin/src/router.ts
  * @Description   :
  *
@@ -229,11 +229,11 @@ export default new Router({
                 {
                     path: 'agent/list',
                     name: 'agentList',
-                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/marketing/merchant/list.vue'),
+                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/marketing/agent/list.vue'),
                     meta: {
                         title: '门店管理',
                         icon: 'circle',
-                        permission: ['read_marketing_merchant_list']
+                        permission: ['read_agent_list']
                     }
                 },
                 {
@@ -249,7 +249,7 @@ export default new Router({
                 {
                     path: 'merchant/consumer/log',
                     name: 'merchantConsumerLog',
-                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/marketing/merchant/rechargelog.vue'),
+                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/marketing/merchant/consumer.vue'),
                     meta: {
                         title: '消费记录',
                         icon: 'circle',

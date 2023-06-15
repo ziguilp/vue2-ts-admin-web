@@ -2,7 +2,7 @@
  * @Author        : turbo 664120459@qq.com
  * @Date          : 2023-05-23 16:13:04
  * @LastEditors   : turbo 664120459@qq.com
- * @LastEditTime  : 2023-06-11 21:30:59
+ * @LastEditTime  : 2023-06-15 11:31:03
  * @FilePath      : /nls-admin/src/api/activity.ts
  * @Description   : 
  * 
@@ -186,4 +186,24 @@ export const downloadCodeFile = async (waveCode: string) => {
         showLoading: true
     }))
     console.log(`下载`, res)
+}
+
+
+/**
+ * 中奖记录
+ */
+export const applyLog = async ({
+    page,
+    pageSize,
+    data
+}: any) => {
+    return ((await request({
+        url: '/marketing/activity/applyLog',
+        method: 'get',
+        params: {
+            page,
+            pageSize,
+            data: data || {}
+        }
+    })).data) as IpageDataDto<any>
 }

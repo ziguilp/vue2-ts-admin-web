@@ -2,8 +2,8 @@
  * @Author        : turbo 664120459@qq.com
  * @Date          : 2022-12-12 16:09:29
  * @LastEditors   : turbo 664120459@qq.com
- * @LastEditTime  : 2022-12-13 21:58:52
- * @FilePath      : /adminweb/src/views/user/list.vue
+ * @LastEditTime  : 2023-06-15 12:14:06
+ * @FilePath      : /nls-admin/src/views/user/list.vue
  * @Description   : 
  * 
  * Copyright (c) 2022 by turbo 664120459@qq.com, All Rights Reserved. 
@@ -11,32 +11,16 @@
 <template>
     <div>
         <custom-list ref="customList" :conf="config">
-            <template slot="mobile" scope="scope">
-                {{ scope.row.mobile }}
-            </template>
-            <template slot="deposit_amount" scope="scope">
-                {{ fen2yuan(scope.row.deposit_amount) }}
-            </template>
-
             <template slot="operations" scope="scope">
                 <el-button
                     type="text"
                     size="small"
-                    @click="handleShowSubscribe(scope.row)"
-                    >查看会员订阅</el-button
+                    @click="handleShowApplyLog(scope.row)"
+                    >查看中奖记录</el-button
                 >
             </template>
         </custom-list>
-
-        <el-dialog
-            width="1100px"
-            :title="activeUser ? `${activeUser.nickname}订阅的会员礼` : ''"
-            :visible.sync="showSubscribe"
-        >
-            <SubscribeVue
-                :user_id="activeUser ? activeUser.id : 0"
-            ></SubscribeVue>
-        </el-dialog>
+        <apply-log ref="applylog"></apply-log>
     </div>
 </template>
 
@@ -57,10 +41,14 @@ import {
 import { getRoleList } from "@/api/role";
 import { isMobile } from "@/utils/validate";
 import { IpageDataDto } from "@/api/types";
+// @ts-ignore
+import applyLog from "@/views/marketing/activity/applylog";
 
 @Component({
     name: "AdminList",
-    components: {},
+    components: {
+        applyLog,
+    },
 })
 export default class extends Vue {
     private activeUser: any = null;
@@ -179,13 +167,12 @@ export default class extends Vue {
         },
     };
 
-    private handleShowSubscribe(row: any) {
-        this.activeUser = row;
-        this.showSubscribe = true;
-    }
-
-    private fen2yuan(v: number) {
-        return Number(v / 100).toFixed(2);
+    private handleShowApplyLog(row: any) {
+        // @ts-ignore
+        this.$refs.applylog.init({
+            title: `${row.nickname}的中奖记录`,
+            userId: row.id,
+        });
     }
 }
 </script>

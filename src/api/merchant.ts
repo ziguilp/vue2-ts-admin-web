@@ -2,7 +2,7 @@
  * @Author        : turbo 664120459@qq.com
  * @Date          : 2023-05-23 16:13:04
  * @LastEditors   : turbo 664120459@qq.com
- * @LastEditTime  : 2023-06-07 11:08:35
+ * @LastEditTime  : 2023-06-15 08:44:19
  * @FilePath      : /nls-admin/src/api/merchant.ts
  * @Description   : 
  * 
@@ -85,6 +85,22 @@ export const getMerchantInfo = async (mid: number) => {
 export const getRechargeLog = async ({ keyword, page, pageSize, data = {} }: any) => {
     return ((await request({
         url: '/marketing/merchant/recharge/log',
+        method: 'get',
+        params: {
+            keyword,
+            page,
+            pageSize,
+            data
+        }
+    })).data) as IpageDataDto<any>
+}
+
+/**
+ * 商户消费记录
+ */
+export const getConsumerLog = async ({ keyword, page, pageSize, data = {} }: any) => {
+    return ((await request({
+        url: '/marketing/merchant/consumer/log',
         method: 'get',
         params: {
             keyword,
