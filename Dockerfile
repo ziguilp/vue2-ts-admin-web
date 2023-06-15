@@ -1,4 +1,4 @@
-FROM node:14.19 as dist
+FROM node:16.20 as dist
 # RUN yarn config set registry https://registry.npm.taobao.org/
 WORKDIR /tmp
 COPY package.json yarn.lock tsconfig.json babel.config.js postcss.config.js vue.config.js  ./
