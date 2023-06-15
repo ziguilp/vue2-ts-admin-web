@@ -2,7 +2,7 @@
  * @Author        : turbo 664120459@qq.com
  * @Date          : 2022-12-12 16:09:29
  * @LastEditors   : turbo 664120459@qq.com
- * @LastEditTime  : 2023-06-03 10:30:41
+ * @LastEditTime  : 2023-06-15 07:59:58
  * @FilePath      : /nls-admin/src/router.ts
  * @Description   :
  *
@@ -209,7 +209,7 @@ export default new Router({
                 {
                     path: 'merchant/list',
                     name: 'merchantList',
-                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/merchant/list.vue'),
+                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/marketing/merchant/list.vue'),
                     meta: {
                         title: '商户管理',
                         icon: 'circle',
@@ -219,7 +219,7 @@ export default new Router({
                 {
                     path: 'activity/list',
                     name: 'activityList',
-                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/activity/list.vue'),
+                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/marketing/activity/list.vue'),
                     meta: {
                         title: '活动管理',
                         icon: 'circle',
@@ -229,9 +229,9 @@ export default new Router({
                 {
                     path: 'agent/list',
                     name: 'agentList',
-                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/merchant/list.vue'),
+                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/marketing/merchant/list.vue'),
                     meta: {
-                        title: '经销商管理',
+                        title: '门店管理',
                         icon: 'circle',
                         permission: ['read_marketing_merchant_list']
                     }
@@ -239,7 +239,7 @@ export default new Router({
                 {
                     path: 'merchant/recharge/log',
                     name: 'merchantRechargeLog',
-                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/merchant/rechargelog.vue'),
+                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/marketing/merchant/rechargelog.vue'),
                     meta: {
                         title: '充值记录',
                         icon: 'circle',
@@ -249,7 +249,7 @@ export default new Router({
                 {
                     path: 'merchant/consumer/log',
                     name: 'merchantConsumerLog',
-                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/merchant/rechargelog.vue'),
+                    component: () => import(/* webpackChunkName: "dashboard" */ '@/views/marketing/merchant/rechargelog.vue'),
                     meta: {
                         title: '消费记录',
                         icon: 'circle',

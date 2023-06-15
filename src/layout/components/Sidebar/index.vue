@@ -1,5 +1,5 @@
 <template>
-    <div :class="{'has-logo': showLogo}">
+    <div :class="{ 'has-logo': showLogo }">
         <sidebar-logo v-if="showLogo" :collapse="isCollapse" />
         <el-scrollbar wrap-class="scrollbar-wrapper">
             <el-menu
@@ -25,48 +25,48 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
-import { AppModule } from '@/store/modules/app'
-import { SettingsModule } from '@/store/modules/settings'
-import SidebarItem from './SidebarItem.vue'
-import SidebarLogo from './SidebarLogo.vue'
-import variables from '@/styles/_variables.scss'
+import { Component, Vue } from "vue-property-decorator";
+import { AppModule } from "@/store/modules/app";
+import { SettingsModule } from "@/store/modules/settings";
+import SidebarItem from "./SidebarItem.vue";
+import SidebarLogo from "./SidebarLogo.vue";
+import variables from "@/styles/_variables.scss";
 
 @Component({
-    name: 'SideBar',
+    name: "SideBar",
     components: {
         SidebarItem,
-        SidebarLogo
-    }
+        SidebarLogo,
+    },
 })
 export default class extends Vue {
     get sidebar() {
-        return AppModule.sidebar
+        return AppModule.sidebar;
     }
 
     get routes() {
-        return (this.$router as any).options.routes
+        return (this.$router as any).options.routes;
     }
 
     get showLogo() {
-        return SettingsModule.showSidebarLogo
+        return SettingsModule.showSidebarLogo;
     }
 
     get variables() {
-        return variables
+        return variables;
     }
 
     get activeMenu() {
-        const route = this.$route
-        const { meta, path } = route
-        if (meta.activeMenu) {
-            return meta.activeMenu
+        const route = this.$route;
+        const { meta, path } = route;
+        if (meta?.activeMenu) {
+            return meta.activeMenu;
         }
-        return path
+        return path;
     }
 
     get isCollapse() {
-        return !this.sidebar.opened
+        return !this.sidebar.opened;
     }
 }
 </script>
